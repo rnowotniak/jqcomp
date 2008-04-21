@@ -1,15 +1,11 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
 
-import org.jscience.mathematics.number.*;
-import org.jscience.mathematics.vector.*;
-import org.jscience.mathematics.vector.DimensionException;
+import org.jscience.mathematics.number.Complex;
 
-class MoreMath {
-	static public double log2(double x){
-		return Math.log10(x)/Math.log10(2);
-	}
-}
+import org.jscience.mathematics.vector.ComplexMatrix;
+import org.jscience.mathematics.vector.ComplexVector;
+import org.jscience.mathematics.vector.DimensionException;
 
 public class QRegister {
 	 private int size;
@@ -49,14 +45,13 @@ public class QRegister {
 	 /** Inner product  */ 
 	 public Complex inner(QRegister that) {
 		 // may raise DimensionException
-		 // buggy
-		 return this.matrix.transpose().times(that.matrix).get(0, 0);
+		 return MoreMath.ConjugateTranspose(this.matrix).times(that.matrix).get(0, 0);
 	 }
 	 
-	 /** Norm = sqrt( <this|this> )
-	  *  BUGGY */
+	 /** Norm = sqrt( <this|this> ) */
 	 public double norm(){
 		 double ret = this.inner(this).getReal();
+		 System.out.println(this.inner(this));
 		 return Math.sqrt(ret);
 	 }
 	 
@@ -68,7 +63,7 @@ public class QRegister {
 	 
 	 /** Set [1, 0, 0, ..., 0] */
 	 public void reset() {
-		 
+		 //TODO
 	 }
 	 
 	 /** Tensor (Kronecker) product */
