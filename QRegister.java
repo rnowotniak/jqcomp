@@ -50,7 +50,7 @@ public class QRegister {
 	 /** Norm = sqrt( <this|this> ) */
 	 public double norm(){
 		 double ret = this.inner(this).getReal();
-		 System.out.println(this.inner(this));
+		 //System.out.println(this.inner(this));
 		 return Math.sqrt(ret);
 	 }
 	 
