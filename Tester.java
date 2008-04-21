@@ -15,9 +15,8 @@ public class Tester {
 		 };
 		 QRegister reg = new QRegister(test);
 		 QRegister reg2 = new QRegister(test2);
-		 System.out.println(reg.inner(reg));
-		 System.out.println(reg.outer(reg));
-		 System.out.println(reg);
+		 System.out.println(reg2.inner(reg2));
+		 System.out.println(reg2.norm());
 		 
 	 }
 }
