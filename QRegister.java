@@ -11,7 +11,7 @@ public class QRegister {
 	 private ComplexMatrix matrix;
 	 
 	 
-	 public QRegister(Complex[] initialValues) {
+	 public QRegister(Complex... initialValues) {
 		 ComplexVector vector = ComplexVector.valueOf(initialValues);
 		 this.size = vector.getDimension();
 		 matrix = ComplexMatrix.valueOf(vector).transpose();
@@ -37,12 +37,12 @@ public class QRegister {
 	 }
 	 	 
 	 /** Addition */
-	public QRegister add(QRegister that) {
+	public final QRegister add(QRegister that) {
 		  return new QRegister(this.matrix.plus(that.matrix));
 	 }
 	 
 	 /** Inner product  */ 
-	 public Complex inner(QRegister that) {
+	 public final Complex inner(QRegister that) {
 		 // may raise DimensionException
 		 return MoreMath.ConjugateTranspose(this.matrix).times(that.matrix).get(0, 0);
 	 }
@@ -54,19 +54,35 @@ public class QRegister {
 		 return Math.sqrt(ret);
 	 }
 	 
+	 
+	 public final QRegister normalize() {
+		 double norm0 = this.norm();
+		 Complex coordinates[] = new Complex[size];
+		 for (int i=0;i<size;i++) {
+			 coordinates[i] = matrix.get(i,0).divide(norm0);
+		 }
+		 matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(coordinates)).transpose();
+		 return this;
+	 }
+	 
 	 /** Outer product */
-	 public ComplexMatrix outer(QRegister that) {
+	 public final ComplexMatrix outer(QRegister that) {
 		 // may raise DimensionException
 		 return this.matrix.times(that.matrix.transpose());
 	 }
 	 
 	 /** Set [1, 0, 0, ..., 0] */
 	 public void reset() {
-		 //TODO
+		 Complex coordinates[] = new Complex[size];
+		 coordinates[0] = Complex.valueOf(1, 0);
+		 for (int i=1;i<size;i++) {
+			 coordinates[i] = Complex.valueOf(0, 0);
+		 }
+		 matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(coordinates)).transpose();
 	 }
 	 
 	 /** Tensor (Kronecker) product */
-	 public QRegister tensor(QRegister that) {
+	 public final QRegister tensor(QRegister that) {
 		 return new QRegister(this.matrix.tensor(that.matrix));
 	 }
 	 
