@@ -3,7 +3,6 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import org.jscience.mathematics.number.Complex;
 
 public class Tester {
-
 	 public static void main(String []args){
 		 Complex[] test = {Complex.valueOf(0,1) ,
 				 	Complex.valueOf(1,0),
@@ -19,4 +18,6 @@ public class Tester {
 		 System.out.println(reg2.norm());
 		 
 	 }
+	 
+	 
 }

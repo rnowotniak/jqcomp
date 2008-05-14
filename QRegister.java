@@ -6,11 +6,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.vector.ComplexVector;
 import org.jscience.mathematics.vector.DimensionException;
 
-public class QRegister {
-	 private int size;
-	 private ComplexMatrix matrix;
-	 
-	 
+public class QRegister { 
 	 public QRegister(Complex... initialValues) {
 		 ComplexVector vector = ComplexVector.valueOf(initialValues);
 		 this.size = vector.getDimension();
@@ -35,10 +31,24 @@ public class QRegister {
 		 this.matrix = initialValues;
 		 size = matrix.getNumberOfRows();
 	 }
-	 	 
+	 
+	 public QRegister(QRegister other) {
+		 this.size = other.size;
+		 this.matrix = other.matrix.copy();
+	 }	 
+	 
+	 // TODO
+	 public final boolean equals(QRegister other) {
+		 throw new RuntimeException("Not yet implemented.");
+	 }	 
+	 
 	 /** Addition */
-	public final QRegister add(QRegister that) {
+	 public final QRegister add(QRegister that) {
 		  return new QRegister(this.matrix.plus(that.matrix));
+	 }
+	
+	 public final QRegister sub(QRegister other) {
+		 return new QRegister(this.matrix.minus(other.matrix));  
 	 }
 	 
 	 /** Inner product  */ 
@@ -89,4 +99,8 @@ public class QRegister {
 	 public String toString() {
 		 return matrix.toString();
 	 }
+	 
+
+	 private int size;
+	 ComplexMatrix matrix;
 }
