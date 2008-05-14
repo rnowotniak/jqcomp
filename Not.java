@@ -1,21 +1,15 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
 import org.jscience.mathematics.vector.ComplexMatrix;
+import org.jscience.mathematics.number.Complex;
 
 public class Not extends AbstractQGate {
-
-	public Not(ComplexMatrix matrix) {
-		super(matrix);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Not(QGate other) {
-		super(other);
-		// TODO Auto-generated constructor stub
-	}
-
 	public Not() {
-		// TODO Auto-generated constructor stub
+		this.matrix = ComplexMatrix.valueOf(new Complex[][] {
+				{cx(0), cx(1)},
+				{cx(1), cx(0)}
+		});
+		
+		this.size = this.matrix.getNumberOfRows();
 	}
-
 }
