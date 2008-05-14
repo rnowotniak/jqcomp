@@ -11,6 +11,11 @@ public class QGate {
 		this.size = matrix.getNumberOfRows();
 	}	
 	
+	public QGate(Complex[][] matrix) {
+		this.matrix = ComplexMatrix.valueOf(matrix);
+		this.size = this.matrix.getNumberOfRows();
+	}
+	
 	public QGate(QGate other) {
 		this.matrix = other.matrix.copy();
 		this.size = matrix.getNumberOfRows();
@@ -78,6 +83,10 @@ public class QGate {
 	public QGate inverse() {
 		return new QGate(matrix.inverse());
 	}	
+	
+	public String toString() {
+		return matrix.toString();
+	}
 	
 	/*	 troche dziwnie to by³o tam napisane
 	 *   je¿eli mamy zamiar zmieniaæ stan danego obiektu

@@ -16,7 +16,7 @@ public class Hadamard extends AbstractQGate {
 	}	
 	
 	private static final ComplexMatrix h2 = ComplexMatrix.valueOf(new Complex[][] {
-			new Complex[] {Complex.valueOf(1, 0), Complex.valueOf(1, 0)},
-			new Complex[] {Complex.valueOf(1, 0), Complex.valueOf(-1, 0)}
+			{Complex.valueOf(1, 0), Complex.valueOf(1, 0)},
+			{Complex.valueOf(1, 0), Complex.valueOf(-1, 0)}
 	}).times(Complex.valueOf(Math.sqrt(2) / 2, 0));	
 }
