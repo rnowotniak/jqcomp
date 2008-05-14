@@ -1,9 +1,9 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
-import org.jscience.mathematics.vector.ComplexMatrix;
+//import org.jscience.mathematics.vector.ComplexMatrix;
 
 public class Stage extends QGate {
-	public Stage(QGate[] gates) {
+	public Stage(AbstractQGate[] gates) {
 		this.gates = gates;
 		
 		size = gates[0].size;
@@ -15,5 +15,5 @@ public class Stage extends QGate {
 		}	
 	}
 	
-	QGate[] gates;	
+	AbstractQGate[] gates;	
 }

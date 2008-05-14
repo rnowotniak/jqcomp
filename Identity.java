@@ -4,6 +4,10 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 public class Identity extends AbstractQGate {
+	public Identity() { 
+		this(2); 	
+	}	
+	
 	public Identity(int size) {
 		Complex[][] values = new Complex[size][size];
 		for(int i = 0; i < size; i++) {
@@ -14,5 +18,5 @@ public class Identity extends AbstractQGate {
 		
 		this.matrix = ComplexMatrix.valueOf(values);
 		this.size = this.matrix.getNumberOfRows();
-	}	
+	}
 }

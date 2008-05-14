@@ -30,12 +30,12 @@ public class Tester {
 	 public static void test2() {		
 		 println("*** test2");
 		 
-		 QGate gate1 = new QGate(new Complex[][]{
+		 AbstractQGate gate1 = new AbstractQGate(new Complex[][]{
 				 {cx(1), cx(0)},
 				 {cx(0), cx(1)}
 		 });		 
 		 
-		 QGate gate2 = new QGate(new Complex[][]{
+		 AbstractQGate gate2 = new AbstractQGate(new Complex[][]{
 				 {cx(1), cx(1)},
 				 {cx(0), cx(-1)}
 		 });
@@ -73,20 +73,20 @@ public class Tester {
 	 public static void test3() {
 		 println("*** test3");
 		 
-		 QGate someGate1 = new QGate(new Complex[][]{
+		 AbstractQGate someGate1 = new AbstractQGate(new Complex[][]{
 				 {cx(1), cx(0)},
 				 {cx(0), cx(1)}
 		 });	
 		 
-		 QGate someGate2 = new QGate(new Complex[][]{
+		 AbstractQGate someGate2 = new AbstractQGate(new Complex[][]{
 				 {cx(-1), cx(1)},
 				 {cx(-1), cx(0)}
 		 });
 		 
 		 QCircuit circuit1 = new QCircuit(new Stage[] {
-			new Stage(new QGate[] {someGate1, someGate2}),
-			new Stage(new QGate[] {someGate2, someGate2}),
-			new Stage(new QGate[] {someGate1}),
+			new Stage(new AbstractQGate[] {someGate1, someGate2}),
+			new Stage(new AbstractQGate[] {someGate2, someGate2}),
+			new Stage(new AbstractQGate[] {someGate1}),
 		 });
 		 
 		 println("circuit1:\n" + circuit1);

@@ -4,10 +4,19 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 
-public class Hadamard extends AbstractQGate {
+public class Hadamard extends AbstractQGate {	
+	public Hadamard() {
+		this(2);
+	}
+	
 	public Hadamard(int size) {
+		 if(size < 2) {
+			 throw new WrongSizeException("size < 2");
+		 }
+		
 		 ComplexMatrix m = h2;		
-		 for(int i = 0; i < size - 1; i++) {
+		 // w oryginale jest - 1, ale czy - 2 nie jest bardziej logiczne?
+		 for(int i = 0; i < size - 2; i++) {
 			 m = m.tensor(h2);
 		 }
 		 

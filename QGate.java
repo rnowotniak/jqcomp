@@ -96,6 +96,20 @@ public class QGate {
 		return this;
 	}*/
 	
+	 // troche dziwne miejsce na te metody, ale przez to jest mniej pisania
+	 protected static Complex cx(double real, double imaginary) {
+		return Complex.valueOf(real, imaginary); 
+	 }
+	 
+	 protected static Complex cx(double real) {
+		return cx(real, 0); 
+	 }	 
+	 
+	 /*	 
+	 protected static toComplexArray(double[][] values) {
+		Complex[][] cvalues = new Complex[values.length][values.length] 
+	 }*/
+	
 	ComplexMatrix matrix;
 	int size; // = columns ?	
 }
