@@ -6,7 +6,7 @@ public class Stage extends QGate {
 	public Stage(QGate[] gates) {
 		this.gates = gates;
 		
-		size = 0;
+		size = gates[0].size;
 		matrix = gates[0].matrix.copy();
 		for(int i = 1; i < gates.length; i++) {
 			// kron == tensor ?

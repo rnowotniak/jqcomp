@@ -1,5 +1,6 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+
 public class QCircuit {
 	public QCircuit(Stage[] stages) {
 		this.stages = stages;
@@ -17,6 +18,23 @@ public class QCircuit {
 		}
 		
 		return result;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < stages.length; i++) {
+			Stage stage = stages[i];
+			
+			sb.append("* Stage ");
+			sb.append(i);
+			sb.append(", size: ");
+			sb.append(stage.size);
+			sb.append(", matrix:\n");
+			sb.append(stage.matrix);
+			sb.append("\n");
+		}
+		
+		return sb.toString();
 	}
 	
 	private Stage[] stages;

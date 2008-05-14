@@ -6,6 +6,7 @@ public class Tester {
 	 public static void main(String []args){
 		 //test1();
 		 test2();
+		 test3();
 	 }
 	 
 	 public static void test1() {
@@ -26,7 +27,9 @@ public class Tester {
 		 System.out.println(reg2.norm());
 	 }
 	 
-	 public static void test2() {		 
+	 public static void test2() {		
+		 println("*** test2");
+		 
 		 QGate gate1 = new QGate(new Complex[][]{
 				 {cx(1), cx(0)},
 				 {cx(0), cx(1)}
@@ -67,19 +70,41 @@ public class Tester {
 		 println("test2 done.");
 	 }
 	 
-	 public static final Complex cx(double real, double imaginary) {
+	 public static void test3() {
+		 println("*** test3");
+		 
+		 QGate someGate1 = new QGate(new Complex[][]{
+				 {cx(1), cx(0)},
+				 {cx(0), cx(1)}
+		 });	
+		 
+		 QGate someGate2 = new QGate(new Complex[][]{
+				 {cx(-1), cx(1)},
+				 {cx(-1), cx(0)}
+		 });
+		 
+		 QCircuit circuit1 = new QCircuit(new Stage[] {
+			new Stage(new QGate[] {someGate1, someGate2}),
+			new Stage(new QGate[] {someGate2, someGate2}),
+			new Stage(new QGate[] {someGate1}),
+		 });
+		 
+		 println("circuit1:\n" + circuit1);
+	 }
+	 
+	 public static Complex cx(double real, double imaginary) {
 		return Complex.valueOf(real, imaginary); 
 	 }
 	 
-	 public static final Complex cx(double real) {
+	 public static Complex cx(double real) {
 		return cx(real, 0); 
 	 }	 
 	 	 
-	 public static final void println(Object str) {
+	 public static void println(Object str) {
 		System.out.println(str); 
 	 }
 	 
-	 public static final void print(Object str) {
+	 public static void print(Object str) {
 		System.out.print(str); 
 	 }
 }
