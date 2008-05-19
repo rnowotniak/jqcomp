@@ -10,14 +10,15 @@ public class Identity extends AbstractQGate {
 	}	
 	
 	public Identity(int size) {
-		Complex[][] values = new Complex[size][size];
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < size; j++) {
+		int dim = MoreMath.pow2(size);
+		Complex[][] values = new Complex[dim][dim];
+		for(int i = 0; i < dim; i++) {
+			for(int j = 0; j < dim; j++) {
 				values[i][j] = Complex.valueOf((i == j) ? 1 : 0, 0);
 			}			
 		}
 		
 		this.matrix = ComplexMatrix.valueOf(values);
-		this.size = this.matrix.getNumberOfRows();
+		this.size = size;
 	}
 }

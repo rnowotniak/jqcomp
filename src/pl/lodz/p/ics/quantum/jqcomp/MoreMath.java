@@ -8,6 +8,12 @@ public class MoreMath {
 		return Math.log10(x)/Math.log10(2);
 	}
 	
+	/** Return 2**x, x is a nonnegative integer */
+	static public int pow2(int exp) {
+		if (exp<0 || exp>31 ) throw new ArithmeticException();
+		return 1<<exp;
+	}
+	
 	/** Transpose and complex conjugate */
 	static public ComplexMatrix ConjugateTranspose(ComplexMatrix H) {
 		Complex[][] C = new Complex[H.getNumberOfRows()][H.getNumberOfColumns()];

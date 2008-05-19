@@ -11,18 +11,18 @@ public class Hadamard extends AbstractQGate {
 	}
 	
 	public Hadamard(int size) {
-		 if(size < 2) {
-			 throw new WrongSizeException("size < 2");
+		 if(size < 1) {
+			 throw new WrongSizeException("size < 1");
 		 }
 		
 		 ComplexMatrix m = h2;		
 		 // w oryginale jest - 1, ale czy - 2 nie jest bardziej logiczne?
-		 for(int i = 0; i < size - 2; i++) {
+		 for(int i = 1; i < size ; i++) {
 			 m = m.tensor(h2);
 		 }
 		 
 		 this.matrix = m;
-		 this.size = m.getNumberOfRows();		 
+		 this.size = size;		 
 		 
 		/* nie wiem czy dobrze to zinterpretowa�em
 		 * for i in xrange(size - 1):

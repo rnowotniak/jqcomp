@@ -8,8 +8,12 @@ import org.jscience.mathematics.number.Complex;
 public class Toffoli extends AbstractQGate {
 	public Toffoli() {
 		this.matrix = tmatrix;
-		this.size = tmatrix.getNumberOfRows();
+		this.size = 3;
 		// dlaczego tam jest size = 3 ???
+		/* bo:
+		 * 1) operuje na 3 kubitach
+		 * 2) ma rozmiar 8 x 8 ( 8 = 2 ** 3)
+		 */
 	}
 	
 	private static final ComplexMatrix tmatrix = ComplexMatrix.valueOf(

@@ -11,6 +11,9 @@ public class Not extends AbstractQGate {
 				{cx(1), cx(0)}
 		});
 		
-		this.size = this.matrix.getNumberOfRows();
+		this.size = 1; 
+		/* dochodzę do wniosku, że size powinien oznaczać
+		 * ilosc kubitow, na ktorych operuje bramka, a nie wymiar macierzy
+		 */
 	}
 }

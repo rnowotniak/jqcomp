@@ -13,7 +13,8 @@ public class PhaseShift extends AbstractQGate {
 				{cx(0), cx(angle, 1).exp()} // exp(angle * 1j)
 		});
 		
-		this.size = matrix.getNumberOfRows();		
+		//this.size = matrix.getNumberOfRows();
+		this.size = 1;
 	}
 	
 	double angle;

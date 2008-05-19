@@ -9,7 +9,8 @@ public class Tester {
 		 //test1();
 		 //test2();
 		 //test3();
-		 testGates();
+		 //testGates();
+		 testHadamard();
 	 }
 	 
 	 public static void testGates(){
@@ -22,6 +23,14 @@ public class Tester {
 		 println("Po RevCNOT");
 		 QRegister reg1q = new QRegister(cx(1,0), cx(0,0));
 		 println(cnot.mul(reg1q));
+	 }
+	 
+	 public static void testHadamard() {
+		 for (int i=1;i<4;i++ ) {
+			 println("Hadamard "+i);
+			 QGate had = new Hadamard(i);
+		 	 println(had);
+		 }
 	 }
 	 
 	 public static void test1() {
