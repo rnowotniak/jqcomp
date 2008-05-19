@@ -6,6 +6,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.vector.ComplexVector;
 import org.jscience.mathematics.vector.DimensionException;
 
+
 public class QRegister { 
 	 public QRegister(Complex... initialValues) {
 		 ComplexVector vector = ComplexVector.valueOf(initialValues);
@@ -16,6 +17,7 @@ public class QRegister {
 	 public QRegister(int dim) {
 		 // TODO check dimensions
 		 ComplexVector vector;
+		 
 		 Complex[] initialValues = new Complex[dim];
 		 initialValues[0] = Complex.valueOf(1,0);
 		 for (int i=1;i<dim;i++)

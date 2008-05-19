@@ -4,6 +4,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 
+
 public class Toffoli extends AbstractQGate {
 	public Toffoli() {
 		this.matrix = tmatrix;

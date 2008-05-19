@@ -4,6 +4,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 
+
 public class Hadamard extends AbstractQGate {	
 	public Hadamard() {
 		this(2);
@@ -23,7 +24,7 @@ public class Hadamard extends AbstractQGate {
 		 this.matrix = m;
 		 this.size = m.getNumberOfRows();		 
 		 
-		/* nie wiem czy dobrze to zinterpretowa³em
+		/* nie wiem czy dobrze to zinterpretowaï¿½em
 		 * for i in xrange(size - 1):
             m = kron(m, h2)
 		 */		

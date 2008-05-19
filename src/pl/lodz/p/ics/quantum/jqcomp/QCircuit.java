@@ -1,6 +1,7 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
 
+
 public class QCircuit {
 	public QCircuit(Stage[] stages) {
 		this.stages = stages;

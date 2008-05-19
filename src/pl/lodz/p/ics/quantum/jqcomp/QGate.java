@@ -1,8 +1,8 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
-import org.jscience.mathematics.vector.ComplexVector;
 
 public class QGate {
 	public QGate(ComplexMatrix matrix) {
@@ -36,23 +36,39 @@ public class QGate {
 		        return result
 		*/
 		// dlaczego Stage?
+
 		
 		throw new RuntimeException("Not yet implemented.");
 	}
 	
 	public QRegister mul(QRegister arg) {		
-		// mam nadzieje ¿e dot oznacza dot product
+		// mam nadzieje ï¿½e dot oznacza dot product
 		// result.matrix = dot(self.matrix, arg2.matrix)
-		// oraz nie wiem czy dobrze interpretuje dzia³anie metody 'times', wg doca:
+		// oraz nie wiem czy dobrze interpretuje dziaï¿½anie metody 'times', wg doca:
 		// 'Returns the product of this matrix with the one specified.'
 		// ponadto co ze sprawdzaniem wymiarow? z dokumentacji nic nie wynika,
-		// mo¿e trzeba je sprawdziæ samemu, a mo¿e times zwróci null
+		// moï¿½e trzeba je sprawdziï¿½ samemu, a moï¿½e times zwrï¿½ci null
+		
+		/* RE:
+		 * Matrix.times to zwykÅ‚y iloczyn macierzy.
+		 * Dla operatora (bramki) A i rejestru x wykonuje A*x, tzn. wykonuje
+		 * "operacjÄ™" A na x.  Wynikiem jest nowy Qregister po przeksztaÅ‚ceniu
+		 * o wymiarach takich samych jak stary x.
+		 * 
+		 * Wymagania:
+		 * wymiary A : size * size
+		 * wymiary x : size * 1
+		 * 
+		 * Np. Blad pojawis siÄ™ gdy bramkÄ™ dziaÅ‚ajÄ…cÄ… na 2 qubitach uÅ¼ywamy na 
+		 * rejestrze 1-bitowym (DimensionException);
+		 */
 		return new QRegister(this.matrix.times(arg.matrix));
 	}
 	
 	public QGate mul(QGate arg) {
-		// '# order changed!'
-		// jw
+		// bramka * bramka to nowa bramka
+		// odpowiednik zÅ‚oÅ¼enia (superpozycji) operacji (dziaÅ‚ania tych 2 bramek)
+
 		return new QGate(arg.matrix.times(this.matrix));
 	}	
 	
@@ -88,9 +104,9 @@ public class QGate {
 		return matrix.toString();
 	}
 	
-	/*	 troche dziwnie to by³o tam napisane
-	 *   je¿eli mamy zamiar zmieniaæ stan danego obiektu
-	 *   to mo¿e by go nie zwracaæ?
+	/*	 troche dziwnie to byï¿½o tam napisane
+	 *   jeï¿½eli mamy zamiar zmieniaï¿½ stan danego obiektu
+	 *   to moï¿½e by go nie zwracaï¿½?
 	public QGate inverse() {
 		matrix = matrix.inverse();
 		return this;

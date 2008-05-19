@@ -3,6 +3,7 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
+
 public class CNot extends AbstractQGate {
 	public CNot() {
 		this(1, 0);

@@ -1,12 +1,27 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+
 import org.jscience.mathematics.number.Complex;
+
 
 public class Tester {
 	 public static void main(String []args){
 		 //test1();
-		 test2();
-		 test3();
+		 //test2();
+		 //test3();
+		 testGates();
+	 }
+	 
+	 public static void testGates(){
+		 QGate cnot = new CNot();
+		 QRegister reg = new QRegister(cx(0.5,0), cx(0,0.5), cx(-0.5,0), cx(0,0));
+		 println("Przed CNOT:");
+		 println(reg);
+		 println("Po CNOT: ");
+		 println(cnot.mul(reg));
+		 println("Po RevCNOT");
+		 QRegister reg1q = new QRegister(cx(1,0), cx(0,0));
+		 println(cnot.mul(reg1q));
 	 }
 	 
 	 public static void test1() {

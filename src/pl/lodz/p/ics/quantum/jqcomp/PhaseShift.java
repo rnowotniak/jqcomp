@@ -4,6 +4,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 
+
 public class PhaseShift extends AbstractQGate {
 	public PhaseShift(double angle) {
 		this.angle = angle;

@@ -1,5 +1,6 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+
 //import org.jscience.mathematics.vector.ComplexMatrix;
 
 public class Stage extends QGate {
