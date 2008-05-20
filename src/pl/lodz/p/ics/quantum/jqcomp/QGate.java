@@ -19,7 +19,7 @@ abstract public class QGate {
 	}
 
 	public QRegister mul(QRegister arg) {
-		return new QRegister(getMatrix().times(arg.matrix));
+		return new QRegister(getMatrix().times(arg.getMatrix()));
 	}
 
 	public QGate mul(QGate arg) {

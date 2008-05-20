@@ -12,7 +12,7 @@ import pl.lodz.p.ics.quantum.jqcomp.QRegister;
  * Superdense coding example
  * 
  * Superdense coding allows to encode one of four classical states
- * (00, 01, 10, 11) in one quantum bit of information.
+ * (00, 01, 10, 11) in only one quantum bit of information.
  * What unique phenomenon exists in this operation? 
  * The measurement performed on the two-level quantum system (qubit) can yield
  * one of only two values: for e.g. horizontal or vertical polarization of photon.

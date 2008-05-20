@@ -73,17 +73,28 @@ public class QRegister {
 				0, 0);
 	}
 
-	/** Norm = sqrt( <this|this> ) */
+	/**
+	 * Compute the norm of the QRegister state vector
+	 * 
+	 * @return norm of the vector
+	 */
 	public double norm() {
-		double ret = this.inner(this).getReal();
-		// System.out.println(this.inner(this));
-		return Math.sqrt(ret);
+		// Please note that this.inner(this) doesn't have any imaginary part
+		double result = this.inner(this).getReal();
+		return Math.sqrt(result);
 	}
 
+	/**
+	 * Normalize QRegister state vector
+	 * 
+	 * This method modifies current object and returns the modified state
+	 * 
+	 * @return normalized QRegister state
+	 */
 	public final QRegister normalize() {
 		double norm0 = this.norm();
-		Complex coordinates[] = new Complex[size];
-		for (int i = 0; i < size; i++) {
+		Complex coordinates[] = new Complex[MoreMath.pow2(size)];
+		for (int i = 0; i < coordinates.length; i++) {
 			coordinates[i] = matrix.get(i, 0).divide(norm0);
 		}
 		matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(coordinates))
@@ -99,9 +110,9 @@ public class QRegister {
 
 	/** Set [1, 0, 0, ..., 0] */
 	public void reset() {
-		Complex coordinates[] = new Complex[size];
+		Complex coordinates[] = new Complex[MoreMath.pow2(size)];
 		coordinates[0] = Complex.valueOf(1, 0);
-		for (int i = 1; i < size; i++) {
+		for (int i = 1; i < coordinates.length; i++) {
 			coordinates[i] = Complex.valueOf(0, 0);
 		}
 		matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(coordinates))
@@ -137,6 +148,10 @@ public class QRegister {
 		return matrix.toString();
 	}
 
-	private int size;
-	ComplexMatrix matrix;
+	protected int size;
+	protected ComplexMatrix matrix;
+	
+	public ComplexMatrix getMatrix() {
+		return matrix;
+	}
 }
