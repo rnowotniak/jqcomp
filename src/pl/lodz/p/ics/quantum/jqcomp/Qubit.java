@@ -4,9 +4,17 @@ import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
 
-public class Qubit extends QRegister {	
-	public Qubit(Complex p, Complex q) {
-		super(p,q);
+public class Qubit extends QRegister {
+	
+	/**
+	 * Create |0> qubit state
+	 */
+	public Qubit() {
+		super(1);
+	}
+	
+	public Qubit(Complex alpha, Complex beta) {
+		super(alpha,beta);
 	}	
 	
 	public final void flip() {

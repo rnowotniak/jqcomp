@@ -5,7 +5,7 @@ import org.jscience.mathematics.number.Complex;
 
 
 
-public class Toffoli extends AbstractQGate {
+public class Toffoli extends ElementaryQGate {
 	public Toffoli() {
 		this.matrix = tmatrix;
 		this.size = 3;

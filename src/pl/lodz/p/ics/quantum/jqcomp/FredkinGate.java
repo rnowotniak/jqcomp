@@ -3,7 +3,7 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
-public class FredkinGate extends AbstractQGate {
+public class FredkinGate extends ElementaryQGate {
 	public FredkinGate() {
 		this.size = 3;
 		this.matrix = fmatrix;

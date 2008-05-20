@@ -5,15 +5,13 @@ import org.jscience.mathematics.number.Complex;
 
 
 
-public class PhaseShift extends AbstractQGate {
+public class PhaseShift extends ElementaryQGate {
 	public PhaseShift(double angle) {
 		this.angle = angle;
 		this.matrix = ComplexMatrix.valueOf(new Complex[][] {
 				{cx(1), cx(0)},
-				{cx(0), cx(angle, 1).exp()} // exp(angle * 1j)
+				{cx(0), cx(0, angle * 1).exp()} // exp(angle * 1j) TODO
 		});
-		
-		//this.size = matrix.getNumberOfRows();
 		this.size = 1;
 	}
 	

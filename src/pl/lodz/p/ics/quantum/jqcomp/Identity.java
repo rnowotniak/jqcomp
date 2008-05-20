@@ -4,9 +4,9 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;
 
 
-public class Identity extends AbstractQGate {
+public class Identity extends ElementaryQGate {
 	public Identity() { 
-		this(2); 	
+		this(1); 	
 	}	
 	
 	public Identity(int size) {

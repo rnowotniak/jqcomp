@@ -10,7 +10,9 @@ public class MoreMath {
 	
 	/** Return 2**x, x is a nonnegative integer */
 	static public int pow2(int exp) {
-		if (exp<0 || exp>31 ) throw new ArithmeticException();
+		if (exp < 0 || exp > 31 ) {
+			throw new ArithmeticException();
+		}
 		return 1<<exp;
 	}
 	
@@ -23,5 +25,21 @@ public class MoreMath {
 		}
 		ComplexMatrix ret = ComplexMatrix.valueOf(C);
 		return ret.transpose();
+	}
+	
+	/**
+	 * Convert 2d real values matrix into ComplexMatrix object 
+	 * @param matrix 2d matrix of real values 
+	 * @return 
+	 */
+	static public ComplexMatrix asComplexMatrix(double[][] matrix) {
+		Complex[][] celements = new Complex[matrix.length][];
+		for (int i = 0; i < matrix.length; i++) {
+			celements[i] = new Complex[matrix[i].length];
+			for (int j = 0; j < matrix[i].length; j++) {
+				celements[i][j] = Complex.valueOf(matrix[i][j], 0);
+			}
+		}
+		return ComplexMatrix.valueOf(celements);
 	}
 }
