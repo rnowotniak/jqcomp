@@ -19,33 +19,10 @@ abstract public class QGate {
 	}
 
 	public QRegister mul(QRegister arg) {
-		// mam nadzieje �e dot oznacza dot product
-		// result.matrix = dot(self.matrix, arg2.matrix)
-		// oraz nie wiem czy dobrze interpretuje dzia�anie metody 'times', wg
-		// doca:
-		// 'Returns the product of this matrix with the one specified.'
-		// ponadto co ze sprawdzaniem wymiarow? z dokumentacji nic nie wynika,
-		// mo�e trzeba je sprawdzi� samemu, a mo�e times zwr�ci null
-
-		/*
-		 * RE: Matrix.times to zwykły iloczyn macierzy. Dla operatora (bramki) A
-		 * i rejestru x wykonuje A*x, tzn. wykonuje "operację" A na x. Wynikiem
-		 * jest nowy Qregister po przekształceniu o wymiarach takich samych jak
-		 * stary x.
-		 * 
-		 * Wymagania: wymiary A : size * size wymiary x : size * 1
-		 * 
-		 * Np. Blad pojawis się gdy bramkę działającą na 2 qubitach używamy na
-		 * rejestrze 1-bitowym (DimensionException);
-		 */
 		return new QRegister(getMatrix().times(arg.matrix));
 	}
 
 	public QGate mul(QGate arg) {
-		// bramka * bramka to nowa bramka
-		// odpowiednik złożenia (superpozycji) operacji (działania tych 2
-		// bramek)
-
 		return new Arbitrary(arg.getMatrix().times(this.getMatrix()));
 	}
 
