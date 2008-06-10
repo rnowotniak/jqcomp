@@ -4,6 +4,9 @@ import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
 public class MoreMath {
+	
+	static public final double epsilon = 1e-5;
+	
 	static public double log2(double x) {
 		return Math.log10(x) / Math.log10(2);
 	}
@@ -49,5 +52,14 @@ public class MoreMath {
 			}
 		}
 		return ComplexMatrix.valueOf(celements);
+	}
+	
+	
+	/** 
+	 * Check if |x| is lesser than epsilon. 
+	 * @param x 	real number
+	 * */
+	static public boolean isNearZero(double x){
+		return Math.abs(x)<epsilon;
 	}
 }

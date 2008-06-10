@@ -141,17 +141,16 @@ public class QRegister {
 	 * @return string representing current state in Dirac notation
 	 */
 	public String dirac() {
-		double epsilon = 1.0e-5;
 		int zeros = 0;
 		int onePos = -1;
 		String ret = "";
 		ComplexVector vector = matrix.getColumn(0);
-		double vectorSize = MoreMath.pow2(size);
+		int vectorSize = MoreMath.pow2(size);
 		for (int i=0;i<vectorSize;i++) {
 			if (vector.get(i).getReal()==1.0&&vector.get(i).getImaginary()==0.0) {
 				if (onePos==-1) onePos = i; // 1st occurence of 1+0j found
 				else {
-					onePos=-1; // next match :(
+					onePos=-1;
 					break;
 				}
 			}
@@ -159,14 +158,29 @@ public class QRegister {
 				zeros++;
 			}
 		}
-		if (onePos>=0&&vectorSize-1==zeros) { // mamy jedno "1" (1+0j) a reszta to zera
+		if (onePos>=0&&vectorSize-1==zeros) { 
+			// mamy jedno "1" (1+0j) a reszta to zera: to wektor bazowy
 			ret = Integer.toBinaryString(onePos) + ">";
 			while (ret.length()-1 < size) 
 				ret = "0" + ret;
 			return "|" + ret;
 		}
-		//throw new RuntimeException("Not implemented yet");
-		return ret;
+		int displayedItems = 0;
+		StringBuffer output = new StringBuffer();
+		for (int i=0;i<vectorSize;i++){
+			Complex elem = vector.get(i);
+			// don't display (0+0j)*|ket>
+			if ( !MoreMath.isNearZero(elem.getReal()) || !MoreMath.isNearZero(elem.getImaginary())) {
+				if (displayedItems>0) output.append(" + ");				   
+				output.append("(").append(elem).append(")|");
+				String tmpStr = Integer.toBinaryString(i) + ">";
+				while (tmpStr.length()-1 < size) 
+					tmpStr= "0" + tmpStr;
+				output.append(tmpStr);
+				displayedItems++;
+			}
+		}
+		return output.toString();
 	}
 
 	public String toString() {
