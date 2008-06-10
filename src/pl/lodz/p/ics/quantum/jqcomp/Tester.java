@@ -4,11 +4,13 @@ import org.jscience.mathematics.number.Complex;
 
 public class Tester {
 	public static void main(String[] args) {
-		test1();
-		test2();
-		test3();
-		testGates();
-		testHadamard();
+		QRegister reg = new QRegister(cx(0.0,0), cx(1,0));
+		print(reg.dirac());
+	//	test1();
+	//	test2();
+	//	test3();
+	//	testGates();
+	//	testHadamard();
 	}
 
 	public static void testGates() {

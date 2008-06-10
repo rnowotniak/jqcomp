@@ -141,7 +141,32 @@ public class QRegister {
 	 * @return string representing current state in Dirac notation
 	 */
 	public String dirac() {
-		throw new RuntimeException("Not implemented yet");
+		double epsilon = 1.0e-5;
+		int zeros = 0;
+		int onePos = -1;
+		String ret = "";
+		ComplexVector vector = matrix.getColumn(0);
+		double vectorSize = MoreMath.pow2(size);
+		for (int i=0;i<vectorSize;i++) {
+			if (vector.get(i).getReal()==1.0&&vector.get(i).getImaginary()==0.0) {
+				if (onePos==-1) onePos = i; // 1st occurence of 1+0j found
+				else {
+					onePos=-1; // next match :(
+					break;
+				}
+			}
+			else if (vector.get(i).getReal()==0.0&&vector.get(i).getImaginary()==0.0) {
+				zeros++;
+			}
+		}
+		if (onePos>=0&&vectorSize-1==zeros) { // mamy jedno "1" (1+0j) a reszta to zera
+			ret = Integer.toBinaryString(onePos) + ">";
+			while (ret.length()-1 < size) 
+				ret = "0" + ret;
+			return "|" + ret;
+		}
+		//throw new RuntimeException("Not implemented yet");
+		return ret;
 	}
 
 	public String toString() {
