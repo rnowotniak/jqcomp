@@ -6,7 +6,21 @@ import org.jscience.mathematics.vector.ComplexVector;
 import org.jscience.mathematics.vector.DimensionException;
 
 public class QRegister {
-
+	
+	/** Create Ket-n from H^{2^qubits} */
+	public static QRegister ket(int n, int qubits){
+		
+		QRegister ret = new QRegister(qubits);
+		if (n==0) return ret;
+		Complex[] values = ret.toComplexArray();
+		values[0]=Complex.valueOf(0,0);
+		try {
+			values[n]=Complex.valueOf(1,0);
+		} catch (IndexOutOfBoundsException outof) {
+			throw new RuntimeException();
+		}
+		return new QRegister(values);
+	}
 	/**
 	 * Create qregister in |00...0> initial state
 	 * 
@@ -73,6 +87,7 @@ public class QRegister {
 				0, 0);
 	}
 
+
 	/**
 	 * Compute the norm of the QRegister state vector
 	 * 
@@ -122,6 +137,28 @@ public class QRegister {
 	/** Tensor (Kronecker) product */
 	public final QRegister tensor(QRegister that) {
 		return new QRegister(this.matrix.tensor(that.matrix));
+	}
+	
+
+	public final QRegister measure() {
+		Complex[] elements = this.toComplexArray();
+		double[] probabilities = new double[elements.length];
+		for (int i=0;i<elements.length;i++) {
+			double x = elements[i].magnitude();
+			probabilities[i] = x * x;
+		}
+
+		double sum = 0.0;
+		double rand = Math.random();
+		for (int i=0;i<probabilities.length;i++) {
+			sum += probabilities[i];
+			if (rand<sum) {
+				return ket(i,
+						(int)(Math.round(MoreMath.log2(elements.length))));
+			}
+		}
+		return ket(probabilities.length-1,
+				(int)(Math.round(MoreMath.log2(elements.length))));
 	}
 
 	/**
@@ -181,6 +218,14 @@ public class QRegister {
 			}
 		}
 		return output.toString();
+	}
+	
+	private final Complex[] toComplexArray(){
+		Complex[] array = new Complex[matrix.getNumberOfRows()];
+		for (int i=0;i<array.length;i++) {
+			array[i] = matrix.get(i, 0);
+		}
+		return array;
 	}
 
 	public String toString() {

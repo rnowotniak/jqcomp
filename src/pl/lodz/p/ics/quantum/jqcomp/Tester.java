@@ -4,8 +4,8 @@ import org.jscience.mathematics.number.Complex;
 
 public class Tester {
 	public static void main(String[] args) {
-		QRegister reg = new QRegister(cx(0.0,0), cx(1,0));
-		print(reg.dirac());
+		testMeasurement();
+	//	testKets();
 	//	test1();
 	//	test2();
 	//	test3();
@@ -13,6 +13,37 @@ public class Tester {
 	//	testHadamard();
 	}
 
+	public static void testKets(){
+		for (int d=1;d<3;d++) {
+			System.out.println("Qubits: "+d);
+			for (int ket=0;ket<MoreMath.pow2(d);ket++) {
+				System.out.println("|"+ket+">:\n"+QRegister.ket(ket, d));
+			}
+		}
+	}
+	
+	public static void testMeasurement(){
+		int results[] = new int[4];
+		QRegister[] b = { 
+				QRegister.ket(0, 2), 
+				QRegister.ket(1, 2),
+				QRegister.ket(2, 2),
+				QRegister.ket(3, 2)
+		};
+		for (int i=0;i<1000;i++) {
+			QRegister reg = new QRegister(cx(0.5, 0), cx(0, 0.5), cx(-0.5, 0), cx(
+				0, -0.5));
+	
+			reg = reg.normalize();
+			reg = reg.measure();
+			for (int j=0;j<4;j++) {
+				if (b[j].equals(reg)) results[j]++;
+			}
+		}
+		for (int i=0;i<results.length;i++) 
+			System.out.println(b[i].dirac()+": "+results[i]);			
+	}
+	
 	public static void testGates() {
 		QGate cnot = new CNot();
 		QRegister reg = new QRegister(cx(0.5, 0), cx(0, 0.5), cx(-0.5, 0), cx(

@@ -88,7 +88,16 @@ public class QRegisterTest extends TestCase {
 
 	@Test
 	public void testDirac() {
-		fail("Not yet implemented");
+		QRegister dirac01 = new QRegister(
+				MoreMath.asComplexMatrix(new double[][] {{ 0, 1, 0, 0 }} ));
+		QRegister dirac000 = new QRegister(
+				MoreMath.asComplexMatrix(new double[][] {{ 1, 0, 0, 0, 0, 0, 0, 0 }} ));
+		/*double s2i = 1 / Math.sqrt(2);
+		QRegister reg = new QRegister(Complex.valueOf(s2i,0), Complex.valueOf(0,-s2i),
+					Complex.valueOf(2*s2i,0), Complex.valueOf(0,0) ); */ 
+		assertEquals(dirac01.dirac(),"|01>");
+		assertEquals(dirac000.dirac(),"|000>");
+		
 	}
 
 }
