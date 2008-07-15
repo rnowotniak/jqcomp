@@ -1,0 +1,24 @@
+
+--------8<--------8<--------8<--------8<--------8<--------8<--------8<
+Wymagania wobec GUI jqcomp-gui:
+	Zapis/odczyt całego obwodu kwantowego do/z pliku
+	Tworzenie nowego obwodu kwantowego:
+		Definiowanie liczby kubitów
+	Wyświetlanie reprezentacji obwodu kwantowego w postaci graficznej
+	Panel z przeciągalnymi/dodawalnymi elementami obwodów:
+		bramka Hadamarda, Pi/8, CNot
+		Toffoli, Fredkin
+		Dowolna bramka kwantowa
+		R_x(theta), R_y(theta), ...
+		Swap
+		,,bramka'' pomiaru (wybór mierzonych kubitów)
+	Możliwość prześledzenia działania obwodu:
+		Panel sterowania wykonaniem:
+			Restart
+			Tryb pracy krokowej -- wykonanie pojedynczego etapu
+			,,Wykonanie'' całego obwodu
+	Możliwość ,,podglądu'' m.in. stanu rejestrów
+		Reprezentacja wektorowa i w notacji Diraca
+		Podgląd macierzy całego etapu obliczeń
+--------8<--------8<--------8<--------8<--------8<--------8<--------8<
+
