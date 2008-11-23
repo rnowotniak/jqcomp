@@ -3,14 +3,23 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import org.jscience.mathematics.number.Complex;
 
 public class Tester {
+	
+	
+	
 	public static void main(String[] args) {
-		testMeasurement();
+		
+	
+	
+		
+	
+	//	testMeasurement();
 	//	testKets();
 	//	test1();
 	//	test2();
 	//	test3();
 	//	testGates();
 	//	testHadamard();
+//		testMeasure2();
 	}
 
 	public static void testKets(){
@@ -126,6 +135,25 @@ public class Tester {
 				new Stage(new ElementaryQGate[] { someGate1 }), });
 
 		println("circuit1:\n" + circuit1);
+	}
+	
+	public static void testMeasure2() {
+		int ones =0;
+		int zeros = 0;
+		for (int i=0;i<3;i++) {
+			QRegister rr = new QRegister( cx(0,0.25),  cx(0.1,0),  cx(0.1,0),  cx(0.1,0), cx(0.1), cx(0.5,0),
+				cx(0,-0.3), cx(0.4,0));
+			rr.normalize();
+
+			QRegister ret = rr.measure(0,1,2);
+			if (ret.equals(QRegister.ket(0, 1))) zeros++;
+			else if (ret.equals(QRegister.ket(1, 1))) ones++;
+			System.out.println("Returned "+ret.dirac());
+			System.out.println("this is "+rr);
+		}
+		
+		
+	    
 	}
 
 	public static Complex cx(double real, double imaginary) {

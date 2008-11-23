@@ -1,11 +1,19 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
+
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.vector.ComplexVector;
 import org.jscience.mathematics.vector.DimensionException;
 
 public class QRegister {
+	
+	protected int size;
+	protected ComplexMatrix matrix;
 	
 	/** Create Ket-n from H^{2^qubits} */
 	public static QRegister ket(int n, int qubits){
@@ -71,7 +79,11 @@ public class QRegister {
 		return matrix.equals(other.matrix);
 	}
 
-	/** Addition */
+/**
+ * Add two registers.
+ * @param that
+ * @return this+that
+ */
 	public final QRegister add(QRegister that) {
 		return new QRegister(this.matrix.plus(that.matrix));
 	}
@@ -80,7 +92,7 @@ public class QRegister {
 		return new QRegister(this.matrix.minus(other.matrix));
 	}
 
-	/** Inner product */
+	/** Compute the inner product of two registers. */
 	public final Complex inner(QRegister that) {
 		// may raise DimensionException
 		return MoreMath.ConjugateTranspose(this.matrix).times(that.matrix).get(
@@ -139,7 +151,20 @@ public class QRegister {
 		return new QRegister(this.matrix.tensor(that.matrix));
 	}
 	
+	
+	
+	private final void zeroAmplitudes(ArrayList<Integer> amp){
+		Complex[] array = this.toComplexArray();
 
+		for (Integer i: amp) {
+			array[i] = Complex.ZERO;		
+		}
+	
+		matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(array))
+			.transpose();
+	}
+
+	/** Measure all qubits of this quantum register. */
 	public final QRegister measure() {
 		Complex[] elements = this.toComplexArray();
 		double[] probabilities = new double[elements.length];
@@ -157,19 +182,74 @@ public class QRegister {
 						(int)(Math.round(MoreMath.log2(elements.length))));
 			}
 		}
-		return ket(probabilities.length-1,
+		
+		QRegister newRegister = ket(probabilities.length-1,
 				(int)(Math.round(MoreMath.log2(elements.length))));
+		
+		matrix = newRegister.getMatrix(); //niszczymy stare dane
+		return newRegister;
+		
 	}
 
 	/**
-	 * Perform projective measurement operation
+	 * Perform projective measurement operation.
 	 * 
 	 * @param qubits
 	 *            indices of measured qubits
 	 * @return one of the measurement subspace base vectors
 	 */
 	public QRegister measure(int... qubits) {
-		throw new RuntimeException("Not implemented yet");
+		for (int i=0; i<qubits.length; i++) {
+			qubits[i] = this.size - qubits[i] - 1;
+		}
+		Arrays.sort(qubits);
+		int probLen = MoreMath.pow2(qubits.length);
+		HashMap<String, Double> prob = new HashMap<String, Double>(probLen);
+		HashMap<String, String> match = new HashMap<String, String>(MoreMath.pow2(this.size));
+		for (int i=0;i<probLen;i++) {
+			String binary = Integer.toBinaryString(i);
+			while (binary.length()<qubits.length) binary = "0"+binary;
+			prob.put(binary, 0.0);
+		}
+
+		// przebiegnij wszystkie mo¿liwe stany bazowe
+		for (int i=0;i<MoreMath.pow2(this.size);i++) {
+			String binary = Integer.toBinaryString(i);
+			while (binary.length()<this.size) binary = "0"+binary; // add trailing zeros
+			StringBuffer sb = new StringBuffer();
+			for (int q: qubits) sb.append(binary.charAt(q));
+			String key = sb.toString();
+		//	System.out.println(binary+" matches "+ key);
+			match.put(binary,key);
+			Complex val = this.toComplexArray()[i];
+			double probability = val.magnitude() * val.magnitude();
+			prob.put(key, prob.get(key)+probability);
+		}
+		
+		String rand = MoreMath.randomize(prob);
+		QRegister returnRegister = QRegister.ket(Integer.parseInt(rand,2), qubits.length) ;
+		
+		/* zerowanie amplitud */
+		
+		// przebiegnij przez wszystkie stany bazowe i ustal, które amplitudy trzeba wyzerowaæ
+		ArrayList<Integer> zeroAmp = new ArrayList<Integer>(); // lista amplitud do wyzerowania
+		for (int i=0;i<MoreMath.pow2(this.size);i++) {
+			String binary = Integer.toBinaryString(i);
+			while (binary.length()<this.size) binary = "0"+binary; // add trailing zeros
+			boolean matches = true;
+			int p=0;
+			for (int q:qubits) {
+				if (binary.charAt(q) != rand.charAt(p++)) { matches=false; break;}
+			}
+			if (!matches) {
+				zeroAmp.add(i);
+			}
+		}
+		zeroAmplitudes(zeroAmp);
+		normalize();
+		
+		//System.out.println(returnRegister);
+		return returnRegister;
 	}
 
 	/**
@@ -185,7 +265,7 @@ public class QRegister {
 		int vectorSize = MoreMath.pow2(size);
 		for (int i=0;i<vectorSize;i++) {
 			if (vector.get(i).getReal()==1.0&&vector.get(i).getImaginary()==0.0) {
-				if (onePos==-1) onePos = i; // 1st occurence of 1+0j found
+				if (onePos==-1) onePos = i; // 1st occurrence of 1+0j found
 				else {
 					onePos=-1;
 					break;
@@ -232,8 +312,6 @@ public class QRegister {
 		return matrix.toString();
 	}
 
-	protected int size;
-	protected ComplexMatrix matrix;
 	
 	public ComplexMatrix getMatrix() {
 		return matrix;

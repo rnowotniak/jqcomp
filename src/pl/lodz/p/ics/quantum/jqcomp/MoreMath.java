@@ -1,5 +1,8 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
@@ -7,6 +10,11 @@ public class MoreMath {
 	
 	static public final double epsilon = 1e-5;
 	
+	/** 
+	 * Compute the binary logarithm of a positive integer x.
+	 * @param x
+	 * @return the base 2 logarithm of x
+	 */
 	static public double log2(double x) {
 		return Math.log10(x) / Math.log10(2);
 	}
@@ -61,5 +69,17 @@ public class MoreMath {
 	 * */
 	static public boolean isNearZero(double x){
 		return Math.abs(x)<epsilon;
+	}
+	
+	
+	public  static String randomize(HashMap<String, Double> probabilities) {
+		Set<String> keys = probabilities.keySet();
+		double r = Math.random();
+		double sum = 0.0;
+		for (String s: keys) {
+			sum += probabilities.get(s);
+			if (r<sum) return s;
+		}
+		return "" ;// todo;
 	}
 }
