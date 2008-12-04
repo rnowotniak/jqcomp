@@ -212,7 +212,7 @@ public class QRegister {
 			prob.put(binary, 0.0);
 		}
 
-		// przebiegnij wszystkie moøliwe stany bazowe
+		// przebiegnij wszystkie mo≈ºliwe stany bazowe
 		for (int i=0;i<MoreMath.pow2(this.size);i++) {
 			String binary = Integer.toBinaryString(i);
 			while (binary.length()<this.size) binary = "0"+binary; // add trailing zeros
@@ -231,7 +231,7 @@ public class QRegister {
 		
 		/* zerowanie amplitud */
 		
-		// przebiegnij przez wszystkie stany bazowe i ustal, ktÛre amplitudy trzeba wyzerowaÊ
+		// przebiegnij przez wszystkie stany bazowe i ustal, kt√≥re amplitudy trzeba wyzerowaƒá
 		ArrayList<Integer> zeroAmp = new ArrayList<Integer>(); // lista amplitud do wyzerowania
 		for (int i=0;i<MoreMath.pow2(this.size);i++) {
 			String binary = Integer.toBinaryString(i);

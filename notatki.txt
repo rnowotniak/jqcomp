@@ -2,13 +2,22 @@
 --------8<--------8<--------8<--------8<--------8<--------8<--------8<
 Wymagania wobec GUI jqcomp-gui:
 	Zapis/odczyt całego obwodu kwantowego do/z pliku
+		Propozycja: z/do XML-a (xstream)
 	Tworzenie nowego obwodu kwantowego:
-		Definiowanie liczby kubitów
+		Definiowanie liczby kubitów (chyba nowe okno z parametrami)
+	gdzies powinien byc checkbox: wyswietlanie skladowych urojonych
+	wyswietlanie stanu rejestru kwantowego (tabelka?) + mozliwosc zmainy amplitud
+		+ normalizacja
+		statystyka amplitud w rejestrze kwantowym:
+			maksymalna, minimalna (wzgledem modulu)
+			srednia wartosc
+			mediania
+			odchylenie standardowe
 	Wyświetlanie reprezentacji obwodu kwantowego w postaci graficznej
 	Panel z przeciągalnymi/dodawalnymi elementami obwodów:
 		bramka Hadamarda, Pi/8, CNot
 		Toffoli, Fredkin
-		Dowolna bramka kwantowa
+		Dowolna bramka kwantowa (podanie macierzy + ortonormalizacja)
 		R_x(theta), R_y(theta), ...
 		Swap
 		,,bramka'' pomiaru (wybór mierzonych kubitów)
