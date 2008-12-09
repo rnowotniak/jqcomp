@@ -30,4 +30,4 @@ Wymagania wobec GUI jqcomp-gui:
 		Reprezentacja wektorowa i w notacji Diraca
 		Podgląd macierzy całego etapu obliczeń
 --------8<--------8<--------8<--------8<--------8<--------8<--------8<
- 
+
