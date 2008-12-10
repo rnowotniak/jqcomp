@@ -23,7 +23,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
 
     /** Creates new form QCircuitJPanel */
     public QCircuitJPanel() {
-        initComponents();
+        initComponents(); 
     }
 
     @Override
