@@ -51,4 +51,18 @@ public class CompoundQGate extends QGate {
 		return result;
 	}
 
+    /**
+     * @return the gates
+     */
+    public List<ElementaryQGate> getGates() {
+        return gates;
+    }
+
+    /**
+     * @param gates the gates to set
+     */
+    public void setGates(List<ElementaryQGate> gates) {
+        this.gates = gates;
+    }
+
 }

@@ -10,8 +10,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import pl.lodz.p.ics.quantum.jqcomp.Measurement;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.Stage;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 
 /**
  *
@@ -21,8 +25,6 @@ public class QCircuitJPanel extends javax.swing.JPanel {
 
     private QCircuit qcircuit;
     private int currentStage;
-
-
     private Color currentStageColor = Color.RED;
     private Stroke currentStageStroke = new BasicStroke(2);
 
@@ -80,12 +82,35 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             }
         }
 
+        // draw array of quantum gates in circuit
+        for (int si = 0; si < qcircuit.getStages().size(); si++) {
+            Stage s = qcircuit.getStages().get(si);
+            if (s instanceof CompoundQGate) {
+                CompoundQGate c = (CompoundQGate) s;
+                for (int gi = 0; gi < c.getGates().size(); gi++) {
+                    ElementaryQGate gate = c.getGates().get(gi);
+                    if (gate instanceof Identity) {
+                        continue;
+                    }
+                    g.setColor(Color.WHITE);
+                    g.fillRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5,
+                            20, 20 + (ystep * (gate.getSize() - 1)));
+                    g.setColor(Color.BLACK);
+                    g.drawRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5,
+                            20, 20 + (ystep * (gate.getSize() - 1)));
+                }
+            } else if (s instanceof ElementaryQGate) {
+
+            } else if (s instanceof Measurement) {
+
+            }
+        }
+
         // draw line representing current state
         g.setPaint(currentStageColor);
         g.setStroke(currentStageStroke);
         g.drawLine(70 + xstep / 2 + xstep * currentStage, ystep - 10,
                 70 + xstep / 2 + xstep * currentStage, ystep + ystep * (qcircuit.getStages().get(0).getSize() - 1) + 10);
-//        g.setPaint();
     }
 
     /** This method is called from within the constructor to
