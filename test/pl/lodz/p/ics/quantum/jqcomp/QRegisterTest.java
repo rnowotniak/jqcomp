@@ -58,9 +58,9 @@ public class QRegisterTest {
 				if (b[j].equals(reg)) results[j]++;
 			}
 		}
-		for (int i=0;i<results.length;i++)
+		for (int i=0;i<results.length;i++) {
 			System.out.println(b[i].dirac()+": "+results[i]);
-        assertEquals(1,1);
+        }
 	}
 
 

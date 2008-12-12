@@ -12,6 +12,12 @@ package jqcompgui;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 
 /**
  *
@@ -36,6 +42,7 @@ public class MainJFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             /* DO NOTHING */
         }
+        writeMsg("Quantum Computer Simulator started");
     }
 
     /** This method is called from within the constructor to
@@ -70,7 +77,7 @@ public class MainJFrame extends javax.swing.JFrame {
         statusBarJLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileJMenu = new javax.swing.JMenu();
-        jMenuItem17 = new javax.swing.JMenuItem();
+        newQuantumCircuitJMenuItem = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JSeparator();
@@ -88,13 +95,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        entanglementAlgorithmJMenuItem = new javax.swing.JMenuItem();
         settingsJMenu = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         helpJMenu = new javax.swing.JMenu();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        helpContentsJMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        aboutJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("jqcomp-gui: Java Quantum Computer Simulator. Technical University of Lodz");
@@ -123,8 +130,18 @@ public class MainJFrame extends javax.swing.JFrame {
         leftJPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         resetJButton.setText("reset");
+        resetJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetJButtonActionPerformed(evt);
+            }
+        });
 
         stepJButton.setText("step");
+        stepJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepJButtonActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("run");
 
@@ -190,7 +207,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         statusBarJPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        statusBarJLabel.setText("Quantum Computer Simulator started");
+        statusBarJLabel.setText("status bar");
 
         javax.swing.GroupLayout statusBarJPanelLayout = new javax.swing.GroupLayout(statusBarJPanel);
         statusBarJPanel.setLayout(statusBarJPanelLayout);
@@ -205,8 +222,13 @@ public class MainJFrame extends javax.swing.JFrame {
 
         fileJMenu.setText("File");
 
-        jMenuItem17.setText("New quantum circuit...");
-        fileJMenu.add(jMenuItem17);
+        newQuantumCircuitJMenuItem.setText("New quantum circuit...");
+        newQuantumCircuitJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newQuantumCircuitJMenuItemActionPerformed(evt);
+            }
+        });
+        fileJMenu.add(newQuantumCircuitJMenuItem);
 
         jMenuItem3.setText("Load quantum circuit...");
         fileJMenu.add(jMenuItem3);
@@ -262,8 +284,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItem12.setText("Grover's fast search");
         algorithmsJMenu.add(jMenuItem12);
 
-        jMenuItem11.setText("Entangled states generation");
-        algorithmsJMenu.add(jMenuItem11);
+        entanglementAlgorithmJMenuItem.setText("Entangled states generation");
+        entanglementAlgorithmJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entanglementAlgorithmJMenuItemActionPerformed(evt);
+            }
+        });
+        algorithmsJMenu.add(entanglementAlgorithmJMenuItem);
 
         jMenuBar1.add(algorithmsJMenu);
 
@@ -277,23 +304,23 @@ public class MainJFrame extends javax.swing.JFrame {
 
         helpJMenu.setText("Help");
 
-        jMenuItem15.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItem15.setText("Contents");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+        helpContentsJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        helpContentsJMenuItem.setText("Contents");
+        helpContentsJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
+                helpContentsJMenuItemActionPerformed(evt);
             }
         });
-        helpJMenu.add(jMenuItem15);
+        helpJMenu.add(helpContentsJMenuItem);
         helpJMenu.add(jSeparator1);
 
-        jMenuItem14.setText("About");
-        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+        aboutJMenuItem.setText("About");
+        aboutJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem14ActionPerformed(evt);
+                aboutJMenuItemActionPerformed(evt);
             }
         });
-        helpJMenu.add(jMenuItem14);
+        helpJMenu.add(aboutJMenuItem);
 
         jMenuBar1.add(helpJMenu);
 
@@ -325,18 +352,60 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+    private void helpContentsJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContentsJMenuItemActionPerformed
         JOptionPane.showMessageDialog(this, "help contents");
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
+}//GEN-LAST:event_helpContentsJMenuItemActionPerformed
 
-    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+    private void aboutJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutJMenuItemActionPerformed
         AboutJDialog ajd = new AboutJDialog(this, true);
         ajd.setVisible(true);
-    }//GEN-LAST:event_jMenuItem14ActionPerformed
+}//GEN-LAST:event_aboutJMenuItemActionPerformed
 
     private void quitJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitJMenuItemActionPerformed
+        /* TODO: Ask for confirmation */
         System.exit(0);
     }//GEN-LAST:event_quitJMenuItemActionPerformed
+
+    private void newQuantumCircuitJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newQuantumCircuitJMenuItemActionPerformed
+        QCircuit qc = new QCircuit();
+        qCircuitJPanel.setQcircuit(qc);
+        qCircuitJPanel.repaint();
+    }//GEN-LAST:event_newQuantumCircuitJMenuItemActionPerformed
+
+    private void entanglementAlgorithmJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entanglementAlgorithmJMenuItemActionPerformed
+        CompoundQGate s1 = new CompoundQGate(new ElementaryQGate[]{new Identity(),
+                    new Hadamard(), new Identity()});
+        CompoundQGate s2 = new CompoundQGate(
+                new ElementaryQGate[]{new Identity(), new CNot()});
+        CompoundQGate s3 = new CompoundQGate(new ElementaryQGate[]{new CNot(0, 1),
+                    new Identity()});
+        CompoundQGate s4 = new CompoundQGate(new ElementaryQGate[]{new CNot(0, 1),
+                    new Identity()});
+
+        QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3, s4});
+        qCircuitJPanel.setQcircuit(qcirc);
+        writeMsg("Entangled states generation quantum circuit loaded");
+        qCircuitJPanel.repaint();
+    }//GEN-LAST:event_entanglementAlgorithmJMenuItemActionPerformed
+
+    private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
+        qCircuitJPanel.setCurrentStage(0);
+        qCircuitJPanel.repaint();
+        writeMsg("Quantum state reset to initial value");
+    }//GEN-LAST:event_resetJButtonActionPerformed
+
+    private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
+        if (qCircuitJPanel.getCurrentStage() == qCircuitJPanel.getQcircuit().getStages().size()) {
+            return;
+        }
+        qCircuitJPanel.setCurrentStage(qCircuitJPanel.getCurrentStage() + 1);
+        qCircuitJPanel.repaint();
+    }//GEN-LAST:event_stepJButtonActionPerformed
+
+    public void writeMsg(String msg) {
+        outputJTextArea.append(msg + "\n");
+        statusBarJLabel.setText(msg);
+    }
 
     /**
      * @param args the command line arguments
@@ -351,9 +420,12 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutJMenuItem;
     private javax.swing.JMenu algorithmsJMenu;
+    private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
     private javax.swing.JButton hadamardJButton;
+    private javax.swing.JMenuItem helpContentsJMenuItem;
     private javax.swing.JMenu helpJMenu;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -366,13 +438,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -389,6 +457,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
+    private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
     private javax.swing.JButton notJButton;
     private javax.swing.JTextArea outputJTextArea;
     private jqcompgui.QCircuitJPanel qCircuitJPanel;

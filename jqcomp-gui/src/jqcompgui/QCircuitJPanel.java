@@ -1,19 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * QCircuitJPanel.java
  *
  * Created on 2008-12-04, 15:26:36
  */
-
 package jqcompgui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
+import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
+import pl.lodz.p.ics.quantum.jqcomp.Stage;
 
 /**
  *
@@ -21,9 +19,16 @@ import java.awt.Graphics2D;
  */
 public class QCircuitJPanel extends javax.swing.JPanel {
 
+    private QCircuit qcircuit;
+    private int currentStage;
+
+
+    private Color currentStageColor = Color.RED;
+    private Stroke currentStageStroke = new BasicStroke(2);
+
     /** Creates new form QCircuitJPanel */
     public QCircuitJPanel() {
-        initComponents(); 
+        initComponents();
     }
 
     @Override
@@ -33,25 +38,54 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.setColor(Color.BLACK);
-        g.drawString("|0>", 30, 50);
-        g.drawString("|0>", 30, 90);
-        g.drawString("|0>", 30, 130);
 
-        g.drawLine(60, 45, 150, 45);
-        g.drawLine(60, 85, 150, 85);
-        g.drawLine(60, 125, 150, 125);
+        if (qcircuit == null) {
+            // draw some preview
+            g.drawString("|0>", 30, 50);
+            g.drawString("|0>", 30, 90);
+            g.drawString("|0>", 30, 130);
 
-        // ...
+            g.drawLine(60, 45, 150, 45);
+            g.drawLine(60, 85, 150, 85);
+            g.drawLine(60, 125, 150, 125);
+            return;
+        }
 
         /*
          * Draw quantum cicruit
          */
 
-        /*
-         * for (QStage s: qcircuit.stages) {
-         *    ...
-         * }
-         */
+        if (qcircuit.getStages().size() == 0) {
+            return;
+        }
+
+        int xstep = 50;
+        int ystep = 50;
+
+        // draw qubits labels
+        for (int i = 0; i < qcircuit.getStages().get(0).getSize(); i++) {
+            g.drawString("|q" +
+                    new Integer(qcircuit.getStages().size() - i - 1).toString() +
+                    ">", 30, ystep + i * ystep);
+            g.drawLine(70, ystep - 5 + i * ystep, 70 + xstep, ystep - 5 + i * ystep);
+        }
+
+        // draw points and qubit lines
+        for (int si = 0; si < qcircuit.getStages().size(); si++) {
+            Stage s = qcircuit.getStages().get(si);
+            for (int q = 0; q < s.getSize(); q++) {
+                g.drawLine(70 + xstep + si * xstep, ystep - 5 + q * ystep,
+                        70 + xstep + si * xstep + xstep, ystep - 5 + q * ystep);
+                g.drawOval(70 + xstep - 2 + si * xstep, ystep - 5 + q * ystep - 2, 4, 4);
+            }
+        }
+
+        // draw line representing current state
+        g.setPaint(currentStageColor);
+        g.setStroke(currentStageStroke);
+        g.drawLine(70 + xstep / 2 + xstep * currentStage, ystep - 10,
+                70 + xstep / 2 + xstep * currentStage, ystep + ystep * (qcircuit.getStages().get(0).getSize() - 1) + 10);
+//        g.setPaint();
     }
 
     /** This method is called from within the constructor to
@@ -75,8 +109,34 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * @return the qcircuit
+     */
+    public QCircuit getQcircuit() {
+        return qcircuit;
+    }
+
+    /**
+     * @param qcircuit the qcircuit to set
+     */
+    public void setQcircuit(QCircuit qcircuit) {
+        this.qcircuit = qcircuit;
+    }
+
+    /**
+     * @return the currentStage
+     */
+    public int getCurrentStage() {
+        return currentStage;
+    }
+
+    /**
+     * @param currentStage the currentStage to set
+     */
+    public void setCurrentStage(int currentStage) {
+        this.currentStage = currentStage;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }
