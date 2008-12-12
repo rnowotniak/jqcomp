@@ -1,10 +1,10 @@
 package pl.lodz.p.ics.quantum.jqcomp.algorithms;
 
-import pl.lodz.p.ics.quantum.jqcomp.Arbitrary;
-import pl.lodz.p.ics.quantum.jqcomp.Identity;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
-import pl.lodz.p.ics.quantum.jqcomp.Not;
-import pl.lodz.p.ics.quantum.jqcomp.PhaseShift;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Not;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.PhaseShift;
 import pl.lodz.p.ics.quantum.jqcomp.QGate;
 import pl.lodz.p.ics.quantum.jqcomp.QRegister;
 
@@ -58,7 +58,7 @@ public class Superdense {
 		//
 		
 		// Decoding matrix
-		QGate B = new Arbitrary(MoreMath.asComplexMatrix(new double[][] {
+		QGate B = new Custom(MoreMath.asComplexMatrix(new double[][] {
 				{ s2, 0, 0, s2 },
 				{ 0, s2, s2, 0 },
 				{ s2, 0, 0, -s2 },

@@ -3,7 +3,6 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
 
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
@@ -54,20 +53,18 @@ public class QRegister {
 	}
 
 	public QRegister(ComplexMatrix initialValues) {
-		ComplexMatrix matrix = initialValues.copy();
+		matrix = initialValues.copy();
 		if (matrix.getNumberOfColumns() > 1) {
 			matrix = matrix.transpose();
 		}
 		if (matrix.getNumberOfColumns() != 1) {
 			throw new DimensionException("Input matrix must have 1 column.");
 		}
-		int size = (int) MoreMath.log2(matrix.getNumberOfRows());
+		size = (int) MoreMath.log2(matrix.getNumberOfRows());
 		if (size != MoreMath.log2(matrix.getNumberOfRows())) {
 			throw new WrongSizeException(
 					"Dimension of QRegister state space have to be the power of 2");
 		}
-		this.matrix = matrix;
-		this.size = size;
 	}
 
 	public QRegister(QRegister other) {
@@ -308,6 +305,7 @@ public class QRegister {
 		return array;
 	}
 
+    @Override
 	public String toString() {
 		return matrix.toString();
 	}

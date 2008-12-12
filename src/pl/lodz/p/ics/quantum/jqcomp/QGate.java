@@ -1,11 +1,22 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
-abstract public class QGate {
+abstract public class QGate implements Stage {
+
+  	/**
+	 * number of qubits this gates operates on
+	 */
+	protected int size;
 
 	abstract public ComplexMatrix getMatrix();
+
+    public int getSize() {
+        return size;
+    }
 
 	/**
 	 * Create a composed quantum gate 
@@ -14,8 +25,8 @@ abstract public class QGate {
 	 *            next parallel gate
 	 * @return a stage of quantum computation
 	 */
-	public Stage next(QGate gate) {
-		return new Stage(this, gate);
+	public CompoundQGate next(QGate gate) {
+		return new CompoundQGate(this, gate);
 	}
 
 	public QRegister mul(QRegister arg) {
@@ -23,15 +34,15 @@ abstract public class QGate {
 	}
 
 	public QGate mul(QGate arg) {
-		return new Arbitrary(arg.getMatrix().times(this.getMatrix()));
+		return new Custom(arg.getMatrix().times(this.getMatrix()));
 	}
 
 	public QGate add(QGate other) {
-		return new Arbitrary(getMatrix().plus(other.getMatrix()));
+		return new Custom(getMatrix().plus(other.getMatrix()));
 	}
 
 	public QGate sub(QGate other) {
-		return new Arbitrary(getMatrix().minus(other.getMatrix()));
+		return new Custom(getMatrix().minus(other.getMatrix()));
 	}
 
 	public QRegister compute(QRegister arg) {
@@ -47,13 +58,14 @@ abstract public class QGate {
 	}
 
 	public QGate transpose() {
-		return new Arbitrary(getMatrix().transpose());
+		return new Custom(getMatrix().transpose());
 	}
 
 	public QGate inverse() {
-		return new Arbitrary(getMatrix().inverse());
+		return new Custom(getMatrix().inverse());
 	}
 
+    @Override
 	public String toString() {
 		return getMatrix().toString();
 	}
@@ -73,8 +85,5 @@ abstract public class QGate {
 		return cx(real, 0);
 	}
 
-	/**
-	 * number of qubits this gates operates on
-	 */
-	public int size;
+
 }

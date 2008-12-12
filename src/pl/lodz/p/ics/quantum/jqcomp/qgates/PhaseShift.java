@@ -1,4 +1,4 @@
-package pl.lodz.p.ics.quantum.jqcomp;
+package pl.lodz.p.ics.quantum.jqcomp.qgates;
 
 import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.number.Complex;

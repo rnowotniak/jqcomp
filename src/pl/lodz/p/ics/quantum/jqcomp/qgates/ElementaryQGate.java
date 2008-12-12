@@ -1,5 +1,6 @@
-package pl.lodz.p.ics.quantum.jqcomp;
+package pl.lodz.p.ics.quantum.jqcomp.qgates;
 
+import pl.lodz.p.ics.quantum.jqcomp.*;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
 
@@ -10,6 +11,5 @@ abstract public class ElementaryQGate extends QGate {
 	public ComplexMatrix getMatrix() {
 		return matrix;
 	}
-		
 
 }

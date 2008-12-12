@@ -1,19 +1,22 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
 import java.util.Arrays;
 import java.util.List;
 
 public class QCircuit {
 
+	private List<CompoundQGate> stages;
+
 	public QCircuit() {
-		this(new Stage[] {});
+		this(new CompoundQGate[] {});
 	}
 
-	public QCircuit(Stage[] stages) {
+	public QCircuit(CompoundQGate[] stages) {
 		this.stages = Arrays.asList(stages);
 	}
 
-	public QRegister execute(QRegister register) {
+	public QRegister compute(QRegister register) {
 		/*
 		 * XXX:
 		 * Efficient algorithm could be implemented here Wissam A. Samad, Roy
@@ -22,25 +25,26 @@ public class QCircuit {
 		 */
 
 		QRegister result = new QRegister(register);
-		for (Stage stage : stages) {
+		for (CompoundQGate stage : stages) {
 			result = stage.compute(result);
 		}
 
 		return result;
 	}
 
-	public void addStage(Stage s) {
+	public void addStage(CompoundQGate s) {
 		stages.add(s);
 	}
 
-	public void addStage(int index, Stage s) {
+	public void addStage(int index, CompoundQGate s) {
 		stages.add(index, s);
 	}
 
+    @Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < stages.size(); i++) {
-			Stage stage = stages.get(i);
+			CompoundQGate stage = stages.get(i);
 
 			sb.append("* Stage ");
 			sb.append(i);
@@ -54,5 +58,4 @@ public class QCircuit {
 		return sb.toString();
 	}
 
-	private List<Stage> stages;
 }

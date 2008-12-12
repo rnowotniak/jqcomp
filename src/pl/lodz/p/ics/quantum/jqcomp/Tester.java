@@ -1,5 +1,10 @@
 package pl.lodz.p.ics.quantum.jqcomp;
 
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
 import org.jscience.mathematics.number.Complex;
 
 public class Tester {
@@ -88,10 +93,10 @@ public class Tester {
 	public static void test2() {
 		println("*** test2");
 
-		ElementaryQGate gate1 = new Arbitrary(new Complex[][] {
+		ElementaryQGate gate1 = new Custom(new Complex[][] {
 				{ cx(1), cx(0) }, { cx(0), cx(1) } });
 
-		ElementaryQGate gate2 = new Arbitrary(new Complex[][] {
+		ElementaryQGate gate2 = new Custom(new Complex[][] {
 				{ cx(1), cx(1) }, { cx(0), cx(-1) } });
 
 		QRegister register1 = new QRegister(new Complex[] { cx(1), cx(1) });
@@ -123,16 +128,16 @@ public class Tester {
 	public static void test3() {
 		println("*** test3");
 
-		ElementaryQGate someGate1 = new Arbitrary(new Complex[][] {
+		ElementaryQGate someGate1 = new Custom(new Complex[][] {
 				{ cx(1), cx(0) }, { cx(0), cx(1) } });
 
-		ElementaryQGate someGate2 = new Arbitrary(new Complex[][] {
+		ElementaryQGate someGate2 = new Custom(new Complex[][] {
 				{ cx(-1), cx(1) }, { cx(-1), cx(0) } });
 
-		QCircuit circuit1 = new QCircuit(new Stage[] {
-				new Stage(new ElementaryQGate[] { someGate1, someGate2 }),
-				new Stage(new ElementaryQGate[] { someGate2, someGate2 }),
-				new Stage(new ElementaryQGate[] { someGate1 }), });
+		QCircuit circuit1 = new QCircuit(new CompoundQGate[] {
+				new CompoundQGate(new ElementaryQGate[] { someGate1, someGate2 }),
+				new CompoundQGate(new ElementaryQGate[] { someGate2, someGate2 }),
+				new CompoundQGate(new ElementaryQGate[] { someGate1 }), });
 
 		println("circuit1:\n" + circuit1);
 	}
