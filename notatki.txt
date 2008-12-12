@@ -21,6 +21,8 @@ Wymagania wobec GUI jqcomp-gui:
 		R_x(theta), R_y(theta), ...
 		Swap
 		,,bramka'' pomiaru (wybór mierzonych kubitów)
+		bramki dodatkowe:
+			(rozne, rzadko uzywane)
 	Możliwość prześledzenia działania obwodu:
 		Panel sterowania wykonaniem:
 			Restart
