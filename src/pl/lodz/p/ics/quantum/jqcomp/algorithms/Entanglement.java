@@ -36,6 +36,7 @@ public class Entanglement {
 		QCircuit qcirc = new QCircuit(new CompoundQGate[] { s1, s2, s3 });
 		System.out.println("Final state:");
 		System.out.println(qcirc.compute(input));
+        System.out.println(qcirc.compute(input).dirac());
 	}
 
 }
