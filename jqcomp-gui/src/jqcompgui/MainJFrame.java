@@ -109,21 +109,32 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        hadamardJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/hadamard_icon.png"))); // NOI18N
         hadamardJButton.setText("Hadamard");
+        hadamardJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hadamardJButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(hadamardJButton);
 
+        notJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Not_icon.png"))); // NOI18N
         notJButton.setText("Not");
         jPanel2.add(notJButton);
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/CNOT_icon.png"))); // NOI18N
         jButton5.setText("CNot");
         jPanel2.add(jButton5);
 
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/phase_icon.png"))); // NOI18N
         jButton6.setText("Phase");
         jPanel2.add(jButton6);
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Toffoli_icon.png"))); // NOI18N
         jButton7.setText("Toffoli");
         jPanel2.add(jButton7);
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/custom_icon.png"))); // NOI18N
         jButton8.setText("Custom");
         jPanel2.add(jButton8);
 
@@ -179,7 +190,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jButton10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jSplitPane1.setDividerLocation(200);
@@ -194,7 +205,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         qCircuitJPanelLayout.setVerticalGroup(
             qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 199, Short.MAX_VALUE)
+            .addGap(0, 191, Short.MAX_VALUE)
         );
 
         jSplitPane1.setTopComponent(qCircuitJPanel);
@@ -343,7 +354,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                     .addComponent(leftJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusBarJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -401,6 +412,10 @@ public class MainJFrame extends javax.swing.JFrame {
         qCircuitJPanel.setCurrentStage(qCircuitJPanel.getCurrentStage() + 1);
         qCircuitJPanel.repaint();
     }//GEN-LAST:event_stepJButtonActionPerformed
+
+    private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hadamardJButtonActionPerformed
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
