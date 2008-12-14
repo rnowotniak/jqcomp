@@ -187,6 +187,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         setPreferredSize(new Dimension(
                 xstep * (qcircuit.getStages().size() + 3),
                 ystep * (qcircuit.getStages().get(0).getSize() + 1)));
+        revalidate();
     }
 
     /**

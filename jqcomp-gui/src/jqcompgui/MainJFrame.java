@@ -10,9 +10,21 @@
  */
 package jqcompgui;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.Dimension;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
@@ -84,8 +96,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         fileJMenu = new javax.swing.JMenu();
         newQuantumCircuitJMenuItem = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        loadJMenuItem = new javax.swing.JMenuItem();
+        saveJMenuItem = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JSeparator();
         quitJMenuItem = new javax.swing.JMenuItem();
         quantumGatesJMenu = new javax.swing.JMenu();
@@ -237,11 +249,11 @@ public class MainJFrame extends javax.swing.JFrame {
         qCircuitJPanel.setLayout(qCircuitJPanelLayout);
         qCircuitJPanelLayout.setHorizontalGroup(
             qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 456, Short.MAX_VALUE)
+            .addGap(0, 660, Short.MAX_VALUE)
         );
         qCircuitJPanelLayout.setVerticalGroup(
             qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 156, Short.MAX_VALUE)
+            .addGap(0, 205, Short.MAX_VALUE)
         );
 
         jScrollPane2.setViewportView(qCircuitJPanel);
@@ -279,11 +291,21 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         fileJMenu.add(newQuantumCircuitJMenuItem);
 
-        jMenuItem3.setText("Load quantum circuit...");
-        fileJMenu.add(jMenuItem3);
+        loadJMenuItem.setText("Load quantum circuit...");
+        loadJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadJMenuItemActionPerformed(evt);
+            }
+        });
+        fileJMenu.add(loadJMenuItem);
 
-        jMenuItem2.setText("Save quantum circuit...");
-        fileJMenu.add(jMenuItem2);
+        saveJMenuItem.setText("Save quantum circuit...");
+        saveJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveJMenuItemActionPerformed(evt);
+            }
+        });
+        fileJMenu.add(saveJMenuItem);
         fileJMenu.add(jSeparator3);
 
         quitJMenuItem.setText("Quit");
@@ -432,7 +454,6 @@ public class MainJFrame extends javax.swing.JFrame {
         QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3});
         qCircuitJPanel.setQcircuit(qcirc);
         writeMsg("Entangled states generation quantum circuit loaded");
-        qCircuitJPanel.revalidate();
         qCircuitJPanel.repaint();
     }//GEN-LAST:event_entanglementAlgorithmJMenuItemActionPerformed
 
@@ -476,11 +497,48 @@ public class MainJFrame extends javax.swing.JFrame {
                 (int) qCircuitJPanel.getPreferredSize().getHeight() * 2));
         qCircuitJPanel.revalidate();
         qCircuitJPanel.repaint();
-//        jScrollPane2.validate();
-//        jScrollPane2.revalidate();
-//        jScrollPane2.repaint();
-//        System.out.println(qCircuitJPanel.getSize().toString());
     }//GEN-LAST:event_zoomInJButtonActionPerformed
+
+    private void saveJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveJMenuItemActionPerformed
+        if (qCircuitJPanel.getQcircuit() == null) {
+            JOptionPane.showMessageDialog(this, "Create quantum circuit first");
+            return;
+        }
+        JFileChooser jfc = new JFileChooser();
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setAcceptAllFileFilterUsed(true);
+        jfc.addChoosableFileFilter(new JqmlFileFilter());
+        if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            XStream xstream = new XStream(new DomDriver());
+            try {
+                xstream.toXML(qCircuitJPanel.getQcircuit(),
+                        new FileOutputStream(jfc.getSelectedFile()));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Create quantum circuit first");
+                return;
+            }
+            writeMsg("Quantum circuit saved: " + jfc.getSelectedFile().getName());
+        }
+    }//GEN-LAST:event_saveJMenuItemActionPerformed
+
+    private void loadJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadJMenuItemActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setAcceptAllFileFilterUsed(true);
+        jfc.addChoosableFileFilter(new JqmlFileFilter());
+        if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                XStream xstream = new XStream(new DomDriver());
+                qCircuitJPanel.setQcircuit(
+                        (QCircuit) xstream.fromXML(new FileInputStream(jfc.getSelectedFile())));
+                qCircuitJPanel.repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Failed loading quantum circuit");
+                return;
+            }
+            writeMsg("Quantum circuit loaded: " + jfc.getSelectedFile().getName());
+        }
+    }//GEN-LAST:event_loadJMenuItemActionPerformed
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
@@ -521,8 +579,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -539,6 +595,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
+    private javax.swing.JMenuItem loadJMenuItem;
     private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
     private javax.swing.JButton notJButton;
     private javax.swing.JTextArea outputJTextArea;
@@ -546,6 +603,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu quantumGatesJMenu;
     private javax.swing.JMenuItem quitJMenuItem;
     private javax.swing.JButton resetJButton;
+    private javax.swing.JMenuItem saveJMenuItem;
     private javax.swing.JMenu settingsJMenu;
     private javax.swing.JLabel statusBarJLabel;
     private javax.swing.JPanel statusBarJPanel;
