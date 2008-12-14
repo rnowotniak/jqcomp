@@ -7,14 +7,17 @@ package jqcompgui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import pl.lodz.p.ics.quantum.jqcomp.Measurement;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.Stage;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 
 /**
@@ -27,15 +30,20 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     private int currentStage;
     private Color currentStageColor = Color.RED;
     private Stroke currentStageStroke = new BasicStroke(2);
+    private int xstep = 50;
+    private int ystep = 50;
+    public float zoom = 1.0f;
 
     /** Creates new form QCircuitJPanel */
     public QCircuitJPanel() {
         initComponents();
+        setPreferredSize(new Dimension(200, 100));
     }
 
     @Override
     public void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
+        g.scale(zoom, zoom);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -50,6 +58,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             g.drawLine(60, 45, 150, 45);
             g.drawLine(60, 85, 150, 85);
             g.drawLine(60, 125, 150, 125);
+//            setPreferredSize(new Dimension(200, 100));
             return;
         }
 
@@ -60,9 +69,6 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         if (qcircuit.getStages().size() == 0) {
             return;
         }
-
-        int xstep = 50;
-        int ystep = 50;
 
         // draw qubits labels
         for (int i = 0; i < qcircuit.getStages().get(0).getSize(); i++) {
@@ -92,17 +98,12 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                     if (gate instanceof Identity) {
                         continue;
                     }
-                    g.setColor(Color.WHITE);
-                    g.fillRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5,
-                            20, 20 + (ystep * (gate.getSize() - 1)));
-                    g.setColor(Color.BLACK);
-                    g.drawRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5,
-                            20, 20 + (ystep * (gate.getSize() - 1)));
+                    drawQGate(g, gate, si, gi);
                 }
             } else if (s instanceof ElementaryQGate) {
-
+                ElementaryQGate gate = (ElementaryQGate) s;
+                drawQGate(g, gate, si, 0);
             } else if (s instanceof Measurement) {
-
             }
         }
 
@@ -111,6 +112,43 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         g.setStroke(currentStageStroke);
         g.drawLine(70 + xstep / 2 + xstep * currentStage, ystep - 10,
                 70 + xstep / 2 + xstep * currentStage, ystep + ystep * (qcircuit.getStages().get(0).getSize() - 1) + 10);
+    }
+
+    private void drawQGate(Graphics2D g, ElementaryQGate gate, int si, int gi) {
+        if (gate instanceof Hadamard) {
+            drawGateBox(g, si, gi, gate);
+            g.drawString("H", 70 + xstep - 10 + si * xstep + 5, ystep - 10 + gi * ystep - 5 + 15);
+        } else if (gate instanceof CNot) {
+            CNot cnot = (CNot) gate;
+            int x1 = 70 + xstep + si * xstep;
+            int y1 = ystep + gi * ystep - 5;
+            int y2 = y1 + ystep * (gate.getSize() - 1);
+            if (cnot.getControl() == 1) {
+                g.fillOval(x1 - 5, y1 - 5, 10, 10);
+                g.setColor(Color.WHITE);
+                g.fillOval(x1 - 5, y2 - 5, 10, 10);
+                g.setColor(Color.BLACK);
+                g.drawOval(x1 - 5, y2 - 5, 10, 10);
+                g.drawLine(x1 - 5, y2, x1 + 5, y2);
+            } else {
+                g.setColor(Color.WHITE);
+                g.fillOval(x1 - 5, y1 - 5, 10, 10);
+                g.setColor(Color.BLACK);
+                g.drawOval(x1 - 5, y1 - 5, 10, 10);
+                g.drawLine(x1 - 5, y1, x1 + 5, y1);
+                g.fillOval(x1 - 5, y2 - 5, 10, 10);
+            }
+            g.drawLine(x1, y1 - 5, x1, y2 + 5);
+        } else {
+            drawGateBox(g, si, gi, gate);
+        }
+    }
+
+    private void drawGateBox(Graphics2D g, int si, int gi, ElementaryQGate gate) {
+        g.setColor(Color.WHITE);
+        g.fillRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
+        g.setColor(Color.BLACK);
+        g.drawRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
     }
 
     /** This method is called from within the constructor to
@@ -146,6 +184,9 @@ public class QCircuitJPanel extends javax.swing.JPanel {
      */
     public void setQcircuit(QCircuit qcircuit) {
         this.qcircuit = qcircuit;
+        setPreferredSize(new Dimension(
+                xstep * (qcircuit.getStages().size() + 3),
+                ystep * (qcircuit.getStages().get(0).getSize() + 1)));
     }
 
     /**

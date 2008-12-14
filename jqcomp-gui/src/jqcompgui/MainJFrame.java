@@ -10,6 +10,7 @@
  */
 package jqcompgui;
 
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
@@ -37,6 +38,7 @@ public class MainJFrame extends javax.swing.JFrame {
     /** Creates new form MainJFrame */
     private MainJFrame() {
         initComponents();
+        jScrollPane2.setSize(200, 100);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -69,7 +71,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JSeparator();
+        zoomInJButton = new javax.swing.JButton();
+        zoomOutJButton = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         qCircuitJPanel = new jqcompgui.QCircuitJPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputJTextArea = new javax.swing.JTextArea();
@@ -161,18 +167,40 @@ public class MainJFrame extends javax.swing.JFrame {
         jButton10.setText("Backward");
 
         jButton11.setText("Remove");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        zoomInJButton.setText("Zoom In");
+        zoomInJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomInJButtonActionPerformed(evt);
+            }
+        });
+
+        zoomOutJButton.setText("Zoom Out");
+        zoomOutJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zoomOutJButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout leftJPanelLayout = new javax.swing.GroupLayout(leftJPanel);
         leftJPanel.setLayout(leftJPanelLayout);
         leftJPanelLayout.setHorizontalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(resetJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(stepJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+            .addComponent(resetJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(stepJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(zoomInJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,25 +218,35 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jButton10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(zoomInJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(zoomOutJButton)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setDividerLocation(200);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.8);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         javax.swing.GroupLayout qCircuitJPanelLayout = new javax.swing.GroupLayout(qCircuitJPanel);
         qCircuitJPanel.setLayout(qCircuitJPanelLayout);
         qCircuitJPanelLayout.setHorizontalGroup(
             qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 516, Short.MAX_VALUE)
+            .addGap(0, 456, Short.MAX_VALUE)
         );
         qCircuitJPanelLayout.setVerticalGroup(
             qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 191, Short.MAX_VALUE)
+            .addGap(0, 156, Short.MAX_VALUE)
         );
 
-        jSplitPane1.setTopComponent(qCircuitJPanel);
+        jScrollPane2.setViewportView(qCircuitJPanel);
+
+        jSplitPane1.setTopComponent(jScrollPane2);
 
         outputJTextArea.setColumns(20);
         outputJTextArea.setRows(5);
@@ -224,7 +262,7 @@ public class MainJFrame extends javax.swing.JFrame {
         statusBarJPanel.setLayout(statusBarJPanelLayout);
         statusBarJPanelLayout.setHorizontalGroup(
             statusBarJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusBarJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+            .addComponent(statusBarJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
         );
         statusBarJPanelLayout.setVerticalGroup(
             statusBarJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,9 +382,9 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(leftJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
             .addComponent(statusBarJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +392,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
                     .addComponent(leftJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusBarJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -390,12 +428,11 @@ public class MainJFrame extends javax.swing.JFrame {
                 new ElementaryQGate[]{new Identity(), new CNot()});
         CompoundQGate s3 = new CompoundQGate(new ElementaryQGate[]{new CNot(0, 1),
                     new Identity()});
-        CompoundQGate s4 = new CompoundQGate(new ElementaryQGate[]{new CNot(0, 1),
-                    new Identity()});
 
-        QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3, s4});
+        QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3});
         qCircuitJPanel.setQcircuit(qcirc);
         writeMsg("Entangled states generation quantum circuit loaded");
+        qCircuitJPanel.revalidate();
         qCircuitJPanel.repaint();
     }//GEN-LAST:event_entanglementAlgorithmJMenuItemActionPerformed
 
@@ -416,6 +453,34 @@ public class MainJFrame extends javax.swing.JFrame {
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_hadamardJButtonActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void zoomOutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutJButtonActionPerformed
+        qCircuitJPanel.zoom /= 2.0f;
+        qCircuitJPanel.setPreferredSize(
+                new Dimension(
+                (int) qCircuitJPanel.getPreferredSize().getWidth() / 2,
+                (int) qCircuitJPanel.getPreferredSize().getHeight() / 2));
+        qCircuitJPanel.revalidate();
+        qCircuitJPanel.repaint();
+}//GEN-LAST:event_zoomOutJButtonActionPerformed
+
+    private void zoomInJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInJButtonActionPerformed
+        qCircuitJPanel.zoom *= 2.0f;
+        qCircuitJPanel.setPreferredSize(
+                new Dimension(
+                (int) qCircuitJPanel.getPreferredSize().getWidth() * 2,
+                (int) qCircuitJPanel.getPreferredSize().getHeight() * 2));
+        qCircuitJPanel.revalidate();
+        qCircuitJPanel.repaint();
+//        jScrollPane2.validate();
+//        jScrollPane2.revalidate();
+//        jScrollPane2.repaint();
+//        System.out.println(qCircuitJPanel.getSize().toString());
+    }//GEN-LAST:event_zoomInJButtonActionPerformed
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
@@ -466,10 +531,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
@@ -483,5 +550,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel statusBarJLabel;
     private javax.swing.JPanel statusBarJPanel;
     private javax.swing.JButton stepJButton;
+    private javax.swing.JButton zoomInJButton;
+    private javax.swing.JButton zoomOutJButton;
     // End of variables declaration//GEN-END:variables
 }
