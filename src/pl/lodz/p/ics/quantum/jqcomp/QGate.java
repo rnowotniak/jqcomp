@@ -77,11 +77,11 @@ abstract public class QGate implements Stage {
 	 */
 
 	// troche dziwne miejsce na te metody, ale przez to jest mniej pisania
-	protected static Complex cx(double real, double imaginary) {
+	public static Complex cx(double real, double imaginary) {
 		return Complex.valueOf(real, imaginary);
 	}
 
-	protected static Complex cx(double real) {
+	public static Complex cx(double real) {
 		return cx(real, 0);
 	}
 

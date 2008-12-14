@@ -10,7 +10,7 @@ public class PhaseShift extends ElementaryQGate {
 		this.angle = angle;
 		this.matrix = ComplexMatrix.valueOf(new Complex[][] {
 				{cx(1), cx(0)},
-				{cx(0), cx(0, angle * 1).exp()} // exp(angle * 1j) TODO
+				{cx(0), cx(0, angle * 1).exp()}
 		});
 		this.size = 1;
 	}

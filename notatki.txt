@@ -1,6 +1,9 @@
 
 --------8<--------8<--------8<--------8<--------8<--------8<--------8<
 Wymagania wobec GUI jqcomp-gui:
+	Zaimplementować 4 algorytmy (jeszcze Grover i teleportacja)
+		zapisać je w postaci *.jqml
+
 	Zapis/odczyt całego obwodu kwantowego do/z pliku
 		Propozycja: z/do XML-a (xstream)
 	Tworzenie nowego obwodu kwantowego:

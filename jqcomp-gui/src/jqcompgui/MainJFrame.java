@@ -13,24 +13,23 @@ package jqcompgui;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileFilter;
+import org.jscience.mathematics.number.Complex;
+import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
+import pl.lodz.p.ics.quantum.jqcomp.QGate;
+import pl.lodz.p.ics.quantum.jqcomp.QRegister;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Swap;
 
 /**
  *
@@ -111,7 +110,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         algorithmsJMenu = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
+        SuperdenseJMenuItem = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         entanglementAlgorithmJMenuItem = new javax.swing.JMenuItem();
         settingsJMenu = new javax.swing.JMenu();
@@ -349,8 +348,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItem10.setText("Quantum teleportation");
         algorithmsJMenu.add(jMenuItem10);
 
-        jMenuItem13.setText("Superdense coding");
-        algorithmsJMenu.add(jMenuItem13);
+        SuperdenseJMenuItem.setText("Superdense coding");
+        SuperdenseJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SuperdenseJMenuItemActionPerformed(evt);
+            }
+        });
+        algorithmsJMenu.add(SuperdenseJMenuItem);
 
         jMenuItem12.setText("Grover's fast search");
         algorithmsJMenu.add(jMenuItem12);
@@ -480,21 +484,21 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void zoomOutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutJButtonActionPerformed
-        qCircuitJPanel.zoom /= 2.0f;
+        qCircuitJPanel.zoom /= 1.5f;
         qCircuitJPanel.setPreferredSize(
                 new Dimension(
-                (int) qCircuitJPanel.getPreferredSize().getWidth() / 2,
-                (int) qCircuitJPanel.getPreferredSize().getHeight() / 2));
+                (int) (qCircuitJPanel.getPreferredSize().getWidth() / 1.5),
+                (int) (qCircuitJPanel.getPreferredSize().getHeight() / 1.5)));
         qCircuitJPanel.revalidate();
         qCircuitJPanel.repaint();
 }//GEN-LAST:event_zoomOutJButtonActionPerformed
 
     private void zoomInJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInJButtonActionPerformed
-        qCircuitJPanel.zoom *= 2.0f;
+        qCircuitJPanel.zoom *= 1.5f;
         qCircuitJPanel.setPreferredSize(
                 new Dimension(
-                (int) qCircuitJPanel.getPreferredSize().getWidth() * 2,
-                (int) qCircuitJPanel.getPreferredSize().getHeight() * 2));
+                (int) (qCircuitJPanel.getPreferredSize().getWidth() * 1.5),
+                (int) (qCircuitJPanel.getPreferredSize().getHeight() * 1.5)));
         qCircuitJPanel.revalidate();
         qCircuitJPanel.repaint();
     }//GEN-LAST:event_zoomInJButtonActionPerformed
@@ -540,6 +544,47 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loadJMenuItemActionPerformed
 
+    private void SuperdenseJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SuperdenseJMenuItemActionPerformed
+        QCircuit qc = new QCircuit();
+        CompoundQGate s1 = new CompoundQGate(new Swap(), new Identity(), new Identity());
+        CompoundQGate s2 = new CompoundQGate(new Identity(), new Custom(new Complex[][] {
+            {QGate.cx(1), QGate.cx(0), QGate.cx(0), QGate.cx(0)},
+            {QGate.cx(0), QGate.cx(1), QGate.cx(0), QGate.cx(0)},
+            {QGate.cx(0), QGate.cx(0), QGate.cx(1), QGate.cx(0)},
+            {QGate.cx(0), QGate.cx(0), QGate.cx(0), QGate.cx(-1)},
+        }), new Identity());
+        CompoundQGate s3 = new CompoundQGate(new Swap(), new Identity(), new Identity());
+        CompoundQGate s4 = new CompoundQGate(new Identity(), new CNot(1, 0), new Identity());
+        CompoundQGate s5 = new CompoundQGate(new Identity(), new Identity(), new CNot(1, 0));
+        CompoundQGate s6 = new CompoundQGate(new Identity(), new Identity(), new Hadamard(), new Identity());
+
+        qc.addStage(s1);
+        qc.addStage(s2);
+        qc.addStage(s3);
+        qc.addStage(s4);
+        qc.addStage(s5);
+        qc.addStage(s6);
+        qCircuitJPanel.setQcircuit(qc);
+        writeMsg("Superdense coding quantum circuit loaded");
+
+        QRegister input;
+
+        double sqr2 = Math.sqrt(2) / 2;
+		QRegister EPR = new QRegister(MoreMath
+				.asComplexMatrix(new double[][] { { sqr2, 0, 0, sqr2 } }));
+
+        writeMsg("Testing superdense coding...");
+        writeMsg("----------------------------");
+        writeMsg("In each case, two least significact qubits below should match input bits:");
+        for (int i = 0; i < 4; i++) {
+            QRegister cbits = QRegister.ket(i, 2);
+            input = cbits.tensor(EPR);
+            writeMsg("input: " + cbits.dirac() + "    output: " + qc.compute(input).dirac());
+        }
+        
+        qCircuitJPanel.repaint();
+    }//GEN-LAST:event_SuperdenseJMenuItemActionPerformed
+
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
         statusBarJLabel.setText(msg);
@@ -558,6 +603,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem SuperdenseJMenuItem;
     private javax.swing.JMenuItem aboutJMenuItem;
     private javax.swing.JMenu algorithmsJMenu;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
@@ -577,7 +623,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

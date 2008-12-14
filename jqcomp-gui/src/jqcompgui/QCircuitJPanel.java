@@ -19,6 +19,7 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Swap;
 
 /**
  *
@@ -73,7 +74,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         // draw qubits labels
         for (int i = 0; i < qcircuit.getStages().get(0).getSize(); i++) {
             g.drawString("|q" +
-                    new Integer(qcircuit.getStages().size() - i - 1).toString() +
+                    new Integer(qcircuit.getStages().get(0).getSize() - i - 1).toString() +
                     ">", 30, ystep + i * ystep);
             g.drawLine(70, ystep - 5 + i * ystep, 70 + xstep, ystep - 5 + i * ystep);
         }
@@ -139,6 +140,15 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                 g.fillOval(x1 - 5, y2 - 5, 10, 10);
             }
             g.drawLine(x1, y1 - 5, x1, y2 + 5);
+        } else if (gate instanceof Swap) {
+            g.setColor(Color.WHITE);
+            g.fillRect(70 + xstep + si * xstep - 10, ystep + gi * ystep - 5 - 10,
+                    20, ystep + 20);
+            g.setColor(Color.BLACK);
+            g.drawLine(70 + xstep + si * xstep - 10, ystep + gi * ystep - 5,
+                    70 + xstep + si * xstep + 10, ystep + (gi + 1) * ystep - 5);
+            g.drawLine(70 + xstep + si * xstep + 10, ystep + gi * ystep - 5,
+                    70 + xstep + si * xstep - 10, ystep + (gi + 1) * ystep - 5);
         } else {
             drawGateBox(g, si, gi, gate);
         }
