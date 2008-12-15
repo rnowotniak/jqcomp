@@ -12,10 +12,18 @@ package jqcompgui;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.jscience.mathematics.number.Complex;
@@ -49,7 +57,6 @@ public class MainJFrame extends javax.swing.JFrame {
     /** Creates new form MainJFrame */
     private MainJFrame() {
         initComponents();
-        jScrollPane2.setSize(200, 100);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
@@ -86,8 +93,7 @@ public class MainJFrame extends javax.swing.JFrame {
         zoomInJButton = new javax.swing.JButton();
         zoomOutJButton = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        qCircuitJPanel = new jqcompgui.QCircuitJPanel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputJTextArea = new javax.swing.JTextArea();
         statusBarJPanel = new javax.swing.JPanel();
@@ -115,6 +121,10 @@ public class MainJFrame extends javax.swing.JFrame {
         entanglementAlgorithmJMenuItem = new javax.swing.JMenuItem();
         settingsJMenu = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        windowsJMenu = new javax.swing.JMenu();
+        closeAllWindowsJMenuItem = new javax.swing.JMenuItem();
+        minimizeAllWindowsJMenuItem = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JSeparator();
         helpJMenu = new javax.swing.JMenu();
         helpContentsJMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
@@ -238,29 +248,15 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap(60, Short.MAX_VALUE))
         );
 
+        jSplitPane1.setDividerLocation(250);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane1.setResizeWeight(0.8);
+        jSplitPane1.setResizeWeight(0.9);
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        javax.swing.GroupLayout qCircuitJPanelLayout = new javax.swing.GroupLayout(qCircuitJPanel);
-        qCircuitJPanel.setLayout(qCircuitJPanelLayout);
-        qCircuitJPanelLayout.setHorizontalGroup(
-            qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
-        );
-        qCircuitJPanelLayout.setVerticalGroup(
-            qCircuitJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 205, Short.MAX_VALUE)
-        );
-
-        jScrollPane2.setViewportView(qCircuitJPanel);
-
-        jSplitPane1.setTopComponent(jScrollPane2);
+        jDesktopPane1.setDragMode(javax.swing.JDesktopPane.OUTLINE_DRAG_MODE);
+        jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setRows(5);
+        outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
         jSplitPane1.setRightComponent(jScrollPane1);
@@ -273,7 +269,7 @@ public class MainJFrame extends javax.swing.JFrame {
         statusBarJPanel.setLayout(statusBarJPanelLayout);
         statusBarJPanelLayout.setHorizontalGroup(
             statusBarJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusBarJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
+            .addComponent(statusBarJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
         );
         statusBarJPanelLayout.setVerticalGroup(
             statusBarJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,6 +373,27 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(settingsJMenu);
 
+        windowsJMenu.setText("Windows");
+
+        closeAllWindowsJMenuItem.setText("Close all windows");
+        closeAllWindowsJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeAllWindowsJMenuItemActionPerformed(evt);
+            }
+        });
+        windowsJMenu.add(closeAllWindowsJMenuItem);
+
+        minimizeAllWindowsJMenuItem.setText("Minimize all windows");
+        minimizeAllWindowsJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minimizeAllWindowsJMenuItemActionPerformed(evt);
+            }
+        });
+        windowsJMenu.add(minimizeAllWindowsJMenuItem);
+        windowsJMenu.add(jSeparator6);
+
+        jMenuBar1.add(windowsJMenu);
+
         helpJMenu.setText("Help");
 
         helpContentsJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
@@ -408,9 +425,9 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(leftJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
             .addComponent(statusBarJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,13 +458,68 @@ public class MainJFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_quitJMenuItemActionPerformed
 
+    private QCircuitJInternalFrame addNewQCircuitJInternalFrame() {
+        return addNewQCircuitJInternalFrame("");
+    }
+
+    private QCircuitJInternalFrame addNewQCircuitJInternalFrame(String title) {
+        QCircuitJInternalFrame qif = new QCircuitJInternalFrame(title);
+        qif.setVisible(true);
+        jDesktopPane1.add(qif);
+        qif.moveToFront();
+        try {
+            qif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            throw new RuntimeException(ex);
+        }
+        updateWindowsJMenu();
+        
+        return qif;
+    }
+
+    private void updateWindowsJMenu() {
+        // remove constant items
+        for (Component i: windowsJMenu.getMenuComponents()) {
+            if (i == closeAllWindowsJMenuItem) {
+                continue;
+            }
+            if (i == minimizeAllWindowsJMenuItem) {
+                continue;
+            }
+            if (i == jSeparator6) {
+                continue;
+            }
+            windowsJMenu.remove(i);
+        }
+        // add all QCircuitJInternalFrames
+        for (JInternalFrame iframe: jDesktopPane1.getAllFrames()) {
+            if (!(iframe instanceof QCircuitJInternalFrame)) {
+                continue;
+            }
+            final QCircuitJInternalFrame qif = (QCircuitJInternalFrame) iframe;
+            JMenuItem item = new JMenuItem(qif.getTitle());
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        qif.setIcon(false);
+                        qif.setSelected(true);
+                    } catch (PropertyVetoException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    qif.moveToFront();
+                }
+            });
+            windowsJMenu.add(item);
+        }
+    }
+
     private void newQuantumCircuitJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newQuantumCircuitJMenuItemActionPerformed
-        QCircuit qc = new QCircuit();
-        qCircuitJPanel.setQcircuit(qc);
-        qCircuitJPanel.repaint();
+        QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame();
+
     }//GEN-LAST:event_newQuantumCircuitJMenuItemActionPerformed
 
     private void entanglementAlgorithmJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entanglementAlgorithmJMenuItemActionPerformed
+        QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame("Entangled states generation circuit");
         CompoundQGate s1 = new CompoundQGate(new ElementaryQGate[]{new Identity(),
                     new Hadamard(), new Identity()});
         CompoundQGate s2 = new CompoundQGate(
@@ -456,23 +528,37 @@ public class MainJFrame extends javax.swing.JFrame {
                     new Identity()});
 
         QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3});
-        qCircuitJPanel.setQcircuit(qcirc);
+        qif.setQcircuit(qcirc);
         writeMsg("Entangled states generation quantum circuit loaded");
-        qCircuitJPanel.repaint();
     }//GEN-LAST:event_entanglementAlgorithmJMenuItemActionPerformed
 
+    private QCircuitJInternalFrame getSelectedQCircuitJInternalFrame() {
+        JInternalFrame iframe = jDesktopPane1.getSelectedFrame();
+        if (iframe == null || !(iframe instanceof QCircuitJInternalFrame)) {
+            return null;
+        }
+        return (QCircuitJInternalFrame) iframe;
+    }
+
     private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
-        qCircuitJPanel.setCurrentStage(0);
-        qCircuitJPanel.repaint();
-        writeMsg("Quantum state reset to initial value");
+        if (getSelectedQCircuitJInternalFrame() == null) {
+            return;
+        }
+        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().setCurrentStage(0);
+        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
+        writeMsg("Quantum circuit state reset to initial value");
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
-        if (qCircuitJPanel.getCurrentStage() == qCircuitJPanel.getQcircuit().getStages().size()) {
+        if (getSelectedQCircuitJInternalFrame() == null) {
             return;
         }
-        qCircuitJPanel.setCurrentStage(qCircuitJPanel.getCurrentStage() + 1);
-        qCircuitJPanel.repaint();
+        QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
+        if (qcjp.getCurrentStage() == qcjp.getQcircuit().getStages().size()) {
+            return;
+        }
+        qcjp.setCurrentStage(qcjp.getCurrentStage() + 1);
+        qcjp.repaint();
     }//GEN-LAST:event_stepJButtonActionPerformed
 
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
@@ -484,30 +570,39 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void zoomOutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutJButtonActionPerformed
-        qCircuitJPanel.zoom /= 1.5f;
-        qCircuitJPanel.setPreferredSize(
+        if (getSelectedQCircuitJInternalFrame() == null) {
+            return;
+        }
+        QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
+        qcjp.zoom /= 1.5f;
+        qcjp.setPreferredSize(
                 new Dimension(
-                (int) (qCircuitJPanel.getPreferredSize().getWidth() / 1.5),
-                (int) (qCircuitJPanel.getPreferredSize().getHeight() / 1.5)));
-        qCircuitJPanel.revalidate();
-        qCircuitJPanel.repaint();
+                (int) (qcjp.getPreferredSize().getWidth() / 1.5),
+                (int) (qcjp.getPreferredSize().getHeight() / 1.5)));
+        qcjp.revalidate();
+        qcjp.repaint();
 }//GEN-LAST:event_zoomOutJButtonActionPerformed
 
     private void zoomInJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInJButtonActionPerformed
-        qCircuitJPanel.zoom *= 1.5f;
-        qCircuitJPanel.setPreferredSize(
+        if (getSelectedQCircuitJInternalFrame() == null) {
+            return;
+        }
+        QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
+        qcjp.zoom *= 1.5f;
+        qcjp.setPreferredSize(
                 new Dimension(
-                (int) (qCircuitJPanel.getPreferredSize().getWidth() * 1.5),
-                (int) (qCircuitJPanel.getPreferredSize().getHeight() * 1.5)));
-        qCircuitJPanel.revalidate();
-        qCircuitJPanel.repaint();
+                (int) (qcjp.getPreferredSize().getWidth() * 1.5),
+                (int) (qcjp.getPreferredSize().getHeight() * 1.5)));
+        qcjp.revalidate();
+        qcjp.repaint();
     }//GEN-LAST:event_zoomInJButtonActionPerformed
 
     private void saveJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveJMenuItemActionPerformed
-        if (qCircuitJPanel.getQcircuit() == null) {
+        if (getSelectedQCircuitJInternalFrame() == null) {
             JOptionPane.showMessageDialog(this, "Create quantum circuit first");
             return;
         }
+        QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
         JFileChooser jfc = new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc.setAcceptAllFileFilterUsed(true);
@@ -515,7 +610,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             XStream xstream = new XStream(new DomDriver());
             try {
-                xstream.toXML(qCircuitJPanel.getQcircuit(),
+                xstream.toXML(qcjp.getQcircuit(),
                         new FileOutputStream(jfc.getSelectedFile()));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Create quantum circuit first");
@@ -533,26 +628,29 @@ public class MainJFrame extends javax.swing.JFrame {
         if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 XStream xstream = new XStream(new DomDriver());
-                qCircuitJPanel.setQcircuit(
+                QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame(
+                        jfc.getSelectedFile().getName());
+                QCircuitJPanel qcjp = qif.getQCircuitJPanel();
+                qcjp.setQcircuit(
                         (QCircuit) xstream.fromXML(new FileInputStream(jfc.getSelectedFile())));
-                qCircuitJPanel.repaint();
+                qcjp.repaint();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Failed loading quantum circuit");
-                return;
+                throw new RuntimeException(ex);
             }
             writeMsg("Quantum circuit loaded: " + jfc.getSelectedFile().getName());
         }
     }//GEN-LAST:event_loadJMenuItemActionPerformed
 
     private void SuperdenseJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SuperdenseJMenuItemActionPerformed
+        QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame("Superdense coding quantum circuit");
         QCircuit qc = new QCircuit();
         CompoundQGate s1 = new CompoundQGate(new Swap(), new Identity(), new Identity());
-        CompoundQGate s2 = new CompoundQGate(new Identity(), new Custom(new Complex[][] {
-            {QGate.cx(1), QGate.cx(0), QGate.cx(0), QGate.cx(0)},
-            {QGate.cx(0), QGate.cx(1), QGate.cx(0), QGate.cx(0)},
-            {QGate.cx(0), QGate.cx(0), QGate.cx(1), QGate.cx(0)},
-            {QGate.cx(0), QGate.cx(0), QGate.cx(0), QGate.cx(-1)},
-        }), new Identity());
+        CompoundQGate s2 = new CompoundQGate(new Identity(), new Custom(new Complex[][]{
+                    {QGate.cx(1), QGate.cx(0), QGate.cx(0), QGate.cx(0)},
+                    {QGate.cx(0), QGate.cx(1), QGate.cx(0), QGate.cx(0)},
+                    {QGate.cx(0), QGate.cx(0), QGate.cx(1), QGate.cx(0)},
+                    {QGate.cx(0), QGate.cx(0), QGate.cx(0), QGate.cx(-1)},}), new Identity());
         CompoundQGate s3 = new CompoundQGate(new Swap(), new Identity(), new Identity());
         CompoundQGate s4 = new CompoundQGate(new Identity(), new CNot(1, 0), new Identity());
         CompoundQGate s5 = new CompoundQGate(new Identity(), new Identity(), new CNot(1, 0));
@@ -564,14 +662,13 @@ public class MainJFrame extends javax.swing.JFrame {
         qc.addStage(s4);
         qc.addStage(s5);
         qc.addStage(s6);
-        qCircuitJPanel.setQcircuit(qc);
+        qif.setQcircuit(qc);
         writeMsg("Superdense coding quantum circuit loaded");
 
         QRegister input;
 
         double sqr2 = Math.sqrt(2) / 2;
-		QRegister EPR = new QRegister(MoreMath
-				.asComplexMatrix(new double[][] { { sqr2, 0, 0, sqr2 } }));
+        QRegister EPR = new QRegister(MoreMath.asComplexMatrix(new double[][]{{sqr2, 0, 0, sqr2}}));
 
         writeMsg("Testing superdense coding...");
         writeMsg("----------------------------");
@@ -581,9 +678,26 @@ public class MainJFrame extends javax.swing.JFrame {
             input = cbits.tensor(EPR);
             writeMsg("input: " + cbits.dirac() + "    output: " + qc.compute(input).dirac());
         }
-        
-        qCircuitJPanel.repaint();
+
     }//GEN-LAST:event_SuperdenseJMenuItemActionPerformed
+
+    private void minimizeAllWindowsJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeAllWindowsJMenuItemActionPerformed
+        for (JInternalFrame f : jDesktopPane1.getAllFrames()) {
+            try {
+                f.setIcon(true);
+            } catch (PropertyVetoException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }//GEN-LAST:event_minimizeAllWindowsJMenuItemActionPerformed
+
+    private void closeAllWindowsJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeAllWindowsJMenuItemActionPerformed
+        for (JInternalFrame f : jDesktopPane1.getAllFrames()) {
+            f.setVisible(true);
+            f.dispose();
+        }
+        System.gc();
+    }//GEN-LAST:event_closeAllWindowsJMenuItemActionPerformed
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
@@ -606,6 +720,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem SuperdenseJMenuItem;
     private javax.swing.JMenuItem aboutJMenuItem;
     private javax.swing.JMenu algorithmsJMenu;
+    private javax.swing.JMenuItem closeAllWindowsJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
     private javax.swing.JButton hadamardJButton;
@@ -620,6 +735,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem12;
@@ -632,19 +748,19 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem loadJMenuItem;
+    private javax.swing.JMenuItem minimizeAllWindowsJMenuItem;
     private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
     private javax.swing.JButton notJButton;
     private javax.swing.JTextArea outputJTextArea;
-    private jqcompgui.QCircuitJPanel qCircuitJPanel;
     private javax.swing.JMenu quantumGatesJMenu;
     private javax.swing.JMenuItem quitJMenuItem;
     private javax.swing.JButton resetJButton;
@@ -653,6 +769,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel statusBarJLabel;
     private javax.swing.JPanel statusBarJPanel;
     private javax.swing.JButton stepJButton;
+    private javax.swing.JMenu windowsJMenu;
     private javax.swing.JButton zoomInJButton;
     private javax.swing.JButton zoomOutJButton;
     // End of variables declaration//GEN-END:variables
