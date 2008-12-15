@@ -139,6 +139,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Windows"/>
           </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="windowsJMenuMenuSelected"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="closeAllWindowsJMenuItem">
               <Properties>

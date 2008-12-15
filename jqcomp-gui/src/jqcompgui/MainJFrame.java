@@ -374,6 +374,15 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuBar1.add(settingsJMenu);
 
         windowsJMenu.setText("Windows");
+        windowsJMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowsJMenuMenuSelected(evt);
+            }
+        });
 
         closeAllWindowsJMenuItem.setText("Close all windows");
         closeAllWindowsJMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -477,7 +486,7 @@ public class MainJFrame extends javax.swing.JFrame {
         return qif;
     }
 
-    private void updateWindowsJMenu() {
+    public void updateWindowsJMenu() {
         // remove constant items
         for (Component i: windowsJMenu.getMenuComponents()) {
             if (i == closeAllWindowsJMenuItem) {
@@ -494,6 +503,9 @@ public class MainJFrame extends javax.swing.JFrame {
         // add all QCircuitJInternalFrames
         for (JInternalFrame iframe: jDesktopPane1.getAllFrames()) {
             if (!(iframe instanceof QCircuitJInternalFrame)) {
+                continue;
+            }
+            if (!iframe.isVisible()) {
                 continue;
             }
             final QCircuitJInternalFrame qif = (QCircuitJInternalFrame) iframe;
@@ -698,6 +710,10 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         System.gc();
     }//GEN-LAST:event_closeAllWindowsJMenuItemActionPerformed
+
+    private void windowsJMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowsJMenuMenuSelected
+        updateWindowsJMenu();
+    }//GEN-LAST:event_windowsJMenuMenuSelected
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
