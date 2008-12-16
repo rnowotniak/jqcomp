@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * QCircuitJInternalFrame.java
  *
  * Created on 2008-12-15, 20:56:15
@@ -11,9 +6,6 @@
 
 package jqcompgui;
 
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 
 /**

@@ -10,6 +10,7 @@
  */
 package jqcompgui;
 
+import com.sun.java_cup.internal.runtime.Symbol;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.Component;
@@ -19,8 +20,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
@@ -52,6 +51,18 @@ public class MainJFrame extends javax.swing.JFrame {
             instance = new MainJFrame();
         }
         return instance;
+    }
+
+    /*
+     * Required to prevent applet memory leakage
+     */
+    public static void destroyInstance() {
+        if (instance != null) {
+            instance.setVisible(false);
+            instance.dispose();
+        }
+        instance = null;
+        System.gc();
     }
 
     /** Creates new form MainJFrame */
@@ -130,8 +141,12 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         aboutJMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("jqcomp-gui: Java Quantum Computer Simulator. Technical University of Lodz");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -714,6 +729,16 @@ public class MainJFrame extends javax.swing.JFrame {
     private void windowsJMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowsJMenuMenuSelected
         updateWindowsJMenu();
     }//GEN-LAST:event_windowsJMenuMenuSelected
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            // it would fail in an applet
+            System.exit(0);
+        }
+        catch (Exception ex) {
+            /* DO NOTHING */
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
