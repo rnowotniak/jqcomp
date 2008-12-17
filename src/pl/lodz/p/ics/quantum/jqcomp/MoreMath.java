@@ -70,6 +70,12 @@ public class MoreMath {
 	static public boolean isNearZero(double x){
 		return Math.abs(x)<epsilon;
 	}
+
+    static public boolean isNearNumber(double x, double y) {
+        return Math.abs(x-y) < epsilon;
+    }
+
+    
 	
 	
 	public  static String randomize(HashMap<String, Double> probabilities) {

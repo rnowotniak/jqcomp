@@ -15,6 +15,8 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
  * @author rob
  */
 public class QRegisterTest {
+    private final static double s2 = 1.0/Math.sqrt(2);
+
 
     public QRegisterTest() {
     }
@@ -132,6 +134,20 @@ public class QRegisterTest {
 
 		println("circuit1:\n" + circuit1);
 	}
+
+    @Test
+    public void testDirac(){
+        QRegister a = QRegister.ket(0,2);
+        assertEquals(a.dirac(), "|00>");
+        QRegister b = new QRegister( cx(0),cx(1.0+1.0e-8 ) );
+        assertEquals(b.dirac(), "|1>");
+        QRegister c = new QRegister( cx(1.0-1.0e-8 ), cx(0), cx(1.0e-8), cx(0));
+        assertEquals(c.dirac(), "|00>");
+        QRegister d = new QRegister( cx(1.0), cx(0, -1e-8));
+        assertEquals(d.dirac(), "|0>");
+     //   QRegister e = new QRegister( cx(0), cx(0.5), cx(0), cx(0.75), cx(0), cx(0), cx(0), cx(0));
+     //   assertEquals(e.dirac(), "a");
+    }
 
     @Test
 	public void testMeasure2() {

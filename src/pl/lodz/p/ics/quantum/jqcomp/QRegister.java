@@ -258,17 +258,31 @@ public class QRegister {
 		int zeros = 0;
 		int onePos = -1;
 		String ret = "";
-		ComplexVector vector = matrix.getColumn(0);
+		//ComplexVector vector = matrix.getColumn(0);
+        Complex[] array = this.toComplexArray();
 		int vectorSize = MoreMath.pow2(size);
 		for (int i=0;i<vectorSize;i++) {
-			if (vector.get(i).getReal()==1.0&&vector.get(i).getImaginary()==0.0) {
+            if (MoreMath.isNearZero(array[i].getImaginary()))
+                array[i] = Complex.valueOf(array[i].getReal(), 0.0);
+
+            if (MoreMath.isNearZero(array[i].getReal()))
+                array[i] = Complex.valueOf(0.0, array[i].getImaginary());
+
+            if (MoreMath.isNearNumber(array[i].getImaginary(), 1.0))
+                array[i] = Complex.valueOf(array[i].getReal(), 1.0);
+
+            if (MoreMath.isNearNumber(array[i].getReal(), 1.0)) {
+                array[i] = Complex.valueOf(1.0, array[i].getImaginary());
+            }
+
+			if (array[i].getReal()==1.0&&array[i].getImaginary()==0.0) {
 				if (onePos==-1) onePos = i; // 1st occurrence of 1+0j found
 				else {
 					onePos=-1;
 					break;
 				}
 			}
-			else if (vector.get(i).getReal()==0.0&&vector.get(i).getImaginary()==0.0) {
+			else if (array[i].getReal()==0.0&&array[i].getImaginary()==0.0) {
 				zeros++;
 			}
 		}
@@ -282,7 +296,7 @@ public class QRegister {
 		int displayedItems = 0;
 		StringBuffer output = new StringBuffer();
 		for (int i=0;i<vectorSize;i++){
-			Complex elem = vector.get(i);
+			Complex elem = array[i];
 			// don't display (0+0j)*|ket>
 			if ( !MoreMath.isNearZero(elem.getReal()) || !MoreMath.isNearZero(elem.getImaginary())) {
 				if (displayedItems>0) output.append(" + ");				   
