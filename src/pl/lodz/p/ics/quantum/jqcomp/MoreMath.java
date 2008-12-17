@@ -74,9 +74,6 @@ public class MoreMath {
     static public boolean isNearNumber(double x, double y) {
         return Math.abs(x-y) < epsilon;
     }
-
-    
-	
 	
 	public  static String randomize(HashMap<String, Double> probabilities) {
 		Set<String> keys = probabilities.keySet();

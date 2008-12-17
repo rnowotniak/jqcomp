@@ -145,8 +145,8 @@ public class QRegisterTest {
         assertEquals(c.dirac(), "|00>");
         QRegister d = new QRegister( cx(1.0), cx(0, -1e-8));
         assertEquals(d.dirac(), "|0>");
-     //   QRegister e = new QRegister( cx(0), cx(0.5), cx(0), cx(0.75), cx(0), cx(0), cx(0), cx(0));
-     //   assertEquals(e.dirac(), "a");
+        QRegister e = new QRegister( cx(0), cx(0.5), cx(0), cx(0.75), cx(0), cx(0), cx(0), cx(0));
+        assertEquals(e.dirac(), "a");
     }
 
     @Test
