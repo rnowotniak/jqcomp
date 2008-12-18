@@ -29,6 +29,7 @@ import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.QGate;
 import pl.lodz.p.ics.quantum.jqcomp.QRegister;
+import pl.lodz.p.ics.quantum.jqcomp.Stage;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
@@ -96,9 +97,9 @@ public class MainJFrame extends javax.swing.JFrame {
         stepJButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        forwardJButton = new javax.swing.JButton();
+        backwardJButton = new javax.swing.JButton();
+        removeJButton = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         zoomInJButton = new javax.swing.JButton();
         zoomOutJButton = new javax.swing.JButton();
@@ -197,14 +198,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jButton2.setText("run");
 
-        jButton9.setText("Forward");
-
-        jButton10.setText("Backward");
-
-        jButton11.setText("Remove");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        forwardJButton.setText("Forward");
+        forwardJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                forwardJButtonActionPerformed(evt);
+            }
+        });
+
+        backwardJButton.setText("Backward");
+        backwardJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backwardJButtonActionPerformed(evt);
+            }
+        });
+
+        removeJButton.setText("Remove");
+        removeJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeJButtonActionPerformed(evt);
             }
         });
 
@@ -230,9 +241,9 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(stepJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(forwardJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(backwardJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(removeJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(zoomInJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
@@ -248,11 +259,11 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9)
+                .addComponent(forwardJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10)
+                .addComponent(backwardJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton11)
+                .addComponent(removeJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -270,6 +281,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -541,7 +553,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void newQuantumCircuitJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newQuantumCircuitJMenuItemActionPerformed
         QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame();
-
     }//GEN-LAST:event_newQuantumCircuitJMenuItemActionPerformed
 
     private void entanglementAlgorithmJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entanglementAlgorithmJMenuItemActionPerformed
@@ -591,9 +602,18 @@ public class MainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_hadamardJButtonActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
+    private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
+        QCircuitJInternalFrame qif = getSelectedQCircuitJInternalFrame();
+        if (qif == null) {
+            return;
+        }
+        Stage selected = qif.getQCircuitJPanel().getSelectedStage();
+        if (selected == null) {
+            return;
+        }
+        qif.getQcircuit().getStages().remove(selected);
+        repaint();
+}//GEN-LAST:event_removeJButtonActionPerformed
 
     private void zoomOutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutJButtonActionPerformed
         if (getSelectedQCircuitJInternalFrame() == null) {
@@ -739,6 +759,48 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    private void forwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardJButtonActionPerformed
+        QCircuitJInternalFrame qif = getSelectedQCircuitJInternalFrame();
+        if (qif == null) {
+            return;
+        }
+        Stage selected = qif.getQCircuitJPanel().getSelectedStage();
+        if (selected == null) {
+            return;
+        }
+        QCircuit qcirc = qif.getQcircuit();
+        for (int i = 0; i < qcirc.getStages().size() - 1; i++) {
+            Stage s = qcirc.getStages().get(i);
+            if (s == selected) {
+                qcirc.getStages().remove(selected);
+                qcirc.getStages().add(i + 1, selected);
+                break;
+            }
+        }
+        repaint();
+    }//GEN-LAST:event_forwardJButtonActionPerformed
+
+    private void backwardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backwardJButtonActionPerformed
+        QCircuitJInternalFrame qif = getSelectedQCircuitJInternalFrame();
+        if (qif == null) {
+            return;
+        }
+        Stage selected = qif.getQCircuitJPanel().getSelectedStage();
+        if (selected == null) {
+            return;
+        }
+        QCircuit qcirc = qif.getQcircuit();
+        for (int i = 1; i < qcirc.getStages().size(); i++) {
+            Stage s = qcirc.getStages().get(i);
+            if (s == selected) {
+                qcirc.getStages().remove(selected);
+                qcirc.getStages().add(i - 1, selected);
+                break;
+            }
+        }
+        repaint();
+    }//GEN-LAST:event_backwardJButtonActionPerformed
+
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
         statusBarJLabel.setText(msg);
@@ -760,20 +822,19 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem SuperdenseJMenuItem;
     private javax.swing.JMenuItem aboutJMenuItem;
     private javax.swing.JMenu algorithmsJMenu;
+    private javax.swing.JButton backwardJButton;
     private javax.swing.JMenuItem closeAllWindowsJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
+    private javax.swing.JButton forwardJButton;
     private javax.swing.JButton hadamardJButton;
     private javax.swing.JMenuItem helpContentsJMenuItem;
     private javax.swing.JMenu helpJMenu;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -803,6 +864,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea outputJTextArea;
     private javax.swing.JMenu quantumGatesJMenu;
     private javax.swing.JMenuItem quitJMenuItem;
+    private javax.swing.JButton removeJButton;
     private javax.swing.JButton resetJButton;
     private javax.swing.JMenuItem saveJMenuItem;
     private javax.swing.JMenu settingsJMenu;

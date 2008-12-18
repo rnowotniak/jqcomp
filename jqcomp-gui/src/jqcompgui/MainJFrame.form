@@ -326,9 +326,9 @@
               <Component id="stepJButton" alignment="0" pref="110" max="32767" attributes="0"/>
               <Component id="jButton2" alignment="0" pref="110" max="32767" attributes="1"/>
               <Component id="jSeparator4" alignment="0" pref="110" max="32767" attributes="1"/>
-              <Component id="jButton9" alignment="0" pref="110" max="32767" attributes="1"/>
-              <Component id="jButton10" alignment="0" pref="110" max="32767" attributes="1"/>
-              <Component id="jButton11" alignment="0" pref="110" max="32767" attributes="1"/>
+              <Component id="forwardJButton" alignment="0" pref="110" max="32767" attributes="1"/>
+              <Component id="backwardJButton" alignment="0" pref="110" max="32767" attributes="1"/>
+              <Component id="removeJButton" alignment="0" pref="110" max="32767" attributes="1"/>
               <Component id="jSeparator5" alignment="0" pref="110" max="32767" attributes="0"/>
               <Component id="zoomInJButton" alignment="0" pref="110" max="32767" attributes="0"/>
               <Component id="zoomOutJButton" alignment="0" pref="110" max="32767" attributes="0"/>
@@ -345,11 +345,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator4" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton9" min="-2" max="-2" attributes="0"/>
+                  <Component id="forwardJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton10" min="-2" max="-2" attributes="0"/>
+                  <Component id="backwardJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton11" min="-2" max="-2" attributes="0"/>
+                  <Component id="removeJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator5" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -385,22 +385,28 @@
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator4">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton9">
+        <Component class="javax.swing.JButton" name="forwardJButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Forward"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forwardJButtonActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton10">
+        <Component class="javax.swing.JButton" name="backwardJButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Backward"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backwardJButtonActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton11">
+        <Component class="javax.swing.JButton" name="removeJButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeJButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator5">
@@ -459,6 +465,9 @@
             <Component class="javax.swing.JTextArea" name="outputJTextArea">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Monospaced" size="13" style="1"/>
+                </Property>
                 <Property name="rows" type="int" value="4"/>
               </Properties>
             </Component>

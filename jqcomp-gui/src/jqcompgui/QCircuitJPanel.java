@@ -29,7 +29,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
 
     private QCircuit qcircuit;
     private int currentStage;
-    private int selectedStage = -1;
+    private Stage selectedStage;
     private Color backgroundColor;
     private Color currentStageColor = Color.RED;
     private Color selectedStageColor = Color.YELLOW;
@@ -76,13 +76,14 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         }
 
         // draw selected stage marker
-        if (selectedStage != -1) {
+        if (selectedStage != null) {
             for (int si = 0; si < qcircuit.getStages().size(); si++) {
                 Stage s = qcircuit.getStages().get(si);
-                if (si == selectedStage) {
+                if (s == selectedStage) {
                     g.setColor(selectedStageColor);
                     g.fillRect(x_offset + (si + 1) * xstep - xstep / 2, ystep - 5 - 10,
                             xstep, ystep * (s.getSize() - 1) + 20);
+                    break;
                 }
             }
         }
@@ -158,7 +159,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             }
             g.drawLine(x1, y1 - 5, x1, y2 + 5);
         } else if (gate instanceof Swap) {
-            if (si == selectedStage) {
+            if (qcircuit.getStages().get(si) == selectedStage) {
                 g.setColor(selectedStageColor);
             } else {
                 g.setColor(backgroundColor);
@@ -182,6 +183,15 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         g.drawRect(x_offset + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
     }
 
+    private int getStageIndexByXY(int x, int y) {
+        for (int i = 0; i < qcircuit.getStages().size(); i++) {
+            if (Math.abs(x_offset + xstep * (i + 1) - x) < xstep / 2) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -194,6 +204,14 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
             }
         });
 
@@ -212,15 +230,34 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         int x = (int) (1.0f * evt.getX() / zoom);
         int y = (int) (1.0f * evt.getY() / zoom);
-        System.out.println(String.format("%1$s %2$s", x, y));
-        for (int i = 0; i < qcircuit.getStages().size(); i++) {
-            if (Math.abs(x_offset + xstep * (i + 1) - x) < xstep / 2) {
-                selectedStage = i;
-                break;
-            }
+//        System.out.println(String.format("%1$s %2$s", x, y));
+        int nsi = getStageIndexByXY(x, y);
+        if (nsi < 0) {
+            return;
         }
+        selectedStage = qcircuit.getStages().get(nsi);
         repaint();
     }//GEN-LAST:event_formMouseClicked
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        int x = (int) (1.0f * evt.getX() / zoom);
+        int y = (int) (1.0f * evt.getY() / zoom);
+        int nsi = getStageIndexByXY(x, y);
+        if (nsi < 0) {
+            return;
+        }
+        Stage newStage = qcircuit.getStages().get(nsi);
+        if (newStage != selectedStage) {
+            // reorder stages
+            qcircuit.getStages().remove(selectedStage);
+            qcircuit.getStages().add(nsi, selectedStage);
+            repaint();
+        }
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        formMouseClicked(evt);
+    }//GEN-LAST:event_formMousePressed
 
     /**
      * @return the qcircuit
@@ -241,6 +278,20 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     }
 
     /**
+     * @return the selectedStage
+     */
+    public Stage getSelectedStage() {
+        return selectedStage;
+    }
+
+    /**
+     * @param selectedStage the selectedStage to set
+     */
+    public void setSelectedStage(Stage selectedStage) {
+        this.selectedStage = selectedStage;
+    }
+
+    /**
      * @return the currentStage
      */
     public int getCurrentStage() {
@@ -253,6 +304,8 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     public void setCurrentStage(int currentStage) {
         this.currentStage = currentStage;
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
