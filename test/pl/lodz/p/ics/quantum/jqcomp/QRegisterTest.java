@@ -1,7 +1,7 @@
-
 package pl.lodz.p.ics.quantum.jqcomp;
 
 import org.jscience.mathematics.number.Complex;
+import org.jscience.mathematics.vector.ComplexMatrix;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +15,8 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
  * @author rob
  */
 public class QRegisterTest {
-    private final static double s2 = 1.0/Math.sqrt(2);
 
+    private final static double s2 = 1.0 / Math.sqrt(2);
 
     public QRegisterTest() {
     }
@@ -29,174 +29,181 @@ public class QRegisterTest {
     public void tearDown() {
     }
 
-
-
     @Test
-	public void testKets(){
-		for (int d=1;d<3;d++) {
-			System.out.println("Qubits: "+d);
-			for (int ket=0;ket<MoreMath.pow2(d);ket++) {
-				System.out.println("|"+ket+">:\n"+QRegister.ket(ket, d));
-			}
-		}
-	}
-
-    @Test
-	public void testMeasurement(){
-		int results[] = new int[4];
-		QRegister[] b = {
-				QRegister.ket(0, 2),
-				QRegister.ket(1, 2),
-				QRegister.ket(2, 2),
-				QRegister.ket(3, 2)
-		};
-		for (int i=0;i<1000;i++) {
-			QRegister reg = new QRegister(cx(0.5, 0), cx(0, 0.5), cx(-0.5, 0), cx(
-				0, -0.5));
-
-			reg = reg.normalize();
-			reg = reg.measure();
-			for (int j=0;j<4;j++) {
-				if (b[j].equals(reg)) results[j]++;
-			}
-		}
-		for (int i=0;i<results.length;i++) {
-			System.out.println(b[i].dirac()+": "+results[i]);
+    public void testKets() {
+        for (int d = 1; d < 3; d++) {
+            System.out.println("Qubits: " + d);
+            for (int ket = 0; ket < MoreMath.pow2(d); ket++) {
+                System.out.println("|" + ket + ">:\n" + QRegister.ket(ket, d));
+            }
         }
-	}
-
-
-
-    @Test
-	public void test1() {
-		Complex[] test = { Complex.valueOf(0, 1), Complex.valueOf(1, 0),
-				Complex.valueOf(0, 0), Complex.valueOf(0, -1) };
-
-		Complex[] test2 = { Complex.valueOf(1, 1), Complex.valueOf(1, 1) };
-
-		QRegister reg = new QRegister(test);
-		QRegister reg2 = new QRegister(test2);
-
-		System.out.println(reg2);
-		System.out.println(reg2.norm());
-	}
-
-    @Test
-	public void test2() {
-		println("*** test2");
-
-		ElementaryQGate gate1 = new Custom(new Complex[][] {
-				{ cx(1), cx(0) }, { cx(0), cx(1) } });
-
-		ElementaryQGate gate2 = new Custom(new Complex[][] {
-				{ cx(1), cx(1) }, { cx(0), cx(-1) } });
-
-		QRegister register1 = new QRegister(new Complex[] { cx(1), cx(1) });
-
-		QRegister register2 = new QRegister(new Complex[] { cx(-1), cx(0) });
-
-		println("gate1:\n" + gate1);
-		println("gate2:\n" + gate2);
-		println("======================================");
-		println("add:\n" + gate1.add(gate2));
-		println("sub:\n" + gate1.sub(gate2));
-		println("mul:\n" + gate1.mul(gate2));
-		println("======================================");
-		println("gate1.trace():\n" + gate1.trace());
-		println("gate1.determinant():\n" + gate1.determinant());
-		println("gate1.transpose():\n" + gate1.transpose());
-		println("gate1.inverse():\n" + gate1.inverse());
-		println("======================================");
-		println("register1:\n" + register1);
-		println("register2:\n" + register2);
-		println("======================================");
-		println("gate2.mul(register1):\n" + gate2.mul(register1));
-		println("gate2.mul(register2):\n" + gate2.mul(register2));
-		println("gate1.mul(register2):\n" + gate1.mul(register2));
-		println("======================================");
-		println("test2 done.");
-	}
-
-    @Test
-	public void test3() {
-		println("*** test3");
-
-		ElementaryQGate someGate1 = new Custom(new Complex[][] {
-				{ cx(1), cx(0) }, { cx(0), cx(1) } });
-
-		ElementaryQGate someGate2 = new Custom(new Complex[][] {
-				{ cx(-1), cx(1) }, { cx(-1), cx(0) } });
-
-		QCircuit circuit1 = new QCircuit(new CompoundQGate[] {
-				new CompoundQGate(new ElementaryQGate[] { someGate1, someGate2 }),
-				new CompoundQGate(new ElementaryQGate[] { someGate2, someGate2 }),
-				new CompoundQGate(new ElementaryQGate[] { someGate1 }), });
-
-		println("circuit1:\n" + circuit1);
-	}
-
-    @Test
-    public void testDirac(){
-        QRegister a = QRegister.ket(0,2);
-        assertEquals(a.dirac(), "|00>");
-        QRegister b = new QRegister( cx(0),cx(1.0+1.0e-8 ) );
-        assertEquals(b.dirac(), "|1>");
-        QRegister c = new QRegister( cx(1.0-1.0e-8 ), cx(0), cx(1.0e-8), cx(0));
-        assertEquals(c.dirac(), "|00>");
-        QRegister d = new QRegister( cx(1.0), cx(0, -1e-8));
-        assertEquals(d.dirac(), "|0>");
-        QRegister e = new QRegister( cx(0), cx(0.5), cx(0), cx(0.75), cx(0), cx(0), cx(0), cx(0));
-        assertEquals(e.dirac(), "a");
     }
 
     @Test
-	public void testMeasure2() {
-		int ones =0;
-		int zeros = 0;
-		for (int i=0;i<3;i++) {
-			QRegister rr = new QRegister( cx(0,0.25),  cx(0.1,0),  cx(0.1,0),  cx(0.1,0), cx(0.1), cx(0.5,0),
-				cx(0,-0.3), cx(0.4,0));
-			rr.normalize();
+    public void testMeasurement() {
+        int results[] = new int[4];
+        QRegister[] b = {
+            QRegister.ket(0, 2),
+            QRegister.ket(1, 2),
+            QRegister.ket(2, 2),
+            QRegister.ket(3, 2)
+        };
+        for (int i = 0; i < 1000; i++) {
+            QRegister reg = new QRegister(cx(0.5, 0), cx(0, 0.5), cx(-0.5, 0), cx(
+                    0, -0.5));
 
-			QRegister ret = rr.measure(0,1,2);
-			if (ret.equals(QRegister.ket(0, 1))) zeros++;
-			else if (ret.equals(QRegister.ket(1, 1))) ones++;
-			System.out.println("Returned "+ret.dirac());
-			System.out.println("this is "+rr);
-		}
+            reg = reg.normalize();
+            reg = reg.measure();
+            for (int j = 0; j < 4; j++) {
+                if (b[j].equals(reg)) {
+                    results[j]++;
+                }
+            }
+        }
+        for (int i = 0; i < results.length; i++) {
+            System.out.println(b[i].dirac() + ": " + results[i]);
+        }
+    }
+
+    @Test
+    public void test1() {
+        Complex[] test = {Complex.valueOf(0, 1), Complex.valueOf(1, 0),
+            Complex.valueOf(0, 0), Complex.valueOf(0, -1)};
+
+        Complex[] test2 = {Complex.valueOf(1, 1), Complex.valueOf(1, 1)};
+
+        QRegister reg = new QRegister(test);
+        QRegister reg2 = new QRegister(test2);
+
+        System.out.println(reg2);
+        System.out.println(reg2.norm());
+    }
+
+    @Test
+    public void test2() {
+        println("*** test2");
+
+        ElementaryQGate gate1 = new Custom(new Complex[][]{
+                    {cx(1), cx(0)}, {cx(0), cx(1)}});
+
+        ElementaryQGate gate2 = new Custom(new Complex[][]{
+                    {cx(1), cx(1)}, {cx(0), cx(-1)}});
+
+        QRegister register1 = new QRegister(new Complex[]{cx(1), cx(1)});
+
+        QRegister register2 = new QRegister(new Complex[]{cx(-1), cx(0)});
+
+        println("gate1:\n" + gate1);
+        println("gate2:\n" + gate2);
+        println("======================================");
+        println("add:\n" + gate1.add(gate2));
+        println("sub:\n" + gate1.sub(gate2));
+        println("mul:\n" + gate1.mul(gate2));
+        println("======================================");
+        println("gate1.trace():\n" + gate1.trace());
+        println("gate1.determinant():\n" + gate1.determinant());
+        println("gate1.transpose():\n" + gate1.transpose());
+        println("gate1.inverse():\n" + gate1.inverse());
+        println("======================================");
+        println("register1:\n" + register1);
+        println("register2:\n" + register2);
+        println("======================================");
+        println("gate2.mul(register1):\n" + gate2.mul(register1));
+        println("gate2.mul(register2):\n" + gate2.mul(register2));
+        println("gate1.mul(register2):\n" + gate1.mul(register2));
+        println("======================================");
+        println("test2 done.");
+    }
+
+    @Test
+    public void test3() {
+        println("*** test3");
+
+        ElementaryQGate someGate1 = new Custom(new Complex[][]{
+                    {cx(1), cx(0)}, {cx(0), cx(1)}});
+
+        ElementaryQGate someGate2 = new Custom(new Complex[][]{
+                    {cx(-1), cx(1)}, {cx(-1), cx(0)}});
+
+        QCircuit circuit1 = null;
+        try {
+            circuit1 = new QCircuit(new CompoundQGate[]{
+                        new CompoundQGate(new ElementaryQGate[]{someGate1, someGate2}),
+                        new CompoundQGate(new ElementaryQGate[]{someGate2, someGate2}),
+                        new CompoundQGate(new ElementaryQGate[]{someGate1}),});
+            fail("Creation of quantum circuit composing different size stages shouldn't be possible");
+        } catch (WrongSizeException ex) {
+            /* DO NOTHING, exception is correct */
+        }
+
+
+        println("circuit1:\n" + circuit1);
+    }
+
+    @Test
+    public void testDirac() {
+        QRegister a = QRegister.ket(0, 2);
+        assertEquals("|00>", a.dirac());
+        QRegister b = new QRegister(cx(0), cx(1.0 + 1.0e-8));
+        assertEquals("|1>" , b.dirac());
+        QRegister c = new QRegister(cx(1.0 - 1.0e-8), cx(0), cx(1.0e-8), cx(0));
+        assertEquals("|00>", c.dirac());
+        QRegister d = new QRegister(cx(1.0), cx(0, -1e-8));
+        assertEquals("|0>", d.dirac());
+        QRegister e = new QRegister(cx(0), cx(0.5), cx(0), cx(0.75), cx(0), cx(0), cx(0), cx(0));
+
+        ComplexMatrix cm = ComplexMatrix.valueOf(new Complex[][]{{
+            cx(0), cx(0), cx(0), cx(0),
+            cx(0), cx(0), cx(0), cx(0),
+            cx(0), cx(0), cx(0), cx(0),
+            cx(0), cx(0), cx(0), cx(-1.0000000002, 0)}});
+        cm = cm.transpose();
+        QRegister f = new QRegister(cm);
+//        System.out.println(f.dirac());
+        assertEquals("-|1111>", f.dirac()); // or -1 * |1111> ?
+    }
+
+    @Test
+    public void testMeasure2() {
+        int ones = 0;
+        int zeros = 0;
+        for (int i = 0; i < 3; i++) {
+            QRegister rr = new QRegister(cx(0, 0.25), cx(0.1, 0), cx(0.1, 0), cx(0.1, 0), cx(0.1), cx(0.5, 0),
+                    cx(0, -0.3), cx(0.4, 0));
+            rr.normalize();
+
+            QRegister ret = rr.measure(0, 1, 2);
+            if (ret.equals(QRegister.ket(0, 1))) {
+                zeros++;
+            } else if (ret.equals(QRegister.ket(1, 1))) {
+                ones++;
+            }
+            System.out.println("Returned " + ret.dirac());
+            System.out.println("this is " + rr);
+        }
 
 
 
-	}
+    }
 
+    public void println(Object str) {
+        System.out.println(str);
+    }
 
-	public void println(Object str) {
-		System.out.println(str);
-	}
+    public void print(Object str) {
+        System.out.print(str);
+    }
 
-	public void print(Object str) {
-		System.out.print(str);
-	}
+    public Complex cx(double real, double imaginary) {
+        return Complex.valueOf(real, imaginary);
+    }
 
-	public Complex cx(double real, double imaginary) {
-		return Complex.valueOf(real, imaginary);
-	}
-
-	public Complex cx(double real) {
-		return cx(real, 0);
-	}
-
-
-
-
-
-
-
-
-
-/*
- * Automatically generated stub methods
- */
+    public Complex cx(double real) {
+        return cx(real, 0);
+    }
+    /*
+     * Automatically generated stub methods
+     */
 
 //    /**
 //     * Test of ket method, of class QRegister.
@@ -414,5 +421,4 @@ public class QRegisterTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-
 }
