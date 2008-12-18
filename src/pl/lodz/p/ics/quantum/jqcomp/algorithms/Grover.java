@@ -15,6 +15,7 @@ import org.jscience.mathematics.number.Complex;
 public class Grover {
     public  QCircuit circuit;
     public QRegister init;
+    
     /**
      * Prepare gates
      *

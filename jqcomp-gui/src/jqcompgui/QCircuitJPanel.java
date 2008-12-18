@@ -29,11 +29,15 @@ public class QCircuitJPanel extends javax.swing.JPanel {
 
     private QCircuit qcircuit;
     private int currentStage;
+    private int selectedStage = -1;
+    private Color backgroundColor;
     private Color currentStageColor = Color.RED;
+    private Color selectedStageColor = Color.YELLOW;
     private Stroke currentStageStroke = new BasicStroke(2);
     private int xstep = 50;
     private int ystep = 50;
     public float zoom = 1.0f;
+    private int x_offset = 70;
 
     /** Creates new form QCircuitJPanel */
     public QCircuitJPanel() {
@@ -44,8 +48,9 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
+        backgroundColor = Color.WHITE;
         g.scale(zoom, zoom);
-        g.setColor(Color.WHITE);
+        g.setColor(backgroundColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.setColor(Color.BLACK);
@@ -59,7 +64,6 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             g.drawLine(60, 45, 150, 45);
             g.drawLine(60, 85, 150, 85);
             g.drawLine(60, 125, 150, 125);
-//            setPreferredSize(new Dimension(200, 100));
             return;
         }
 
@@ -71,21 +75,34 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             return;
         }
 
+        // draw selected stage marker
+        if (selectedStage != -1) {
+            for (int si = 0; si < qcircuit.getStages().size(); si++) {
+                Stage s = qcircuit.getStages().get(si);
+                if (si == selectedStage) {
+                    g.setColor(selectedStageColor);
+                    g.fillRect(x_offset + (si + 1) * xstep - xstep / 2, ystep - 5 - 10,
+                            xstep, ystep * (s.getSize() - 1) + 20);
+                }
+            }
+        }
+
         // draw qubits labels
         for (int i = 0; i < qcircuit.getStages().get(0).getSize(); i++) {
+            g.setColor(Color.BLACK);
             g.drawString("|q" +
                     new Integer(qcircuit.getStages().get(0).getSize() - i - 1).toString() +
-                    ">", 30, ystep + i * ystep);
-            g.drawLine(70, ystep - 5 + i * ystep, 70 + xstep, ystep - 5 + i * ystep);
+                    ">", x_offset - 40, ystep + i * ystep);
+            g.drawLine(x_offset, ystep - 5 + i * ystep, x_offset + xstep, ystep - 5 + i * ystep);
         }
 
         // draw points and qubit lines
         for (int si = 0; si < qcircuit.getStages().size(); si++) {
             Stage s = qcircuit.getStages().get(si);
             for (int q = 0; q < s.getSize(); q++) {
-                g.drawLine(70 + xstep + si * xstep, ystep - 5 + q * ystep,
-                        70 + xstep + si * xstep + xstep, ystep - 5 + q * ystep);
-                g.drawOval(70 + xstep - 2 + si * xstep, ystep - 5 + q * ystep - 2, 4, 4);
+                g.drawLine(x_offset + xstep + si * xstep, ystep - 5 + q * ystep,
+                        x_offset + xstep + si * xstep + xstep, ystep - 5 + q * ystep);
+                g.drawOval(x_offset + xstep - 2 + si * xstep, ystep - 5 + q * ystep - 2, 4, 4);
             }
         }
 
@@ -111,28 +128,28 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         // draw line representing current state
         g.setPaint(currentStageColor);
         g.setStroke(currentStageStroke);
-        g.drawLine(70 + xstep / 2 + xstep * currentStage, ystep - 10,
-                70 + xstep / 2 + xstep * currentStage, ystep + ystep * (qcircuit.getStages().get(0).getSize() - 1) + 10);
+        g.drawLine(x_offset + xstep / 2 + xstep * currentStage, ystep - 10,
+                x_offset + xstep / 2 + xstep * currentStage, ystep + ystep * (qcircuit.getStages().get(0).getSize() - 1) + 10);
     }
 
     private void drawQGate(Graphics2D g, ElementaryQGate gate, int si, int gi) {
         if (gate instanceof Hadamard) {
             drawGateBox(g, si, gi, gate);
-            g.drawString("H", 70 + xstep - 10 + si * xstep + 5, ystep - 10 + gi * ystep - 5 + 15);
+            g.drawString("H", x_offset + xstep - 10 + si * xstep + 5, ystep - 10 + gi * ystep - 5 + 15);
         } else if (gate instanceof CNot) {
             CNot cnot = (CNot) gate;
-            int x1 = 70 + xstep + si * xstep;
+            int x1 = x_offset + xstep + si * xstep;
             int y1 = ystep + gi * ystep - 5;
             int y2 = y1 + ystep * (gate.getSize() - 1);
             if (cnot.getControl() == 1) {
                 g.fillOval(x1 - 5, y1 - 5, 10, 10);
-                g.setColor(Color.WHITE);
+                g.setColor(backgroundColor);
                 g.fillOval(x1 - 5, y2 - 5, 10, 10);
                 g.setColor(Color.BLACK);
                 g.drawOval(x1 - 5, y2 - 5, 10, 10);
                 g.drawLine(x1 - 5, y2, x1 + 5, y2);
             } else {
-                g.setColor(Color.WHITE);
+                g.setColor(backgroundColor);
                 g.fillOval(x1 - 5, y1 - 5, 10, 10);
                 g.setColor(Color.BLACK);
                 g.drawOval(x1 - 5, y1 - 5, 10, 10);
@@ -141,24 +158,28 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             }
             g.drawLine(x1, y1 - 5, x1, y2 + 5);
         } else if (gate instanceof Swap) {
-            g.setColor(Color.WHITE);
-            g.fillRect(70 + xstep + si * xstep - 10, ystep + gi * ystep - 5 - 10,
-                    20, ystep + 20);
+            if (si == selectedStage) {
+                g.setColor(selectedStageColor);
+            } else {
+                g.setColor(backgroundColor);
+            }
+            g.fillRect(x_offset + xstep + si * xstep - 10, ystep + gi * ystep - 5 - 5,
+                    20, ystep + 10);
             g.setColor(Color.BLACK);
-            g.drawLine(70 + xstep + si * xstep - 10, ystep + gi * ystep - 5,
-                    70 + xstep + si * xstep + 10, ystep + (gi + 1) * ystep - 5);
-            g.drawLine(70 + xstep + si * xstep + 10, ystep + gi * ystep - 5,
-                    70 + xstep + si * xstep - 10, ystep + (gi + 1) * ystep - 5);
+            g.drawLine(x_offset + xstep + si * xstep - 10, ystep + gi * ystep - 5,
+                    x_offset + xstep + si * xstep + 10, ystep + (gi + 1) * ystep - 5);
+            g.drawLine(x_offset + xstep + si * xstep + 10, ystep + gi * ystep - 5,
+                    x_offset + xstep + si * xstep - 10, ystep + (gi + 1) * ystep - 5);
         } else {
             drawGateBox(g, si, gi, gate);
         }
     }
 
     private void drawGateBox(Graphics2D g, int si, int gi, ElementaryQGate gate) {
-        g.setColor(Color.WHITE);
-        g.fillRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
+        g.setColor(backgroundColor);
+        g.fillRect(x_offset + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
         g.setColor(Color.BLACK);
-        g.drawRect(70 + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
+        g.drawRect(x_offset + xstep - 10 + si * xstep, ystep - 10 + gi * ystep - 5, 20, 20 + (ystep * (gate.getSize() - 1)));
     }
 
     /** This method is called from within the constructor to
@@ -169,6 +190,12 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -181,6 +208,19 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             .addGap(0, 206, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        int x = (int) (1.0f * evt.getX() / zoom);
+        int y = (int) (1.0f * evt.getY() / zoom);
+        System.out.println(String.format("%1$s %2$s", x, y));
+        for (int i = 0; i < qcircuit.getStages().size(); i++) {
+            if (Math.abs(x_offset + xstep * (i + 1) - x) < xstep / 2) {
+                selectedStage = i;
+                break;
+            }
+        }
+        repaint();
+    }//GEN-LAST:event_formMouseClicked
 
     /**
      * @return the qcircuit

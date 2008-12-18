@@ -10,7 +10,6 @@
  */
 package jqcompgui;
 
-import com.sun.java_cup.internal.runtime.Symbol;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.Component;
