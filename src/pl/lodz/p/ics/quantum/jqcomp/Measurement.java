@@ -23,7 +23,8 @@ public class Measurement implements Stage {
         }
         this.size = size;
     }
-   
+
+
     public Measurement(int size, int ...qubits) {
         this.qubits = qubits.clone();
    
