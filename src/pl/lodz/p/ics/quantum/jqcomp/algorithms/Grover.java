@@ -43,6 +43,8 @@ public class Grover {
             circuit.addStage(A);
             circuit.addStage(B);
         }
+        Stage measure = new Measurement(dim);
+        circuit.addStage(measure);
     }
 
     static public void main(String[] args) {
