@@ -160,7 +160,7 @@ public class QRegisterTest {
         cm = cm.transpose();
         QRegister f = new QRegister(cm);
 //        System.out.println(f.dirac());
-        assertEquals("-|1111>", f.dirac()); // or -1 * |1111> ?
+        assertEquals("-1.0|1111>", f.dirac()); // or -1 * |1111> ?
     }
 
     @Test

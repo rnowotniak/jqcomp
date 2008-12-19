@@ -275,6 +275,13 @@ public class QRegister {
                 array[i] = Complex.valueOf(1.0, array[i].getImaginary());
             }
 
+            if (MoreMath.isNearNumber(array[i].getImaginary(), -1.0))
+                array[i] = Complex.valueOf(array[i].getReal(), -1.0);
+
+            if (MoreMath.isNearNumber(array[i].getReal(), -1.0)) {
+                array[i] = Complex.valueOf(-1.0, array[i].getImaginary());
+            }
+
 			if (array[i].getReal()==1.0&&array[i].getImaginary()==0.0) {
 				if (onePos==-1) onePos = i; // 1st occurrence of 1+0j found
 				else {
@@ -299,8 +306,20 @@ public class QRegister {
 			Complex elem = array[i];
 			// don't display (0+0j)*|ket>
 			if ( !MoreMath.isNearZero(elem.getReal()) || !MoreMath.isNearZero(elem.getImaginary())) {
-				if (displayedItems>0) output.append(" + ");				   
-				output.append("(").append(elem).append(")|");
+                if (elem.getImaginary()==0.0) {
+                    if (displayedItems>0) {
+                        if (elem.getReal()>=0) output.append(" +");
+                        else output.append(" -");
+                        output.append(Math.abs(elem.getReal()));
+                    }
+                    else output.append(elem.getReal());
+                }
+                else {
+                    if (displayedItems>0) output.append(" +");
+                    output.append("(").append(elem).append(")");
+                }
+              
+                output.append("|");
 				String tmpStr = Integer.toBinaryString(i) + ">";
 				while (tmpStr.length()-1 < size) 
 					tmpStr= "0" + tmpStr;
