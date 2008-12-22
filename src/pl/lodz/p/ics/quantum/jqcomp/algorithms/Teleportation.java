@@ -47,9 +47,29 @@ public class Teleportation {
         }
     }
 
-    public void main(String []args) {
+    public static void main(String []args) {
         QCircuit c = new QCircuit();
+
+        QRegister init = new QRegister(Complex.valueOf(0.22, 0.44), Complex.valueOf(0.7, 0));
+        init.normalize();
+      //  init = QRegister.ket(0, 2).tensor(init);
+        init = init.tensor(QRegister.ket(0, 2));
+        System.out.println("init = "+init);
+        System.out.println("");
         c.addStage(new CompoundQGate(new Identity(1), new L(), new Identity(1)));
-      //  c.addStage(new CompoundQGate(new Identity(1), new CNot()));
+        c.addStage(new CompoundQGate(new Identity(1), new CNot()));
+        c.addStage(new CompoundQGate(new CNot(), new Identity(1)));
+        c.addStage(new CompoundQGate(new R(), new Identity(1), new Identity(1)));
+        c.addStage(new Measurement(3,1,2)); // <---
+        c.addStage(new CompoundQGate(new S(), new CNot()));
+        c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+        c.addStage(new CompoundQGate(new CNot(0,1), new Identity(1)));
+        c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+        c.addStage(new CompoundQGate(new S(), new Identity(1), new T()));
+        c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+        c.addStage(new CompoundQGate(new CNot(0,1), new Identity()));
+        c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+        QRegister fin = c.compute(init);
+        System.out.println("fin = "+fin); //sth is wrong
     }
 }

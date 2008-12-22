@@ -38,7 +38,7 @@ public class QCircuit {
 
         QRegister result = new QRegister(register);
         for (Stage stage : stages) {
-            result = stage.compute(result);
+                result = stage.compute(result);
         }
 
         return result;

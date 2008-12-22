@@ -32,7 +32,8 @@ public class Measurement implements Stage {
     }
 
     public QRegister compute(QRegister q) {
-       return q.measure(this.qubits);
+       q.measure(this.qubits); // changes q
+       return q;
     }
 
     public int getSize() {
