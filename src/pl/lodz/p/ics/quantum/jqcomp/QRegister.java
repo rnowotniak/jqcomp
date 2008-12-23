@@ -72,8 +72,24 @@ public class QRegister {
 		this.matrix = other.matrix.copy();
 	}
 
-	public final boolean equals(QRegister other) {
-		return matrix.equals(other.matrix);
+    @Override
+	public final boolean equals(Object other) {
+  /*      if (other instanceof QRegister) {
+                return matrix.equals(((QRegister)other).matrix);
+    } */
+        if (! (other instanceof QRegister )) return false;
+        ComplexMatrix otherMatrix = ((QRegister)other).matrix;
+        if (matrix.getNumberOfColumns()!= otherMatrix.getNumberOfColumns())
+            return false;
+        if (matrix.getNumberOfRows() != otherMatrix.getNumberOfRows())
+            return false;
+        for (int i=0;i<matrix.getNumberOfRows();i++)
+            for (int j=0;j<matrix.getNumberOfColumns();j++) {
+                // MoreMath.epsilon - tolerance
+                if (!matrix.get(i, j).equals(otherMatrix.get(i, j), MoreMath.epsilon))
+                    return false;
+            }
+        return true;
 	}
 
 /**
@@ -126,7 +142,9 @@ public class QRegister {
 		return this;
 	}
 
-	/** Outer product */
+	/** Computer the outer product.
+     @param that
+     */
 	public final ComplexMatrix outer(QRegister that) {
 		// may raise DimensionException
 		return this.matrix.times(that.matrix.transpose());
@@ -143,13 +161,14 @@ public class QRegister {
 				.transpose();
 	}
 
-	/** Tensor (Kronecker) product */
+	/** Compute the tensor (Kronecker) product*/
 	public final QRegister tensor(QRegister that) {
 		return new QRegister(this.matrix.tensor(that.matrix));
 	}
 	
 	
-	
+	/** Set selected amplitudes to zero
+     */
 	private final void zeroAmplitudes(ArrayList<Integer> amp){
 		Complex[] array = this.toComplexArray();
 
@@ -330,7 +349,7 @@ public class QRegister {
 		return output.toString();
 	}
 	
-	private final Complex[] toComplexArray(){
+	public final Complex[] toComplexArray(){
 		Complex[] array = new Complex[matrix.getNumberOfRows()];
 		for (int i=0;i<array.length;i++) {
 			array[i] = matrix.get(i, 0);
