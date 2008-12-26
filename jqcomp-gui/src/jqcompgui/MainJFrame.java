@@ -32,12 +32,163 @@ import pl.lodz.p.ics.quantum.jqcomp.QRegister;
 import pl.lodz.p.ics.quantum.jqcomp.Stage;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 import java.util.*;
+import javax.swing.*;
+import java.awt.event.*;
 
 /**
  *
  * @author rob
  */
 public class MainJFrame extends javax.swing.JFrame {
+
+    private abstract class MyAction
+		extends AbstractAction implements MouseListener {
+
+		public MyAction(String text, ImageIcon icon, String desc) {
+				super(text, icon);
+				putValue(SHORT_DESCRIPTION, desc);
+		}
+
+		public MyAction(String text, ImageIcon icon) {
+			super(text, icon);
+		}
+
+        public MyAction(String text, String desc) {
+			super(text);
+            putValue(SHORT_DESCRIPTION, desc);
+		}
+
+		public void mouseEntered(MouseEvent arg0) {
+			//setStatus((String)getValue(SHORT_DESCRIPTION));
+		}
+
+		public void mouseExited(MouseEvent arg0) {
+			//setStatus("");
+		}
+
+		public void mousePressed(MouseEvent arg0) { }
+		public void mouseReleased(MouseEvent arg0) { }
+		public void mouseClicked(MouseEvent arg0) {	}
+	}
+
+    private abstract class AddGateAction extends MyAction {
+        public AddGateAction(String name) {
+            super(name, "Add " + name + " quantum gate to the selected circuit");
+        }
+
+        public AddGateAction(String name, ImageIcon icon) {
+            super(name, icon, "Add " + name + " quantum gate to the selected circuit");
+        }
+
+        public void doAction(QGate gate) {
+            doQGateAddDialog(gate);
+        }
+    }
+
+    private class AddSwapGateAction extends AddGateAction {
+        public AddSwapGateAction() {
+            super("Swap");//, new ImageIcon(MainJFrame.this.getClass().getResource(
+                    //"/jqcompgui/img/swap_icon.png")));
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new Swap());
+        }
+    }
+    private AddSwapGateAction swapAction = new AddSwapGateAction();
+
+    private class AddHadamardGateAction extends AddGateAction {
+        public AddHadamardGateAction() {
+            super("Hadamard", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/hadamard_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new Hadamard());
+        }
+    }
+    private AddHadamardGateAction hadamardAction = new AddHadamardGateAction();
+
+    private class AddCNotGateAction extends AddGateAction {
+        public AddCNotGateAction() {
+            super("Controlled Not", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/cnot_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new CNot());
+        }
+    }
+    private AddCNotGateAction cNotAction = new AddCNotGateAction();
+
+    private class AddNotGateAction extends AddGateAction {
+        public AddNotGateAction() {
+            super("Not", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/not_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new Not());
+        }
+    }
+    private AddNotGateAction notAction = new AddNotGateAction();
+
+    private class AddPhaseShiftGateAction extends AddGateAction {
+        public AddPhaseShiftGateAction() {
+            super("Phase Shift", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/phase_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new PhaseShift(Math.PI / 2));
+        }
+    }
+    private AddPhaseShiftGateAction phaseShiftAction = new AddPhaseShiftGateAction();
+
+    private class AddToffoliGateAction extends AddGateAction {
+        public AddToffoliGateAction() {
+            super("Toffoli", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/toffoli_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new Toffoli());
+        }
+    }
+    private AddToffoliGateAction toffoliAction = new AddToffoliGateAction();
+
+    private class AddFredkinGateAction extends AddGateAction {
+        public AddFredkinGateAction() {
+            super("Fredkin");//, new ImageIcon(MainJFrame.this.getClass().getResource(
+                    //"/jqcompgui/img/fredkin_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            System.out.println("Fredkin");
+            doAction(new Fredkin());
+        }
+    }
+    private AddFredkinGateAction fredkinAction = new AddFredkinGateAction();
+
+    private class AddCustomGateAction extends AddGateAction {
+        public AddCustomGateAction() {
+            super("Custom", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/custom_icon.png")));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            doAction(new Custom(new Identity().getMatrix()));
+        }
+    }
+    private AddCustomGateAction customAction = new AddCustomGateAction();
 
     private static MainJFrame instance;
 
@@ -69,6 +220,8 @@ public class MainJFrame extends javax.swing.JFrame {
             /* DO NOTHING */
         }
         writeMsg("Quantum Computer Simulator started");
+
+        
     }
 
     /** This method is called from within the constructor to
@@ -115,12 +268,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         quitJMenuItem = new javax.swing.JMenuItem();
         quantumGatesJMenu = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jmiHadamard = new javax.swing.JMenuItem();
+        jtmCNot = new javax.swing.JMenuItem();
+        jtmNot = new javax.swing.JMenuItem();
+        jtmPhaseShift = new javax.swing.JMenuItem();
+        jmiSwap = new javax.swing.JMenuItem();
+        jtmToffoli = new javax.swing.JMenuItem();
+        jmiFredkin = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         jMenuItem16 = new javax.swing.JMenuItem();
         algorithmsJMenu = new javax.swing.JMenu();
@@ -149,6 +303,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        hadamardJButton.setAction(hadamardAction);
         hadamardJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/hadamard_icon.png"))); // NOI18N
         hadamardJButton.setText("Hadamard");
         hadamardJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +313,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(hadamardJButton);
 
+        notJButton.setAction(notAction);
         notJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Not_icon.png"))); // NOI18N
         notJButton.setText("Not");
         notJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +323,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(notJButton);
 
+        jButton5.setAction(cNotAction);
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/CNOT_icon.png"))); // NOI18N
         jButton5.setText("CNot");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +333,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(jButton5);
 
+        jButton6.setAction(phaseShiftAction);
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/phase_icon.png"))); // NOI18N
         jButton6.setText("Phase");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -185,6 +343,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(jButton6);
 
+        jButton7.setAction(toffoliAction);
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Toffoli_icon.png"))); // NOI18N
         jButton7.setText("Toffoli");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +353,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(jButton7);
 
+        jButton8.setAction(customAction);
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/custom_icon.png"))); // NOI18N
         jButton8.setText("Custom");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -332,7 +492,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13));
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -392,25 +552,36 @@ public class MainJFrame extends javax.swing.JFrame {
 
         quantumGatesJMenu.setText("Quantum Gates");
 
-        jMenuItem4.setText("Hadamard");
-        quantumGatesJMenu.add(jMenuItem4);
+        jmiHadamard.setAction(hadamardAction);
+        jmiHadamard.setText("Hadamard");
+        quantumGatesJMenu.add(jmiHadamard);
 
-        jMenuItem9.setText("CNot");
-        quantumGatesJMenu.add(jMenuItem9);
+        jtmCNot.setAction(cNotAction);
+        jtmCNot.setText("CNot");
+        quantumGatesJMenu.add(jtmCNot);
 
-        jMenuItem8.setText("Not");
-        quantumGatesJMenu.add(jMenuItem8);
+        jtmNot.setAction(notAction);
+        jtmNot.setText("Not");
+        quantumGatesJMenu.add(jtmNot);
 
-        jMenuItem7.setText("Phase Shift");
-        quantumGatesJMenu.add(jMenuItem7);
+        jtmPhaseShift.setAction(phaseShiftAction);
+        jtmPhaseShift.setText("Phase Shift");
+        quantumGatesJMenu.add(jtmPhaseShift);
 
-        jMenuItem6.setText("Toffoli");
-        quantumGatesJMenu.add(jMenuItem6);
+        jmiSwap.setAction(swapAction);
+        jmiSwap.setText("Swap");
+        quantumGatesJMenu.add(jmiSwap);
 
-        jMenuItem5.setText("Fredkin");
-        quantumGatesJMenu.add(jMenuItem5);
+        jtmToffoli.setAction(toffoliAction);
+        jtmToffoli.setText("Toffoli");
+        quantumGatesJMenu.add(jtmToffoli);
+
+        jmiFredkin.setAction(fredkinAction);
+        jmiFredkin.setText("Fredkin");
+        quantumGatesJMenu.add(jmiFredkin);
         quantumGatesJMenu.add(jSeparator2);
 
+        jMenuItem16.setAction(customAction);
         jMenuItem16.setText("Custom quantum gate");
         quantumGatesJMenu.add(jMenuItem16);
 
@@ -727,7 +898,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
-        doQGateAddDialog(new Hadamard());
+        //doQGateAddDialog(new Hadamard());
     }//GEN-LAST:event_hadamardJButtonActionPerformed
 
     private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
@@ -934,23 +1105,23 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backwardJButtonActionPerformed
 
     private void notJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notJButtonActionPerformed
-        doQGateAddDialog(new Not());
+//        doQGateAddDialog(new Not());
     }//GEN-LAST:event_notJButtonActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        doQGateAddDialog(new CNot());
+        //doQGateAddDialog(new CNot());
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        doQGateAddDialog(new PhaseShift(Math.PI / 2));
+        //doQGateAddDialog(new PhaseShift(Math.PI / 2));
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        doQGateAddDialog(new Toffoli());
+        //doQGateAddDialog(new Toffoli());
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        doQGateAddDialog(new Custom(new Identity().getMatrix()));
+        //doQGateAddDialog(new Custom(new Identity().getMatrix()));
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void btnAddInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddInputActionPerformed
@@ -1044,6 +1215,10 @@ public class MainJFrame extends javax.swing.JFrame {
         return true;
     }
 
+    private void setStatus(String msg) {
+        statusBarJLabel.setText(msg);
+    }
+
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
         statusBarJLabel.setText(msg);
@@ -1085,12 +1260,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -1101,6 +1270,13 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JMenuItem jmiFredkin;
+    private javax.swing.JMenuItem jmiHadamard;
+    private javax.swing.JMenuItem jmiSwap;
+    private javax.swing.JMenuItem jtmCNot;
+    private javax.swing.JMenuItem jtmNot;
+    private javax.swing.JMenuItem jtmPhaseShift;
+    private javax.swing.JMenuItem jtmToffoli;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem loadJMenuItem;
     private javax.swing.JMenuItem minimizeAllWindowsJMenuItem;
