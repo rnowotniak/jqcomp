@@ -114,7 +114,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private class AddCNotGateAction extends AddGateAction {
         public AddCNotGateAction() {
             super("Controlled Not", new ImageIcon(MainJFrame.this.getClass().getResource(
-                    "/jqcompgui/img/cnot_icon.png")));
+                    "/jqcompgui/img/CNOT_icon.png")));
         }
 
         @Override
@@ -127,7 +127,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private class AddNotGateAction extends AddGateAction {
         public AddNotGateAction() {
             super("Not", new ImageIcon(MainJFrame.this.getClass().getResource(
-                    "/jqcompgui/img/not_icon.png")));
+                    "/jqcompgui/img/Not_icon.png")));
         }
 
         @Override
@@ -153,7 +153,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private class AddToffoliGateAction extends AddGateAction {
         public AddToffoliGateAction() {
             super("Toffoli", new ImageIcon(MainJFrame.this.getClass().getResource(
-                    "/jqcompgui/img/toffoli_icon.png")));
+                    "/jqcompgui/img/Toffoli_icon.png")));
         }
 
         @Override

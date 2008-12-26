@@ -262,7 +262,7 @@
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane1" pref="384" max="32767" attributes="0"/>
+                  <Component id="jSplitPane1" pref="404" max="32767" attributes="0"/>
                   <Component id="leftJPanel" alignment="0" max="32767" attributes="2"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
