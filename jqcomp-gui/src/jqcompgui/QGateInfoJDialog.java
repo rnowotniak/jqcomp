@@ -99,6 +99,52 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         protected PhaseShiftOptionsJPanel pnlOptions;
     }
 
+    private class CNotDisplayModel implements QGateDisplayModel {
+        public boolean initializeDisplay(JScrollPane display, QGate gate) {
+            if(gate instanceof CNot) {
+                this.gate = (CNot)gate;
+                pnlOptions = new CNotOptionsJPanel();
+                pnlOptions.setMaxRow(maxRow);
+                pnlOptions.setTargetRow(this.gate.getTarget());
+                pnlOptions.setControlRow(this.gate.getControl());
+                display.setViewportView(pnlOptions);
+                pnlOptions.revalidate();
+                return true;
+            }
+
+            return false;
+        }
+
+        public QGate update(QGate gate) {
+            int target = pnlOptions.getTargetRow();
+            if(target < 0) {
+                return null;
+            }
+
+            int control = pnlOptions.getControlRow();
+            if(control < 0) {
+                return null;
+            }
+
+            if(control == target) {                
+                return null;
+            }
+
+            return new CNot(control, target);
+        }
+
+        public String getName() {
+            return "Controlled Not";
+        }
+
+        public String getDescription() {
+            return "Controlled Not quantum gate.";
+        }
+
+        protected CNot gate;
+        protected CNotOptionsJPanel pnlOptions;
+    }
+
     public QGateInfoJDialog(Frame owner, boolean modal) {
         super(owner, modal);
         initComponents();
@@ -114,6 +160,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         });
 
         this.addDisplayModel(new PhaseShiftDisplayModel());
+        this.addDisplayModel(new CNotDisplayModel());
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
  
