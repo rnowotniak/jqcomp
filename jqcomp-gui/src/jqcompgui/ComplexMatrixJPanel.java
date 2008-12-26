@@ -13,6 +13,7 @@ package jqcompgui;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
@@ -27,12 +28,84 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    private void updateFields()
-    {
+//    private void updateFields()
+//    {
+//        ComplexMatrix m = getMatrix();
+//        if(m == null) {
+//            return;
+//        }
+//
+//        ComponentListener cl = new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                System.out.println("component resized");
+//                alignFields();
+//            }
+//        };
+//
+//        final int rows = m.getNumberOfRows();
+//        final int columns = m.getNumberOfColumns();
+//
+//        ntbs = new ComplexTextBox[columns][rows];
+//
+//        int x = getXOffset();
+//        int y = getYOffset();
+//
+//        //Matrix m = context.getPolynomial();
+//
+//        JComponent pane = getPane();
+//
+//        Color bgColor = getBackground();
+//        Color fgColor = getForeground();
+//        Font font = getFont();
+//
+//        int maxWidth = 0;
+//
+//        pane.removeAll();
+//        for(int i = 0; i < columns; i++)
+//        {
+//            y = getYOffset();
+//
+//            for(int j = 0; j < rows; j++)
+//            {
+//                ComplexTextBox ntb = new ComplexTextBox();
+//                ntb.setFont(font);
+//                ntb.setBackground(bgColor);
+//                ntb.setForeground(fgColor);
+//                ntb.setValue(m.get(i, j));
+//                ntb.setShowImaginary(isShowImaginary());
+//                ntb.addComponentListener(cl);
+//                setNTB(ntb, i, j);
+//                getPane().add(ntb);
+//
+//                if(ntb.getWidth() > maxWidth) {
+//                    maxWidth = ntb.getWidth() + 2;
+//                }
+//
+//                y += ntb.getHeight() + getYOffset();
+//            }
+//
+//            x += maxWidth + getXOffset();
+//        }
+//
+//        setPreferredSize(new Dimension(x, y));
+//        revalidate();
+//        repaint();
+//    }
+
+    private void updateFields() {
         ComplexMatrix m = getMatrix();
         if(m == null) {
             return;
         }
+
+        ComponentListener cl = new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                System.out.println("component resized");
+                alignFields(true);
+            }
+        };
 
         final int rows = m.getNumberOfRows();
         final int columns = m.getNumberOfColumns();
@@ -42,71 +115,101 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         int x = getXOffset();
         int y = getYOffset();
 
-        //Matrix m = context.getPolynomial();
-
-        JComponent pane = getPane();
-
         Color bgColor = getBackground();
         Color fgColor = getForeground();
         Font font = getFont();
-
-        int maxWidth = 0;
-
-        pane.removeAll();
-        for(int i = 0; i < columns; i++)
-        {
-            y = getYOffset();
-            
-            for(int j = 0; j < rows; j++)
-            {
+        
+        for(int i = 0; i < columns; i++) {
+            for(int j = 0; j < rows; j++) {
                 ComplexTextBox ntb = new ComplexTextBox();
                 ntb.setFont(font);
                 ntb.setBackground(bgColor);
                 ntb.setForeground(fgColor);
-                ntb.setLocation(x, y);
                 ntb.setValue(m.get(i, j));
                 ntb.setShowImaginary(isShowImaginary());
+                ntb.addComponentListener(cl);
                 setNTB(ntb, i, j);
-
-                if(ntb.getWidth() > maxWidth) {
-                    maxWidth = ntb.getWidth() + 2;
-                }
-
-                y += ntb.getHeight() + getYOffset();
             }
-            
-            x += maxWidth + getXOffset();
         }
+        
+        alignFields(false);
 
+        JComponent pane = getPane();
+        pane.removeAll();
+        for(int i = 0; i < columns; i++) {
+            for(int j = 0; j < rows; j++) {
+                pane.add(getNTB(i, j));
+            }            
+        }
+        
         setPreferredSize(new Dimension(x, y));
         revalidate();
         repaint();
     }
 
-    private void alignFields() {
+     private void alignFields(boolean invalidate) {
         ComplexMatrix m = getMatrix();
         final int rows = m.getNumberOfRows();
         final int columns = m.getNumberOfColumns();
 
-        int x = getXOffset();
-        int y = getYOffset();
+        if(columnWidths.length != columns) {
+            columnWidths = new int[columns];
+            for(int i = 0; i < columnWidths.length; i++) {
+                columnWidths[i] = 0;
+            }
 
-        int maxWidth = 0;
-        
+            computeColumnsWidths(columnWidths);
+        }
+
+        int x = xOffset;
+        int y = yOffset;
+
         for(int i = 0; i < columns; i++) {
+            y = yOffset;
+
             for(int j = 0; j < rows; j++) {
                 ComplexTextBox ntb = getNTB(i, j);
-                if(ntb.getWidth() > maxWidth) {
-                    maxWidth = ntb.getWidth();
-                }
-
+                ntb.setLocation(x, y);
                 y += ntb.getHeight() + getYOffset();
             }
 
-            y = getYOffset();
-            x += maxWidth + getXOffset();
+            x += columnWidths[i] + xOffset;
+        }
+
+        if(invalidate) {
+            setPreferredSize(new Dimension(x, y));
+            revalidate();
+            repaint();
         }
     }
+
+    private int getColumnMaxWidth(int column) {
+        final int size = getMatrix().getNumberOfRows();
+        int max = 0;
+        for(int i = 0; i < size; i++) {
+            int cur = getNTB(column, i).getWidth();
+            if(cur > max) {
+                max = cur;
+            }
+        }
+
+        return max;
+    }
+
+    private boolean computeColumnsWidths(int[] widths) {
+        boolean modified = false;
+        for(int i = 0; i < widths.length; i++) {
+            int newWidth = getColumnMaxWidth(i);
+            if(newWidth != widths[i]) {
+                widths[i] = newWidth;
+                modified = true;
+            }
+        }
+
+        return modified;
+    }
+
+   
 
     private ComplexMatrix getMatrixFromFields() {
         Complex[][] marr = new Complex[ntbs.length][ntbs[0].length];
@@ -121,8 +224,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
     }
 
     private void setNTB(ComplexTextBox ntb, int i, int j) {
-        ntbs[i][j] = ntb;
-        getPane().add(ntb);
+        ntbs[i][j] = ntb;        
     }
 
     private ComplexTextBox getNTB(int i, int j){
@@ -224,6 +326,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         }
     }
 
+    private int[] columnWidths = new int[0];
     private ComplexTextBox[][] ntbs = new ComplexTextBox[0][0];
     //private Dimension ntbSize = new Dimension(200, 20);
 
@@ -235,13 +338,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
 
     private int xOffset = 4;
     private int yOffset = 2;
-
-//    private int topOffset = 2;
-//    private String numberFormat = "";
-//
-//    private int displayRows = 0;
-//    private int displayColumns = 0;
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -262,15 +359,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
             .addGap(0, 113, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
    
-
-   
-
-      
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
- 
 }

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
+import javax.swing.*;
 
 /**
  *
@@ -26,6 +27,34 @@ public class ComplexTextBox extends javax.swing.JPanel {
     public ComplexTextBox() {
         initComponents();
         setupControls();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        if(showImaginary) {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+
+            JTextField t1 = getTxt1();
+            JTextField t2 = getTxt2();
+
+            FontMetrics metrics = g.getFontMetrics();
+
+            int width = metrics.charWidth('+');
+            int offset = t1.getX() + t1.getWidth();
+            int x = offset + betweenOffset[1] / 2 - width / 2;
+            int y = (topOffset[1] + t1.getHeight() + bottomOffset[1]) / 2 + 4;
+            g.setColor(getForeground());
+            g.drawString("+", x, y);
+
+            width = metrics.charWidth('i');
+            offset = t2.getX() + t2.getWidth();
+            x = offset;
+            g.drawString("i", x, y);
+
+        } else {
+            // does nothing
+        }
     }
 
     private void setupControls() {
@@ -42,28 +71,42 @@ public class ComplexTextBox extends javax.swing.JPanel {
         };
 
         getTxt1().addComponentListener(cl);
+        getTxt1().setBorder(BorderFactory.createEmptyBorder());
+
         getTxt2().addComponentListener(cl);
+        getTxt2().setBorder(BorderFactory.createEmptyBorder());
 
         add(getTxt1());
         add(getTxt2());
     }
 
     private void alignControls() {
-        System.out.println("alignControls");
-        final int offset = 2;
+        // offset index
+        int oi = showImaginary ? 1 : 0;
 
-        getTxt1().setLocation(0, 0);
-        Dimension pref1 = getTxt1().getPreferredSize();
-        getTxt1().setSize(pref1.width + 1, pref1.height);
+        JTextField t1 = getTxt1();
+        JTextField t2 = getTxt2();
 
-        getTxt2().setVisible(showImaginary);
-        getTxt2().setLocation(getTxt1().getX() + getTxt1().getWidth() + offset, 0);
-        Dimension pref2 = getTxt2().getPreferredSize();
-        getTxt2().setSize(pref2.width + 1, pref2.height);
+        t1.setLocation(leftOffset[oi], topOffset[oi]);
+        Dimension pref1 = t1.getPreferredSize();
+        t1.setSize(pref1.width + 1, pref1.height);
+
+        t2.setVisible(showImaginary);
+        t2.setLocation(t1.getX() + t1.getWidth()
+                + betweenOffset[oi], topOffset[oi]);
+        Dimension pref2 = t2.getPreferredSize();
+        t2.setSize(pref2.width + 1, pref2.height);
        
-        Dimension d = new Dimension(
-                getTxt2().getX() + getTxt2().getWidth(),
-                getTxt2().getHeight());
+        Dimension d;
+        if(showImaginary) {
+            d = new Dimension(
+                t2.getX() + t2.getWidth() + rightOffset[oi],
+                t2.getY() + t2.getHeight() + bottomOffset[oi]);
+        } else {
+            d = new Dimension(
+                t1.getX() + t1.getWidth() + rightOffset[oi],
+                t2.getY() + t1.getHeight() + bottomOffset[oi]);
+        }
 
         this.setPreferredSize(d);
         this.setSize(d);
@@ -117,6 +160,13 @@ public class ComplexTextBox extends javax.swing.JPanel {
         updateColors();
     }
 
+//    @Override
+//    public void setFont(Font font) {
+//
+//    }
+
+
+
      /**
      * @return the txt1
      */
@@ -159,6 +209,14 @@ public class ComplexTextBox extends javax.swing.JPanel {
     private NumericTextBox txt1 = null;
     private NumericTextBox txt2 = null;
     private boolean showImaginary = true;
+
+    // {hideImaginary, showImaginary}
+    private static final int[] leftOffset = new int[] {0, 0};
+    private static final int[] betweenOffset = new int[] {0, 10};
+    private static final int[] rightOffset = new int[] {0, 5};
+    private static final int[] topOffset = new int[] {0, 0};
+    private static final int[] bottomOffset = new int[] {0, 0};
+    
 
     /** This method is called from within the constructor to
      * initialize the form.

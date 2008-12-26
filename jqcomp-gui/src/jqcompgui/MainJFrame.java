@@ -56,6 +56,7 @@ public class MainJFrame extends javax.swing.JFrame {
         public MyAction(String text, String desc) {
 			super(text);
             putValue(SHORT_DESCRIPTION, desc);
+
 		}
 
 		public void mouseEntered(MouseEvent arg0) {
@@ -81,7 +82,12 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         public void doAction(QGate gate) {
-            doQGateAddDialog(gate);
+            Object icon = getValue(LARGE_ICON_KEY);
+            if(icon == null) {
+                icon = getValue(SMALL_ICON);
+            }
+
+            doQGateAddDialog(gate, (ImageIcon)icon);
         }
     }
 
@@ -828,7 +834,7 @@ public class MainJFrame extends javax.swing.JFrame {
 //        return infoFrame;
 //    }
 
-    private void doQGateAddDialog(QGate gate) {
+    private void doQGateAddDialog(QGate gate, ImageIcon icon) {
         QGateInfoJDialog f = new QGateInfoJDialog(this, true);
         QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
         if(frame == null) {
@@ -845,7 +851,9 @@ public class MainJFrame extends javax.swing.JFrame {
         f.setShowImaginary(isShowImaginary());
         f.setMaxRow(maxRow);
         f.setGate(gate);
+        f.setIcon(icon);
         f.setVisible(true);
+        
 
         writeMsg("Koniec");
         System.out.println("Koniec dialogu");
