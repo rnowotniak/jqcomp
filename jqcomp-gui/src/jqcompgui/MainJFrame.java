@@ -283,7 +283,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuItem12 = new javax.swing.JMenuItem();
         entanglementAlgorithmJMenuItem = new javax.swing.JMenuItem();
         settingsJMenu = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        chkHideImaginary = new javax.swing.JCheckBoxMenuItem();
         windowsJMenu = new javax.swing.JMenu();
         closeAllWindowsJMenuItem = new javax.swing.JMenuItem();
         minimizeAllWindowsJMenuItem = new javax.swing.JMenuItem();
@@ -492,7 +492,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13));
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -577,7 +577,6 @@ public class MainJFrame extends javax.swing.JFrame {
         quantumGatesJMenu.add(jtmToffoli);
 
         jmiFredkin.setAction(fredkinAction);
-        jmiFredkin.setText("Fredkin");
         quantumGatesJMenu.add(jmiFredkin);
         quantumGatesJMenu.add(jSeparator2);
 
@@ -615,9 +614,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
         settingsJMenu.setText("Settings");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Hide imaginary components");
-        settingsJMenu.add(jCheckBoxMenuItem1);
+        chkHideImaginary.setSelected(true);
+        chkHideImaginary.setText("Hide imaginary components");
+        settingsJMenu.add(chkHideImaginary);
 
         jMenuBar1.add(settingsJMenu);
 
@@ -843,6 +842,7 @@ public class MainJFrame extends javax.swing.JFrame {
             maxRow = qc.getStages().get(0).getSize();
         }
 
+        f.setShowImaginary(isShowImaginary());
         f.setMaxRow(maxRow);
         f.setGate(gate);
         f.setVisible(true);
@@ -895,6 +895,10 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         return new CompoundQGate(gates);
+    }
+
+    public boolean isShowImaginary() {
+        return !chkHideImaginary.isSelected();
     }
 
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
@@ -1242,6 +1246,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton backwardJButton;
     private javax.swing.JButton btnAddInput;
     private javax.swing.JButton btnRemoveInput;
+    private javax.swing.JCheckBoxMenuItem chkHideImaginary;
     private javax.swing.JMenuItem closeAllWindowsJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
@@ -1254,7 +1259,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;

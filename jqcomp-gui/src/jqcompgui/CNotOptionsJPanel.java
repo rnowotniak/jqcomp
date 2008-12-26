@@ -13,6 +13,7 @@ package jqcompgui;
 
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -23,10 +24,15 @@ public class CNotOptionsJPanel extends javax.swing.JPanel {
     /** Creates new form CNotOptionsJPanel */
     public CNotOptionsJPanel() {
         initComponents();
+
+        controlRowSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
+        targetRowSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
     }
     
     public void setMaxRow(int maxRow) {
         this.maxRow = maxRow;
+        ((SpinnerNumberModel)controlRowSpinner.getModel()).setMaximum(maxRow);
+        ((SpinnerNumberModel)targetRowSpinner.getModel()).setMaximum(maxRow);
     }
     
     public int getMaxRow() {

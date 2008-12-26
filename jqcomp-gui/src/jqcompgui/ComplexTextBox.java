@@ -56,10 +56,11 @@ public class ComplexTextBox extends javax.swing.JPanel {
         Dimension pref1 = getTxt1().getPreferredSize();
         getTxt1().setSize(pref1.width + 1, pref1.height);
 
+        getTxt2().setVisible(showImaginary);
         getTxt2().setLocation(getTxt1().getX() + getTxt1().getWidth() + offset, 0);
         Dimension pref2 = getTxt2().getPreferredSize();
         getTxt2().setSize(pref2.width + 1, pref2.height);
-
+       
         Dimension d = new Dimension(
                 getTxt2().getX() + getTxt2().getWidth(),
                 getTxt2().getHeight());
@@ -138,8 +139,26 @@ public class ComplexTextBox extends javax.swing.JPanel {
         return txt2;
     }
 
+    /**
+     * @return the showImaginary
+     */
+    public boolean isShowImaginary() {
+        return showImaginary;
+    }
+
+    /**
+     * @param showImaginary the showImaginary to set
+     */
+    public void setShowImaginary(boolean showImaginary) {
+        if(this.showImaginary != showImaginary) {
+            this.showImaginary = showImaginary;
+            alignControls();
+        }
+    }
+
     private NumericTextBox txt1 = null;
     private NumericTextBox txt2 = null;
+    private boolean showImaginary = true;
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -161,6 +180,8 @@ public class ComplexTextBox extends javax.swing.JPanel {
             .addGap(0, 42, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    
  
 
 

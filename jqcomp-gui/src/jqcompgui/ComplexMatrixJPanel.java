@@ -30,6 +30,10 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
     private void updateFields()
     {
         ComplexMatrix m = getMatrix();
+        if(m == null) {
+            return;
+        }
+
         final int rows = m.getNumberOfRows();
         final int columns = m.getNumberOfColumns();
 
@@ -60,7 +64,8 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
                 ntb.setBackground(bgColor);
                 ntb.setForeground(fgColor);
                 ntb.setLocation(x, y);
-                ntb.setValue(m.get(i, j));               
+                ntb.setValue(m.get(i, j));
+                ntb.setShowImaginary(isShowImaginary());
                 setNTB(ntb, i, j);
 
                 if(ntb.getWidth() > maxWidth) {
@@ -75,6 +80,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
 
         setPreferredSize(new Dimension(x, y));
         revalidate();
+        repaint();
     }
 
     private void alignFields() {
@@ -201,6 +207,23 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         this.yOffset = yOffset;
     }
 
+     /**
+     * @return the showImaginary
+     */
+    public boolean isShowImaginary() {
+        return showImaginary;
+    }
+
+    /**
+     * @param showImaginary the showImaginary to set
+     */
+    public void setShowImaginary(boolean showImaginary) {
+        if(this.showImaginary != showImaginary) {
+            this.showImaginary = showImaginary;
+            this.updateFields();
+        }
+    }
+
     private ComplexTextBox[][] ntbs = new ComplexTextBox[0][0];
     //private Dimension ntbSize = new Dimension(200, 20);
 
@@ -208,6 +231,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
     private boolean changedOne = false;
     private boolean changed = false;
     private boolean editEnabled = true;
+    private boolean showImaginary = true;
 
     private int xOffset = 4;
     private int yOffset = 2;
@@ -238,6 +262,8 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
             .addGap(0, 113, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+   
 
    
 

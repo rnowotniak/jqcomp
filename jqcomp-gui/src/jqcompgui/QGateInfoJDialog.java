@@ -64,7 +64,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         protected ComplexMatrixJPanel pnlMatrix;
     }
 
-     private static class PhaseShiftDisplayModel implements QGateDisplayModel {
+    private static class PhaseShiftDisplayModel implements QGateDisplayModel {
         public boolean initializeDisplay(JScrollPane display, QGate gate) {
             if(gate instanceof PhaseShift) {
                 this.gate = (PhaseShift)gate;
@@ -145,6 +145,42 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         protected CNotOptionsJPanel pnlOptions;
     }
 
+    private class CustomDisplayModel implements QGateDisplayModel {
+        public boolean initializeDisplay(JScrollPane display, QGate gate) {
+            if(gate instanceof Custom) {
+                this.gate = (Custom)gate;
+                pnlOptions = new CustomOptionsJPanel();
+                pnlOptions.setShowImaginary(isShowImaginary());
+                pnlOptions.setMax(maxRow);
+                pnlOptions.setMatrix(this.gate.getMatrix());
+                display.setViewportView(pnlOptions);
+                pnlOptions.revalidate();
+                return true;
+            }
+
+            return false;
+        }
+
+        public QGate update(QGate gate) {
+            if(gate.getMatrix().equals(pnlOptions.getMatrix())) {
+                return gate;
+            } else {
+                return new Custom(pnlOptions.getMatrix());
+            }
+        }
+
+        public String getName() {
+            return "Custom";
+        }
+
+        public String getDescription() {
+            return "Custom quantum gate.";
+        }
+
+        protected Custom gate;
+        protected CustomOptionsJPanel pnlOptions;
+    }
+
     public QGateInfoJDialog(Frame owner, boolean modal) {
         super(owner, modal);
         initComponents();
@@ -161,6 +197,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
 
         this.addDisplayModel(new PhaseShiftDisplayModel());
         this.addDisplayModel(new CNotDisplayModel());
+        this.addDisplayModel(new CustomDisplayModel());
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
  
@@ -283,6 +320,20 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         displayModels.remove(model);
     }
 
+    /**
+     * @return the showImaginary
+     */
+    public boolean isShowImaginary() {
+        return showImaginary;
+    }
+
+    /**
+     * @param showImaginary the showImaginary to set
+     */
+    public void setShowImaginary(boolean showImaginary) {
+        this.showImaginary = showImaginary;
+    }
+
     private ArrayList<QGateDisplayModel> displayModels
             = new ArrayList<QGateDisplayModel>();
 
@@ -296,6 +347,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     private int dialogResult = DIALOG_CANCELLED;
     private boolean changed = false;
     private int maxRow = 0;
+    private boolean showImaginary = true;
     
 
     /** This method is called from within the constructor to
