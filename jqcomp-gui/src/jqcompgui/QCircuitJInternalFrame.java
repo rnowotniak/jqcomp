@@ -7,6 +7,7 @@
 package jqcompgui;
 
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 
 /**
  *
@@ -32,6 +33,8 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
         }
         setTitle(String.format("(%1$s) %2$s",
                 new Integer(id).toString(), title));
+
+        getQCircuit().addStage(new Identity());
     }
 
     /** This method is called from within the constructor to
@@ -85,15 +88,15 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
     /**
      * @return the qcircuit
      */
-    public QCircuit getQcircuit() {
-        return qCircuitJPanel.getQcircuit();
+    public QCircuit getQCircuit() {
+        return qCircuitJPanel.getQCircuit();
     }
 
     /**
      * @param qcircuit the qcircuit to set
      */
-    public void setQcircuit(QCircuit qcircuit) {
-        qCircuitJPanel.setQcircuit(qcircuit);
+    public void setQCircuit(QCircuit qcircuit) {
+        qCircuitJPanel.setQCircuit(qcircuit);
     }
 
     /**

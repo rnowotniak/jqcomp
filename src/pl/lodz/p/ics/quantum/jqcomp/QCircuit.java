@@ -76,6 +76,8 @@ public class QCircuit {
         return sb.toString();
     }
 
+
+
     /**
      * @return the stages
      */

@@ -30,13 +30,8 @@ import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.QGate;
 import pl.lodz.p.ics.quantum.jqcomp.QRegister;
 import pl.lodz.p.ics.quantum.jqcomp.Stage;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.CNot;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.Hadamard;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.Swap;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
+import java.util.*;
 
 /**
  *
@@ -103,6 +98,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         zoomInJButton = new javax.swing.JButton();
         zoomOutJButton = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JSeparator();
+        btnAddInput = new javax.swing.JButton();
+        btnRemoveInput = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -162,22 +160,47 @@ public class MainJFrame extends javax.swing.JFrame {
 
         notJButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Not_icon.png"))); // NOI18N
         notJButton.setText("Not");
+        notJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notJButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(notJButton);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/CNOT_icon.png"))); // NOI18N
         jButton5.setText("CNot");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton5);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/phase_icon.png"))); // NOI18N
         jButton6.setText("Phase");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton6);
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/Toffoli_icon.png"))); // NOI18N
         jButton7.setText("Toffoli");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton7);
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jqcompgui/img/custom_icon.png"))); // NOI18N
         jButton8.setText("Custom");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton8);
 
         leftJPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -197,6 +220,11 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         jButton2.setText("run");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         forwardJButton.setText("Forward");
         forwardJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -233,6 +261,20 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        btnAddInput.setText("Add Row");
+        btnAddInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddInputActionPerformed(evt);
+            }
+        });
+
+        btnRemoveInput.setText("Remove Row");
+        btnRemoveInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveInputActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout leftJPanelLayout = new javax.swing.GroupLayout(leftJPanel);
         leftJPanel.setLayout(leftJPanelLayout);
         leftJPanelLayout.setHorizontalGroup(
@@ -247,6 +289,9 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(zoomInJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(btnAddInput, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(btnRemoveInput, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +315,13 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(zoomInJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(zoomOutJButton)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAddInput)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRemoveInput)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jSplitPane1.setDividerLocation(250);
@@ -281,7 +332,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13));
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -470,7 +521,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                     .addComponent(leftJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusBarJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -496,7 +547,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private QCircuitJInternalFrame addNewQCircuitJInternalFrame() {
         return addNewQCircuitJInternalFrame("");
     }
-
+   
     private QCircuitJInternalFrame addNewQCircuitJInternalFrame(String title) {
         QCircuitJInternalFrame qif = new QCircuitJInternalFrame(title);
         qif.setVisible(true);
@@ -565,7 +616,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     new Identity()});
 
         QCircuit qcirc = new QCircuit(new CompoundQGate[]{s1, s2, s3});
-        qif.setQcircuit(qcirc);
+        qif.setQCircuit(qcirc);
         writeMsg("Entangled states generation quantum circuit loaded");
     }//GEN-LAST:event_entanglementAlgorithmJMenuItemActionPerformed
 
@@ -582,7 +633,7 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
         getSelectedQCircuitJInternalFrame().getQCircuitJPanel().setCurrentStage(0);
-        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
+        //getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
         writeMsg("Quantum circuit state reset to initial value");
     }//GEN-LAST:event_resetJButtonActionPerformed
 
@@ -591,15 +642,92 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
         QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
-        if (qcjp.getCurrentStage() == qcjp.getQcircuit().getStages().size()) {
+        if (qcjp.getCurrentStage() == qcjp.getQCircuit().getStages().size()) {
             return;
         }
         qcjp.setCurrentStage(qcjp.getCurrentStage() + 1);
-        qcjp.repaint();
+        //qcjp.repaint();
     }//GEN-LAST:event_stepJButtonActionPerformed
 
+//    private QGateInfoJDialog infoFrame = null;
+//    private QGateInfoJDialog getInfoFrame() {
+//        if(infoFrame == null) {
+//            infoFrame = new QGateInfoJDialog();
+//        }
+//
+//        return infoFrame;
+//    }
+
+    private void doQGateAddDialog(QGate gate) {
+        QGateInfoJDialog f = new QGateInfoJDialog(this, true);
+        QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
+        if(frame == null) {
+            return;
+        }
+        
+        QCircuit qc = frame.getQCircuitJPanel().getQCircuit();
+
+        int maxRow = -1;
+        if(qc.getStages().size() > 0) {
+            maxRow = qc.getStages().get(0).getSize();
+        }
+
+        f.setMaxRow(maxRow);
+        f.setGate(gate);
+        f.setVisible(true);
+
+        writeMsg("Koniec");
+        System.out.println("Koniec dialogu");
+        
+        if(f.getDialogResult() == QGateInfoJDialog.DIALOG_ACCEPTED) {
+            QGate newGate = f.getGate();
+            if(!gate.equals(newGate)) {
+                System.out.println("Gate changed.");
+                gate = newGate;
+            }
+
+            Stage stage = makeStage(gate, f.getRow(), maxRow);
+            if(stage == null) {
+                return;
+            }
+
+            QCircuitJPanel qcj = frame.getQCircuitJPanel();
+            java.util.List<Stage> stages = qcj.getQCircuit().getStages();
+            int selected = stages.indexOf(qcj.getSelectedStage());
+            if(selected > -1) {
+                stages.add(selected, stage);
+            } else {
+                stages.add(stage);
+            }
+
+            qcj.repaint();
+            qcj.revalidate();
+        }
+    }
+
+    private Stage makeStage(QGate gate, int row, int maxRow) {
+        if(row < 0) {
+            return null;
+        }
+        
+        int size = maxRow - (gate.getSize() - 1);
+        if(size < 1) {
+            return null;
+        }
+
+        QGate[] gates = new QGate[size];
+        gates[row] = gate;
+        for(int i = 0; i < gates.length; i++) {
+            if(i != row) {
+                gates[i] = new Identity();
+            }
+        }
+
+        return new CompoundQGate(gates);
+    }
+
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
-        // TODO add your handling code here:
+        doQGateAddDialog(new Hadamard());
     }//GEN-LAST:event_hadamardJButtonActionPerformed
 
     private void removeJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeJButtonActionPerformed
@@ -611,7 +739,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (selected == null) {
             return;
         }
-        qif.getQcircuit().getStages().remove(selected);
+        qif.getQCircuit().getStages().remove(selected);
         repaint();
 }//GEN-LAST:event_removeJButtonActionPerformed
 
@@ -619,28 +747,32 @@ public class MainJFrame extends javax.swing.JFrame {
         if (getSelectedQCircuitJInternalFrame() == null) {
             return;
         }
+        
         QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
-        qcjp.zoom /= 1.5f;
-        qcjp.setPreferredSize(
-                new Dimension(
-                (int) (qcjp.getPreferredSize().getWidth() / 1.5),
-                (int) (qcjp.getPreferredSize().getHeight() / 1.5)));
-        qcjp.revalidate();
-        qcjp.repaint();
+        qcjp.setZoom(qcjp.getZoom() / 1.5f);
+        
+//        qcjp.setPreferredSize(
+//                new Dimension(
+//                (int) (qcjp.getPreferredSize().getWidth() / 1.5),
+//                (int) (qcjp.getPreferredSize().getHeight() / 1.5)));
+//        qcjp.revalidate();
+//        qcjp.repaint();
 }//GEN-LAST:event_zoomOutJButtonActionPerformed
 
     private void zoomInJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInJButtonActionPerformed
         if (getSelectedQCircuitJInternalFrame() == null) {
             return;
         }
+
         QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
-        qcjp.zoom *= 1.5f;
-        qcjp.setPreferredSize(
-                new Dimension(
-                (int) (qcjp.getPreferredSize().getWidth() * 1.5),
-                (int) (qcjp.getPreferredSize().getHeight() * 1.5)));
-        qcjp.revalidate();
-        qcjp.repaint();
+        qcjp.setZoom(qcjp.getZoom() * 1.5f);
+
+//        qcjp.setPreferredSize(
+//                new Dimension(
+//                (int) (qcjp.getPreferredSize().getWidth() * 1.5),
+//                (int) (qcjp.getPreferredSize().getHeight() * 1.5)));
+//        qcjp.revalidate();
+//        qcjp.repaint();
     }//GEN-LAST:event_zoomInJButtonActionPerformed
 
     private void saveJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveJMenuItemActionPerformed
@@ -656,7 +788,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             XStream xstream = new XStream(new DomDriver());
             try {
-                xstream.toXML(qcjp.getQcircuit(),
+                xstream.toXML(qcjp.getQCircuit(),
                         new FileOutputStream(jfc.getSelectedFile()));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Create quantum circuit first");
@@ -677,7 +809,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 QCircuitJInternalFrame qif = addNewQCircuitJInternalFrame(
                         jfc.getSelectedFile().getName());
                 QCircuitJPanel qcjp = qif.getQCircuitJPanel();
-                qcjp.setQcircuit(
+                qcjp.setQCircuit(
                         (QCircuit) xstream.fromXML(new FileInputStream(jfc.getSelectedFile())));
                 qcjp.repaint();
             } catch (Exception ex) {
@@ -708,7 +840,7 @@ public class MainJFrame extends javax.swing.JFrame {
         qc.addStage(s4);
         qc.addStage(s5);
         qc.addStage(s6);
-        qif.setQcircuit(qc);
+        qif.setQCircuit(qc);
         writeMsg("Superdense coding quantum circuit loaded");
 
         QRegister input;
@@ -768,7 +900,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (selected == null) {
             return;
         }
-        QCircuit qcirc = qif.getQcircuit();
+        QCircuit qcirc = qif.getQCircuit();
         for (int i = 0; i < qcirc.getStages().size() - 1; i++) {
             Stage s = qcirc.getStages().get(i);
             if (s == selected) {
@@ -789,7 +921,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (selected == null) {
             return;
         }
-        QCircuit qcirc = qif.getQcircuit();
+        QCircuit qcirc = qif.getQCircuit();
         for (int i = 1; i < qcirc.getStages().size(); i++) {
             Stage s = qcirc.getStages().get(i);
             if (s == selected) {
@@ -801,6 +933,117 @@ public class MainJFrame extends javax.swing.JFrame {
         repaint();
     }//GEN-LAST:event_backwardJButtonActionPerformed
 
+    private void notJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notJButtonActionPerformed
+        doQGateAddDialog(new Not());
+    }//GEN-LAST:event_notJButtonActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        doQGateAddDialog(new CNot());
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        doQGateAddDialog(new PhaseShift(Math.PI / 2));
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        doQGateAddDialog(new Toffoli());
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        doQGateAddDialog(new Custom(new Identity().getMatrix()));
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void btnAddInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddInputActionPerformed
+        QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
+        if(frame == null) {
+            return;
+        }
+        
+        QCircuit qc = frame.getQCircuit();
+
+        if(qc.getStages().size() == 0) {
+            qc.addStage(new Identity());
+        } else {
+            addRow(qc);
+        }
+        
+        frame.setQCircuit(qc);
+    }//GEN-LAST:event_btnAddInputActionPerformed
+
+    private void btnRemoveInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveInputActionPerformed
+        QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
+        if(frame == null) {
+            return;
+        }
+
+        QCircuit qc = frame.getQCircuit();
+        if(qc.getStages().size() == 0) {
+            return;
+        }
+
+        removeRow(qc);
+        frame.setQCircuit(qc);
+    }//GEN-LAST:event_btnRemoveInputActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void addRow(QCircuit qc) {
+        for(int i = 0; i < qc.getStages().size(); i++) {
+            QGate gate = (QGate)qc.getStages().get(i);
+            CompoundQGate newGate = new CompoundQGate(gate, new Identity());
+            qc.getStages().set(i, newGate);
+        }
+    }
+
+    private boolean removeRow(QCircuit qc) {
+        if(checkIfCanRemoveLastRow(qc)) {
+            for(int i = 0; i < qc.getStages().size(); i++) {
+                QGate gate = (QGate)qc.getStages().get(i);
+                CompoundQGate compound = (CompoundQGate)gate;
+                List<ElementaryQGate> gates = compound.getGates();     
+                List<QGate> gates2 = new ArrayList<QGate>(gates.size());
+                for(ElementaryQGate g : gates) {
+                    gates2.add(g);
+                }
+
+                gates2.remove(gates.size() - 1);
+                qc.getStages().set(i, new CompoundQGate(gates2));
+            }
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkIfCanRemoveLastRow(QCircuit qc) {
+        if(qc.getStages().size() == 0 || qc.getStages().get(0).getSize() < 2) {
+            return false;
+        }
+
+        for(int i = 0; i < qc.getStages().size(); i++) {
+            QGate gate = (QGate)qc.getStages().get(i);
+
+            if(gate.getMatrix() == null ||
+                    gate.getMatrix().getNumberOfRows() < 2) {
+                writeMsg("Too few rows to remove.");
+                return false;
+            }
+            
+            CompoundQGate compound = (CompoundQGate)gate;
+            java.util.List<ElementaryQGate> gates = compound.getGates();
+            if(!(gates.get(gates.size() - 1) instanceof Identity)) {
+                writeMsg("Cannot remove rows which contain quantum gates"
+                        + " - remove appropriate stages first.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");
         statusBarJLabel.setText(msg);
@@ -811,7 +1054,6 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             public void run() {
                 new MainJFrame().setVisible(true);
             }
@@ -823,6 +1065,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutJMenuItem;
     private javax.swing.JMenu algorithmsJMenu;
     private javax.swing.JButton backwardJButton;
+    private javax.swing.JButton btnAddInput;
+    private javax.swing.JButton btnRemoveInput;
     private javax.swing.JMenuItem closeAllWindowsJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
@@ -855,6 +1099,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem loadJMenuItem;
