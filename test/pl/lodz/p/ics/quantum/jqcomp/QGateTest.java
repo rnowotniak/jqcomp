@@ -33,15 +33,31 @@ public class QGateTest {
 
         cnot = new CNot(0,1);
         expected = QRegister.ket(1,2); // |01>
-
         assertEquals(expected,cnot.compute(start));
 
         start = QRegister.ket(2, 2); //|10>: control: 0, target 1
         expected = QRegister.ket(2,2); //|10>
         assertEquals(expected,cnot.compute(start));
+
+        start = QRegister.ket(5, 3); // |101>
+        cnot = new CNot(2,1);
+        expected = QRegister.ket(7, 3); // |111>
+        assertEquals(expected,cnot.compute(start));
+
+        start = QRegister.ket(3, 3); // |011>
+        expected = QRegister.ket(3, 3); // cnot does nothing (control qubit is 0)
+        assertEquals(expected,cnot.compute(start));
 	}
 
+    @Test
+    public void testFredkin(){
+        QGate fr =  new Fredkin();
+        QRegister a = QRegister.ket(2, 3); // |010>
+        assertEquals(QRegister.ket(2, 3), fr.compute(a)); // expected |010>
 
+        a = QRegister.ket(6,3); // |110>
+        assertEquals(QRegister.ket(5, 3), fr.compute(a)); // expected |101>
+    }
 
     @Test
 	public void testHadamard() {
@@ -54,8 +70,7 @@ public class QGateTest {
         QRegister b = new QRegister(cx(-0.4,0.8), cx(0.1,0.1));
         b.normalize();
         QGate hadhad = had.mul(had);
-        assertEquals(hadhad.compute(b), b);
-        
+        assertEquals(hadhad.compute(b), b); 
 	}
 
 
@@ -78,6 +93,24 @@ public class QGateTest {
         assertEquals(aResult, ps.compute(a));
 
     }
+
+   @Test
+   public void testSwap() {
+       QGate swap = new Swap();
+       QRegister a = QRegister.ket(2, 2); // |10>
+       QRegister expected = QRegister.ket(1, 2); // |01>
+       assertEquals(expected, swap.compute(a));
+   }
+
+   @Test
+   public void testToffoli() {
+       QGate toffoli = new Toffoli();
+       for (int i=0;i<4;i++) {
+           QRegister a = QRegister.ket(i*2, 3); // |i>|0>
+           QRegister expected = QRegister.ket(i*2 + (i==3?1:0), 3);
+           assertEquals(expected, toffoli.compute(a));
+       }
+   }
 
     public void println(Object str) {
 		System.out.println(str);
