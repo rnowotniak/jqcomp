@@ -49,10 +49,6 @@ public class CNot extends ElementaryQGate {
 	}
 
 
-    static private void replaceChar(StringBuilder sb, int index, String replacement ) {
-        sb.replace(index, index+1, replacement);
-    }
-
     /**
      * @return the control
      */

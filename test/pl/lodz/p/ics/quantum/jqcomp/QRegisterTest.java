@@ -31,11 +31,9 @@ public class QRegisterTest {
 
     @Test
     public void testKets() {
-        for (int d = 1; d < 3; d++) {
-            System.out.println("Qubits: " + d);
-            for (int ket = 0; ket < MoreMath.pow2(d); ket++) {
-                System.out.println("|" + ket + ">:\n" + QRegister.ket(ket, d));
-            }
+        for (int d = 1; d < 16; d++) {
+            QRegister k = QRegister.ket(d, 4);
+            assertTrue(MoreMath.isNearNumber(1.0,k.norm()));
         }
     }
 
@@ -65,19 +63,6 @@ public class QRegisterTest {
         }
     }
 
-    @Test
-    public void test1() {
-        Complex[] test = {Complex.valueOf(0, 1), Complex.valueOf(1, 0),
-            Complex.valueOf(0, 0), Complex.valueOf(0, -1)};
-
-        Complex[] test2 = {Complex.valueOf(1, 1), Complex.valueOf(1, 1)};
-
-        QRegister reg = new QRegister(test);
-        QRegister reg2 = new QRegister(test2);
-
-        System.out.println(reg2);
-        System.out.println(reg2.norm());
-    }
 
     @Test
     public void test2() {

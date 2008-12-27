@@ -8,7 +8,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 
 public class MoreMath {
 	
-	static public final double epsilon = 1e-9;
+	static public final double epsilon = 1e-7;
 	
 	/** 
 	 * Compute the binary logarithm of a positive real number.
