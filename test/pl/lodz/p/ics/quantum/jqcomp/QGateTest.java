@@ -33,6 +33,7 @@ public class QGateTest {
 
         cnot = new CNot(0,1);
         expected = QRegister.ket(1,2); // |01>
+
         assertEquals(expected,cnot.compute(start));
 
         start = QRegister.ket(2, 2); //|10>: control: 0, target 1

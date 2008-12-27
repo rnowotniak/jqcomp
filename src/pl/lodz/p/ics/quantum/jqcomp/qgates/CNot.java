@@ -1,8 +1,9 @@
 package pl.lodz.p.ics.quantum.jqcomp.qgates;
 
 import org.jscience.mathematics.vector.ComplexMatrix;
+import org.jscience.mathematics.vector.ComplexVector;
 import org.jscience.mathematics.number.Complex;
-
+import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
 
 public class CNot extends ElementaryQGate {
 
@@ -25,9 +26,32 @@ public class CNot extends ElementaryQGate {
 			this.size = 2;
 		}
 		else {
-			throw new RuntimeException("Not yet implemented");
+            if (control==target) throw new RuntimeException("CNOT Gate: control == target");
+            size = Math.max(target, control) + 1 ;
+            int dim = MoreMath.pow2(size);
+            ComplexVector[] rows = new ComplexVector[dim];
+            Complex[] row = new Complex[dim];
+            for (int i=0; i<dim ;i++) {
+                if ((i>>control & 1) == 1) {
+                    int t = i;
+                    t ^= (1 << target); // flip target bit
+                    for (int j=0;j<dim;j++) {
+                        row[j] = (j==t ? Complex.ONE : Complex.ZERO);
+                    }
+                } else {
+                    for (int j=0;j<dim;j++)
+                        row [j] = (i==j ? Complex.ONE : Complex.ZERO);
+                }
+                rows[i] = ComplexVector.valueOf(row);
+            }
+            this.matrix = ComplexMatrix.valueOf(rows);
 		}
 	}
+
+
+    static private void replaceChar(StringBuilder sb, int index, String replacement ) {
+        sb.replace(index, index+1, replacement);
+    }
 
     /**
      * @return the control

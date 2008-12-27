@@ -11,7 +11,7 @@ public class MoreMath {
 	static public final double epsilon = 1e-9;
 	
 	/** 
-	 * Compute the binary logarithm of a positive integer x.
+	 * Compute the binary logarithm of a positive real number.
 	 * @param x
 	 * @return the base 2 logarithm of x
 	 */
