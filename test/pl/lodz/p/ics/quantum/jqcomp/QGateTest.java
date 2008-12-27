@@ -48,6 +48,13 @@ public class QGateTest {
         QRegister a = QRegister.ket(1,1); // |1>
         QRegister ha = new QRegister(cx(s2), cx(-s2));
         assertEquals(ha, had.compute(a) );
+
+        // Identity: H*H = I
+        QRegister b = new QRegister(cx(-0.4,0.8), cx(0.1,0.1));
+        b.normalize();
+        QGate hadhad = had.mul(had);
+        assertEquals(hadhad.compute(b), b);
+        
 	}
 
 
