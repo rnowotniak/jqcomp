@@ -189,7 +189,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         initComponents();
 
         // to chyba nie działa tak jak myślałem :)
-        this.qubitSpinner.setInputVerifier(new InputVerifier() {
+        this.qubitJSpinner.setInputVerifier(new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
                 JSpinner i = (JSpinner)input;
@@ -232,11 +232,11 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     }
 
     private void setGateName(String name) {
-        txtName.setText(name);
+        nameJTextField.setText(name);
     }
 
     private void setGateDescription(String description) {
-        txtDescription.setText(description);
+        descriptionJTextArea.setText(description);
     }
 
     public int getDialogResult() {
@@ -260,10 +260,10 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     }
 
     public int getRow() {
-        int value = ((Integer)qubitSpinner.getValue());
+        int value = ((Integer)qubitJSpinner.getValue());
         if(value > maxRow) {
             value = maxRow;
-            qubitSpinner.setValue(value);
+            qubitJSpinner.setValue(value);
             // tu warto wyświetlić jakiś komunikat
         }
 
@@ -282,7 +282,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
      */
     public void setMaxRow(int maxRow) {
         this.maxRow = maxRow;
-        ((SpinnerNumberModel)qubitSpinner.getModel()).setMaximum(maxRow);
+        ((SpinnerNumberModel)qubitJSpinner.getModel()).setMaximum(maxRow);
     }
 
     public boolean changed() {
@@ -367,48 +367,48 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtName = new javax.swing.JTextField();
+        nameJTextField = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
+        descriptionJTextArea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        pnlMatrix = new jqcompgui.ComplexMatrixJPanel();
-        btnAdd = new javax.swing.JButton();
-        qubitSpinner = new javax.swing.JSpinner();
+        displayJPanel = new jqcompgui.ComplexMatrixJPanel();
+        addJButton = new javax.swing.JButton();
+        qubitJSpinner = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         lblIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        txtDescription.setColumns(20);
-        txtDescription.setEditable(false);
-        txtDescription.setRows(5);
-        jScrollPane1.setViewportView(txtDescription);
+        descriptionJTextArea.setColumns(20);
+        descriptionJTextArea.setEditable(false);
+        descriptionJTextArea.setRows(5);
+        jScrollPane1.setViewportView(descriptionJTextArea);
 
         jLabel1.setText("Description:");
 
-        javax.swing.GroupLayout pnlMatrixLayout = new javax.swing.GroupLayout(pnlMatrix);
-        pnlMatrix.setLayout(pnlMatrixLayout);
-        pnlMatrixLayout.setHorizontalGroup(
-            pnlMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout displayJPanelLayout = new javax.swing.GroupLayout(displayJPanel);
+        displayJPanel.setLayout(displayJPanelLayout);
+        displayJPanelLayout.setHorizontalGroup(
+            displayJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 551, Short.MAX_VALUE)
         );
-        pnlMatrixLayout.setVerticalGroup(
-            pnlMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        displayJPanelLayout.setVerticalGroup(
+            displayJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 301, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(pnlMatrix);
+        jScrollPane2.setViewportView(displayJPanel);
 
-        btnAdd.setText("Add to circuit");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        addJButton.setText("Add to circuit");
+        addJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                addJButtonActionPerformed(evt);
             }
         });
 
-        qubitSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        qubitJSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
 
         jLabel2.setText("Insertion qubit:");
 
@@ -425,14 +425,14 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-                        .addComponent(btnAdd))
+                        .addComponent(addJButton))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(qubitSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(qubitJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -443,11 +443,11 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAdd)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(addJButton)
+                            .addComponent(nameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(qubitSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(qubitJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
                     .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -464,11 +464,11 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void addJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addJButtonActionPerformed
         dialogResult = DIALOG_ACCEPTED;
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_btnAddActionPerformed
+}//GEN-LAST:event_addJButtonActionPerformed
 
     private boolean showYesNoDialog(String msg) {
         // ?
@@ -477,17 +477,17 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton addJButton;
+    private javax.swing.JTextArea descriptionJTextArea;
+    private jqcompgui.ComplexMatrixJPanel displayJPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblIcon;
-    private jqcompgui.ComplexMatrixJPanel pnlMatrix;
-    private javax.swing.JSpinner qubitSpinner;
-    private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField nameJTextField;
+    private javax.swing.JSpinner qubitJSpinner;
     // End of variables declaration//GEN-END:variables
 
 }

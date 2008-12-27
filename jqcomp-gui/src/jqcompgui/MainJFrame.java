@@ -258,8 +258,8 @@ public class MainJFrame extends javax.swing.JFrame {
         zoomInJButton = new javax.swing.JButton();
         zoomOutJButton = new javax.swing.JButton();
         jSeparator7 = new javax.swing.JSeparator();
-        btnAddInput = new javax.swing.JButton();
-        btnRemoveInput = new javax.swing.JButton();
+        addQubitJButton = new javax.swing.JButton();
+        removeQubitJButton = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -427,17 +427,17 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        btnAddInput.setText("Add Qubit");
-        btnAddInput.addActionListener(new java.awt.event.ActionListener() {
+        addQubitJButton.setText("Add Qubit");
+        addQubitJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddInputActionPerformed(evt);
+                addQubitJButtonActionPerformed(evt);
             }
         });
 
-        btnRemoveInput.setText("Remove Qubit");
-        btnRemoveInput.addActionListener(new java.awt.event.ActionListener() {
+        removeQubitJButton.setText("Remove Qubit");
+        removeQubitJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveInputActionPerformed(evt);
+                removeQubitJButtonActionPerformed(evt);
             }
         });
 
@@ -456,8 +456,8 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(zoomInJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(btnAddInput, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(btnRemoveInput, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(addQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(removeQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,9 +484,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAddInput)
+                .addComponent(addQubitJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRemoveInput)
+                .addComponent(removeQubitJButton)
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -1136,7 +1136,7 @@ public class MainJFrame extends javax.swing.JFrame {
         //doQGateAddDialog(new Custom(new Identity().getMatrix()));
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void btnAddInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddInputActionPerformed
+    private void addQubitJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQubitJButtonActionPerformed
         QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
         if(frame == null) {
             return;
@@ -1151,9 +1151,9 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         
         frame.setQCircuit(qc);
-    }//GEN-LAST:event_btnAddInputActionPerformed
+}//GEN-LAST:event_addQubitJButtonActionPerformed
 
-    private void btnRemoveInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveInputActionPerformed
+    private void removeQubitJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeQubitJButtonActionPerformed
         QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
         if(frame == null) {
             return;
@@ -1166,7 +1166,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         removeRow(qc);
         frame.setQCircuit(qc);
-    }//GEN-LAST:event_btnRemoveInputActionPerformed
+}//GEN-LAST:event_removeQubitJButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -1249,10 +1249,9 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem SuperdenseJMenuItem;
     private javax.swing.JMenuItem aboutJMenuItem;
+    private javax.swing.JButton addQubitJButton;
     private javax.swing.JMenu algorithmsJMenu;
     private javax.swing.JButton backwardJButton;
-    private javax.swing.JButton btnAddInput;
-    private javax.swing.JButton btnRemoveInput;
     private javax.swing.JCheckBoxMenuItem chkHideImaginary;
     private javax.swing.JMenuItem closeAllWindowsJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
@@ -1297,6 +1296,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu quantumGatesJMenu;
     private javax.swing.JMenuItem quitJMenuItem;
     private javax.swing.JButton removeJButton;
+    private javax.swing.JButton removeQubitJButton;
     private javax.swing.JButton resetJButton;
     private javax.swing.JMenuItem saveJMenuItem;
     private javax.swing.JMenu settingsJMenu;

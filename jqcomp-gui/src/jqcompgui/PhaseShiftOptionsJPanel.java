@@ -48,7 +48,7 @@ public class PhaseShiftOptionsJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtAngle = new jqcompgui.NumericTextBox();
+        txtAngle = new jqcompgui.NumericJTextField();
         chkRadians = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
 
@@ -85,7 +85,7 @@ public class PhaseShiftOptionsJPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkRadians;
     private javax.swing.JLabel jLabel1;
-    private jqcompgui.NumericTextBox txtAngle;
+    private jqcompgui.NumericJTextField txtAngle;
     // End of variables declaration//GEN-END:variables
 
 }

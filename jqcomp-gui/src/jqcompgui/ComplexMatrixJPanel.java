@@ -46,7 +46,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
 //        final int rows = m.getNumberOfRows();
 //        final int columns = m.getNumberOfColumns();
 //
-//        ntbs = new ComplexTextBox[columns][rows];
+//        ntbs = new ComplexJPanel[columns][rows];
 //
 //        int x = getXOffset();
 //        int y = getYOffset();
@@ -68,7 +68,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
 //
 //            for(int j = 0; j < rows; j++)
 //            {
-//                ComplexTextBox ntb = new ComplexTextBox();
+//                ComplexJPanel ntb = new ComplexJPanel();
 //                ntb.setFont(font);
 //                ntb.setBackground(bgColor);
 //                ntb.setForeground(fgColor);
@@ -110,7 +110,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         final int rows = m.getNumberOfRows();
         final int columns = m.getNumberOfColumns();
 
-        ntbs = new ComplexTextBox[columns][rows];
+        ntbs = new ComplexJPanel[columns][rows];
 
         int x = getXOffset();
         int y = getYOffset();
@@ -121,7 +121,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         
         for(int i = 0; i < columns; i++) {
             for(int j = 0; j < rows; j++) {
-                ComplexTextBox ntb = new ComplexTextBox();
+                ComplexJPanel ntb = new ComplexJPanel();
                 ntb.setFont(font);
                 ntb.setBackground(bgColor);
                 ntb.setForeground(fgColor);
@@ -168,7 +168,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
             y = yOffset;
 
             for(int j = 0; j < rows; j++) {
-                ComplexTextBox ntb = getNTB(i, j);
+                ComplexJPanel ntb = getNTB(i, j);
                 ntb.setLocation(x, y);
                 y += ntb.getHeight() + getYOffset();
             }
@@ -223,11 +223,11 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         return ComplexMatrix.valueOf(marr);
     }
 
-    private void setNTB(ComplexTextBox ntb, int i, int j) {
+    private void setNTB(ComplexJPanel ntb, int i, int j) {
         ntbs[i][j] = ntb;        
     }
 
-    private ComplexTextBox getNTB(int i, int j){
+    private ComplexJPanel getNTB(int i, int j){
         return ntbs[i][j];
     }
 
@@ -327,7 +327,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
     }
 
     private int[] columnWidths = new int[0];
-    private ComplexTextBox[][] ntbs = new ComplexTextBox[0][0];
+    private ComplexJPanel[][] ntbs = new ComplexJPanel[0][0];
     //private Dimension ntbSize = new Dimension(200, 20);
 
     private ComplexMatrix matrix = null;

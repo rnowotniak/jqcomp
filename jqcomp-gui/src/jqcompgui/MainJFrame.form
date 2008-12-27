@@ -394,8 +394,8 @@
               <Component id="zoomInJButton" alignment="0" pref="110" max="32767" attributes="0"/>
               <Component id="zoomOutJButton" alignment="0" pref="110" max="32767" attributes="0"/>
               <Component id="jSeparator7" alignment="0" pref="110" max="32767" attributes="0"/>
-              <Component id="btnAddInput" alignment="0" pref="110" max="32767" attributes="0"/>
-              <Component id="btnRemoveInput" alignment="0" pref="110" max="32767" attributes="0"/>
+              <Component id="addQubitJButton" alignment="0" pref="110" max="32767" attributes="0"/>
+              <Component id="removeQubitJButton" alignment="0" pref="110" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -423,9 +423,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator7" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnAddInput" min="-2" max="-2" attributes="0"/>
+                  <Component id="addQubitJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnRemoveInput" min="-2" max="-2" attributes="0"/>
+                  <Component id="removeQubitJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="66" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -502,20 +502,20 @@
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator7">
         </Component>
-        <Component class="javax.swing.JButton" name="btnAddInput">
+        <Component class="javax.swing.JButton" name="addQubitJButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add Qubit"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddInputActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addQubitJButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnRemoveInput">
+        <Component class="javax.swing.JButton" name="removeQubitJButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove Qubit"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveInputActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeQubitJButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

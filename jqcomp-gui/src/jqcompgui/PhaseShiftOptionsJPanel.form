@@ -38,7 +38,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="jqcompgui.NumericTextBox" name="txtAngle">
+    <Component class="jqcompgui.NumericJTextField" name="txtAngle">
       <Properties>
         <Property name="text" type="java.lang.String" value="0.0"/>
       </Properties>

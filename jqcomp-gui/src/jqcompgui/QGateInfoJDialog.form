@@ -31,15 +31,15 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="lblIcon" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtName" min="-2" pref="115" max="-2" attributes="1"/>
+                      <Component id="nameJTextField" min="-2" pref="115" max="-2" attributes="1"/>
                       <EmptySpace pref="143" max="32767" attributes="0"/>
-                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
+                      <Component id="addJButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace pref="264" max="32767" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="qubitSpinner" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="qubitJSpinner" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jSeparator1" alignment="0" pref="387" max="32767" attributes="0"/>
               </Group>
@@ -54,12 +54,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="addJButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="nameJTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="qubitSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="qubitJSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -79,7 +79,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="txtName">
+    <Component class="javax.swing.JTextField" name="nameJTextField">
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
@@ -90,7 +90,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="txtDescription">
+        <Component class="javax.swing.JTextArea" name="descriptionJTextArea">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="editable" type="boolean" value="false"/>
@@ -108,7 +108,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Container class="jqcompgui.ComplexMatrixJPanel" name="pnlMatrix">
+        <Container class="jqcompgui.ComplexMatrixJPanel" name="displayJPanel">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -125,15 +125,15 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnAdd">
+    <Component class="javax.swing.JButton" name="addJButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add to circuit"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addJButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSpinner" name="qubitSpinner">
+    <Component class="javax.swing.JSpinner" name="qubitJSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="0" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>

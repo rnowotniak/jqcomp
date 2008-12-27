@@ -15,9 +15,9 @@ import javax.swing.event.*;
  *
  * @author Andrzej
  */
-public class NumericTextBox extends JTextField
+public class NumericJTextField extends JTextField
 {
-    public NumericTextBox()
+    public NumericJTextField()
     {
         this.addKeyListener(new KeyAdapter() {
             @Override
@@ -84,17 +84,18 @@ public class NumericTextBox extends JTextField
     private void textChanged() {
         if(isSizeAsText()) {
             Dimension d = getPreferredSize();
-            if(d.width < 50) { // inaczej nie widać kursora
-                d = new Dimension(50, d.height);
-            }
+            setSize(d);
+//            if(d.width < 50) { // inaczej nie widać kursora
+//                d = new Dimension(50, d.height);
+//            }
 
-            System.out.println("aligning to text");
-            final Dimension df = d;
-//            EventQueue.invokeLater(new Runnable() {
-//                public void run() {
-                    setSize(df);
-//                }
-//            });
+//            System.out.println("aligning to text");
+//            final Dimension df = d;
+////            EventQueue.invokeLater(new Runnable() {
+////                public void run() {
+//                    setSize(df);
+////                }
+////            });
         }
     }
 

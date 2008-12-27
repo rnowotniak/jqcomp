@@ -4,7 +4,7 @@
  */
 
 /*
- * ComplexTextBox.java
+ * ComplexJPanel.java
  *
  * Created on 2008-12-25, 11:51:40
  */
@@ -21,10 +21,10 @@ import javax.swing.*;
  *
  * @author Andrzej
  */
-public class ComplexTextBox extends javax.swing.JPanel {
+public class ComplexJPanel extends javax.swing.JPanel {
 
-    /** Creates new form ComplexTextBox */
-    public ComplexTextBox() {
+    /** Creates new form ComplexJPanel */
+    public ComplexJPanel() {
         initComponents();
         setupControls();
     }
@@ -170,9 +170,9 @@ public class ComplexTextBox extends javax.swing.JPanel {
      /**
      * @return the txt1
      */
-    protected NumericTextBox getTxt1() {
+    protected NumericJTextField getTxt1() {
         if(txt1 == null) {
-            txt1 = new NumericTextBox();
+            txt1 = new NumericJTextField();
         }
 
         return txt1;
@@ -181,9 +181,9 @@ public class ComplexTextBox extends javax.swing.JPanel {
     /**
      * @return the txt2
      */
-    protected NumericTextBox getTxt2() {
+    protected NumericJTextField getTxt2() {
         if(txt2 == null) {
-            txt2 = new NumericTextBox();
+            txt2 = new NumericJTextField();
         }
 
         return txt2;
@@ -206,8 +206,8 @@ public class ComplexTextBox extends javax.swing.JPanel {
         }
     }
 
-    private NumericTextBox txt1 = null;
-    private NumericTextBox txt2 = null;
+    private NumericJTextField txt1 = null;
+    private NumericJTextField txt2 = null;
     private boolean showImaginary = true;
 
     // {hideImaginary, showImaginary}
