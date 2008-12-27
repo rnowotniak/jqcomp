@@ -36,10 +36,10 @@
                       <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="313" max="32767" attributes="0"/>
+                      <EmptySpace pref="264" max="32767" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="rowSpinner" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="qubitSpinner" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jSeparator1" alignment="0" pref="387" max="32767" attributes="0"/>
               </Group>
@@ -59,7 +59,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="rowSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="qubitSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -133,7 +133,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSpinner" name="rowSpinner">
+    <Component class="javax.swing.JSpinner" name="qubitSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="0" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
@@ -142,7 +142,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Row:"/>
+        <Property name="text" type="java.lang.String" value="Insertion qubit:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblIcon">

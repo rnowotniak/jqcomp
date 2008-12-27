@@ -189,7 +189,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         initComponents();
 
         // to chyba nie działa tak jak myślałem :)
-        this.rowSpinner.setInputVerifier(new InputVerifier() {
+        this.qubitSpinner.setInputVerifier(new InputVerifier() {
             @Override
             public boolean verify(JComponent input) {
                 JSpinner i = (JSpinner)input;
@@ -260,10 +260,10 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     }
 
     public int getRow() {
-        int value = ((Integer)rowSpinner.getValue());
+        int value = ((Integer)qubitSpinner.getValue());
         if(value > maxRow) {
             value = maxRow;
-            rowSpinner.setValue(value);
+            qubitSpinner.setValue(value);
             // tu warto wyświetlić jakiś komunikat
         }
 
@@ -282,7 +282,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
      */
     public void setMaxRow(int maxRow) {
         this.maxRow = maxRow;
-        ((SpinnerNumberModel)rowSpinner.getModel()).setMaximum(maxRow);
+        ((SpinnerNumberModel)qubitSpinner.getModel()).setMaximum(maxRow);
     }
 
     public boolean changed() {
@@ -375,7 +375,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         pnlMatrix = new jqcompgui.ComplexMatrixJPanel();
         btnAdd = new javax.swing.JButton();
-        rowSpinner = new javax.swing.JSpinner();
+        qubitSpinner = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         lblIcon = new javax.swing.JLabel();
 
@@ -408,9 +408,9 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
             }
         });
 
-        rowSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        qubitSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
 
-        jLabel2.setText("Row:");
+        jLabel2.setText("Insertion qubit:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -429,10 +429,10 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                         .addComponent(btnAdd))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 313, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rowSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(qubitSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -447,7 +447,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rowSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(qubitSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
                     .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -485,7 +485,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblIcon;
     private jqcompgui.ComplexMatrixJPanel pnlMatrix;
-    private javax.swing.JSpinner rowSpinner;
+    private javax.swing.JSpinner qubitSpinner;
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables

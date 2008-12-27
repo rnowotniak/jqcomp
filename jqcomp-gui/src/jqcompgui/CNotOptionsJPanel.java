@@ -40,41 +40,41 @@ public class CNotOptionsJPanel extends javax.swing.JPanel {
     }
 
     public int getTargetRow() {
-        return get(targetRowSpinner, "Target row is out of range");
+        return get(targetRowSpinner, "Target qubit is out of range");
     }
 
-    public void setTargetRow(int row) {
-        set(targetRowSpinner, row);
+    public void setTargetRow(int qubit) {
+        set(targetRowSpinner, qubit);
     }
 
     public int getControlRow() {
-       return get(controlRowSpinner, "Control row is out of range");
+       return get(controlRowSpinner, "Control qubit is out of range");
     }
 
-    public void setControlRow(int row) {
-        set(controlRowSpinner, row);
+    public void setControlRow(int qubit) {
+        set(controlRowSpinner, qubit);
     }
 
     private int get(JSpinner spn, String msg) {
-        int row = (Integer)spn.getValue();
-        if(!checkRow(row)) {
+        int qubit = (Integer)spn.getValue();
+        if(!checkRow(qubit)) {
             JOptionPane.showMessageDialog(this, msg);
             return -1;
         }
 
-        return row;
+        return qubit;
     }
 
-    private void set(JSpinner spn, int row) {
-        if(!checkRow(row)) {
-            throw new RuntimeException("row");
+    private void set(JSpinner spn, int qubit) {
+        if(!checkRow(qubit)) {
+            throw new RuntimeException("qubit");
         }
 
-        spn.setValue(row);
+        spn.setValue(qubit);
     }
 
-    private boolean checkRow(int row) {
-        return row >= 0 && row <= maxRow;
+    private boolean checkRow(int qubit) {
+        return qubit >= 0 && qubit <= maxRow;
     }
 
     private int maxRow = 0;
@@ -96,11 +96,11 @@ public class CNotOptionsJPanel extends javax.swing.JPanel {
         controlRowSpinner = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("Target row:");
+        jLabel1.setText("Target qubit:");
 
-        jLabel2.setText("Control row:");
+        jLabel2.setText("Control qubit:");
 
-        jLabel3.setText("Note: control and target rows \nare relative to the insertion row above.");
+        jLabel3.setText("Note: control and target qubits are relative to the insertion qubit above.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -109,7 +109,7 @@ public class CNotOptionsJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)

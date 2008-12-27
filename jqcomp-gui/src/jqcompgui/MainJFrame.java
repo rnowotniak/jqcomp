@@ -427,14 +427,14 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        btnAddInput.setText("Add Row");
+        btnAddInput.setText("Add Qubit");
         btnAddInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddInputActionPerformed(evt);
             }
         });
 
-        btnRemoveInput.setText("Remove Row");
+        btnRemoveInput.setText("Remove Qubit");
         btnRemoveInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveInputActionPerformed(evt);
@@ -487,7 +487,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(btnAddInput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemoveInput)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jSplitPane1.setDividerLocation(250);
@@ -498,7 +498,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13));
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -697,7 +697,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                     .addComponent(leftJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusBarJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -849,7 +849,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         f.setShowImaginary(isShowImaginary());
-        f.setMaxRow(maxRow);
+        f.setMaxRow(maxRow - gate.getSize());
         f.setGate(gate);
         f.setIcon(icon);
         f.setVisible(true);
@@ -884,8 +884,8 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }
 
-    private Stage makeStage(QGate gate, int row, int maxRow) {
-        if(row < 0) {
+    private Stage makeStage(QGate gate, int qubit, int maxRow) {
+        if(qubit < 0) {
             return null;
         }
         
@@ -895,9 +895,9 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         QGate[] gates = new QGate[size];
-        gates[row] = gate;
+        gates[qubit] = gate;
         for(int i = 0; i < gates.length; i++) {
-            if(i != row) {
+            if(i != qubit) {
                 gates[i] = new Identity();
             }
         }
@@ -1211,15 +1211,14 @@ public class MainJFrame extends javax.swing.JFrame {
 
             if(gate.getMatrix() == null ||
                     gate.getMatrix().getNumberOfRows() < 2) {
-                writeMsg("Too few rows to remove.");
+                writeMsg("Too few qubits to remove.");
                 return false;
             }
             
             CompoundQGate compound = (CompoundQGate)gate;
             java.util.List<ElementaryQGate> gates = compound.getGates();
             if(!(gates.get(gates.size() - 1) instanceof Identity)) {
-                writeMsg("Cannot remove rows which contain quantum gates"
-                        + " - remove appropriate stages first.");
+                writeMsg("Please remove stages which act on this qubit first.");
                 return false;
             }
         }

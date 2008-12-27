@@ -19,7 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel3" alignment="0" pref="335" max="32767" attributes="0"/>
+                  <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -59,21 +59,21 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Target row:"/>
+        <Property name="text" type="java.lang.String" value="Target qubit:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="targetRowSpinner">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Control row:"/>
+        <Property name="text" type="java.lang.String" value="Control qubit:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="controlRowSpinner">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Note: control and target rows &#xa;are relative to the insertion row above."/>
+        <Property name="text" type="java.lang.String" value="Note: control and target qubits are relative to the insertion qubit above."/>
       </Properties>
     </Component>
   </SubComponents>

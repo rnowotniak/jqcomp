@@ -19,14 +19,19 @@ public class NumericTextBox extends JTextField
 {
     public NumericTextBox()
     {
-        this.addKeyListener(new KeyAdapter()
-        {
+        this.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e)
-            {
+            public void keyTyped(KeyEvent e) {
                 if(!passChar(e.getKeyChar())) {
                     e.consume();
                 }               
+            }
+        });
+
+        this.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                getValue();
             }
         });
 
@@ -47,13 +52,31 @@ public class NumericTextBox extends JTextField
 
     public boolean passChar(char c)
     {       
-        if(Character.isDigit(c)) return true;
-        if(c == '.') {
-            String text = getText();
-            if(text.length() != 0 && !text.contains(".")) return true;
+        if(Character.isDigit(c)) {
+            return true;
         }
 
-        if(c == '-' || c == '+' || c == 'e' || c == 'E') return true;
+        if(c == '.') {
+            String text = getText();
+            if(text.length() != 0 && !text.contains(".")) {
+                return true;
+            }
+        }
+
+        if(c == '-' || c == '+') {
+            String text = getText();
+            if(text.length() == 0
+               || Character.toLowerCase(text.charAt(text.length() - 1)) == 'e') {
+                return true;
+            }
+        }
+
+        if(c == 'e' || c == 'E') {
+            String text = getText().toLowerCase();
+            if(!text.contains("e")) {
+                return true;
+            }
+        }
 
         return false;
     }

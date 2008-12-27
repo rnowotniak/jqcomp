@@ -426,7 +426,7 @@
                   <Component id="btnAddInput" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnRemoveInput" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="46" max="32767" attributes="0"/>
+                  <EmptySpace pref="66" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -504,7 +504,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAddInput">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Add Row"/>
+            <Property name="text" type="java.lang.String" value="Add Qubit"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddInputActionPerformed"/>
@@ -512,7 +512,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRemoveInput">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Remove Row"/>
+            <Property name="text" type="java.lang.String" value="Remove Qubit"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveInputActionPerformed"/>
