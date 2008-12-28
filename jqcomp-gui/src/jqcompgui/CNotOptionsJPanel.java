@@ -31,8 +31,8 @@ public class CNotOptionsJPanel extends javax.swing.JPanel {
     
     public void setMaxRow(int maxRow) {
         this.maxRow = maxRow;
-        ((SpinnerNumberModel)controlRowSpinner.getModel()).setMaximum(maxRow);
-        ((SpinnerNumberModel)targetRowSpinner.getModel()).setMaximum(maxRow);
+        ((SpinnerNumberModel)controlRowSpinner.getModel()).setMaximum(maxRow - 1);
+        ((SpinnerNumberModel)targetRowSpinner.getModel()).setMaximum(maxRow - 1);
     }
     
     public int getMaxRow() {

@@ -27,8 +27,11 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
     /** Creates new form ExecutionInfoJDialog */
     public ExecutionInfoJDialog(java.awt.Frame parent, ExecutionMonitor monitor) {
-        super(parent, false);
+        super(parent, false);        
         initComponents();
+
+        inputDecJTextField.setSizeAsText(false);
+
         setExecutionMonitor(monitor);
 
         this.addWindowListener(new WindowAdapter() {
@@ -89,6 +92,22 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         f.setText(text);
     }
 
+    private QRegister getInputRegister() {
+        Object val = inputDecJTextField.getValue();
+        if(val == null) {
+            return null;
+        }
+
+        if(monitor.getQCircuit().getStages().size() < 1) {
+            return null;
+        }
+
+        int qubits = monitor.getQCircuit().getStages().get(0).getSize();
+        double dval = (Double)val;
+
+        return QRegister.ket((int)dval, qubits);
+    }
+
     private ExecutionMonitor monitor;
 
     /** This method is called from within the constructor to
@@ -106,6 +125,12 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         inputJTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         resultJTextField = new javax.swing.JTextField();
+        stepJButton = new javax.swing.JButton();
+        resetJButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        runJButton = new javax.swing.JButton();
+        inputDecJTextField = new jqcompgui.NumericJTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -115,6 +140,31 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         jLabel3.setText("Result:");
 
+        stepJButton.setText("Next Step");
+        stepJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepJButtonActionPerformed(evt);
+            }
+        });
+
+        resetJButton.setText("Reset");
+        resetJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetJButtonActionPerformed(evt);
+            }
+        });
+
+        runJButton.setText("Run");
+        runJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runJButtonActionPerformed(evt);
+            }
+        });
+
+        inputDecJTextField.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setText("Input (decimal): ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,17 +173,37 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(inputJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                    .addComponent(currentJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                    .addComponent(currentJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addComponent(resultJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                    .addComponent(resultJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputDecJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(runJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stepJButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inputDecJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetJButton)
+                    .addComponent(stepJButton)
+                    .addComponent(runJButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -145,21 +215,62 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
+        if(monitor.isInExecutedState()) {
+            monitor.reset();
+        }
+
+        if(monitor.isInInitialState()) {
+            QRegister reg = getInputRegister();
+            if(reg == null) {
+                return;
+            }
+
+            monitor.startStepExecution(reg);
+        }
+
+        monitor.nextStep();
+    }//GEN-LAST:event_stepJButtonActionPerformed
+
+    private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
+        monitor.reset();
+    }//GEN-LAST:event_resetJButtonActionPerformed
+
+    private void runJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runJButtonActionPerformed
+        if(monitor.isInExecutedState()) {
+            monitor.reset();
+        }
+
+        if(monitor.isInInitialState()) {
+            QRegister reg = getInputRegister();
+            if(reg == null) {
+                return;
+            }
+
+            monitor.compute(reg);
+        }
+    }//GEN-LAST:event_runJButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField currentJTextField;
+    private jqcompgui.NumericJTextField inputDecJTextField;
     private javax.swing.JTextField inputJTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton resetJButton;
     private javax.swing.JTextField resultJTextField;
+    private javax.swing.JButton runJButton;
+    private javax.swing.JButton stepJButton;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -46,6 +46,29 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        monitor.stateChangedEvent().add(new Listener<EventObject>() {
+            public void invoked(EventObject e) {
+                ExecutionMonitor m = (ExecutionMonitor)e.getSource();
+                switch(m.getState()) {
+                    case ExecutionMonitor.EXECUTED_STATE:
+                        writeMsg("executed - output: " + m.getResultRegister().dirac());
+                        break;
+
+                    case ExecutionMonitor.STEP_EXECUTION_STATE:
+                        writeMsg("started step execution...");
+                        break;
+
+                    case ExecutionMonitor.INITIAL_STATE:
+                        writeMsg("reset to the initial state.");
+                        break;
+
+                    default:
+                        assert(false);
+                        break;
+                }
+            }
+        });
+
         this.addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosed(InternalFrameEvent e) {
                 closeExecutionInfoJDialog();
@@ -86,6 +109,10 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
             executionInfoJDialog.dispose();
             executionInfoJDialog = null;
         }
+    }
+
+    public void writeMsg(String msg) {
+        MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
     }
 
     private ExecutionInfoJDialog executionInfoJDialog = null;
@@ -187,8 +214,6 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
     public ExecutionMonitor getExecutionMonitor() {
         return monitor;
     }
-
-    
 
     private final ExecutionMonitor monitor = new ExecutionMonitor();
 

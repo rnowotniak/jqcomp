@@ -23,8 +23,9 @@ public class QRegister {
 		values[0]=Complex.valueOf(0,0);
 		try {
 			values[n]=Complex.valueOf(1,0);
-		} catch (IndexOutOfBoundsException outof) {
-			throw new RuntimeException();
+		} catch (IndexOutOfBoundsException e) {
+			//throw new RuntimeException();
+            return null;
 		}
 		return new QRegister(values);
 	}

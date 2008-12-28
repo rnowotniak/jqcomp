@@ -96,7 +96,6 @@ public class ExecutionMonitor {
         }
 
         setCurrentStep(getCurrentStep() + 1);
-
         return true;
     }
 

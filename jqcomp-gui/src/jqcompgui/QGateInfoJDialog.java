@@ -108,6 +108,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
                 this.gate = (CNot)gate;
                 pnlOptions = new CNotOptionsJPanel();
                 pnlOptions.setMaxRow(maxRow);
+
                 pnlOptions.setTargetRow(this.gate.getTarget());
                 pnlOptions.setControlRow(this.gate.getControl());
                 display.setViewportView(pnlOptions);
@@ -130,6 +131,10 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
             }
 
             if(control == target) {                
+                return null;
+            }
+
+            if((control + getRow()) > maxRow || (target + getRow()) > maxRow) {
                 return null;
             }
 
@@ -224,7 +229,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
 
     private void updateGate() {
         QGate newOne = currentModel.update(gate);
-        if(!gate.equals(newOne)) {
+        if(newOne != null && !gate.equals(newOne)) {
             changed = true;
             setGate(newOne);
             updateDisplay();
@@ -255,6 +260,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         if(this.gate != gate) {
             this.gate = gate;
             dialogResult = DIALOG_CANCELLED;
+            setMaxRow(maxRow);
             updateDisplay();
         }
     }
@@ -282,7 +288,9 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
      */
     public void setMaxRow(int maxRow) {
         this.maxRow = maxRow;
-        ((SpinnerNumberModel)qubitJSpinner.getModel()).setMaximum(maxRow);
+        if(gate != null) {
+            ((SpinnerNumberModel)qubitJSpinner.getModel()).setMaximum(maxRow - gate.getSize());
+        }
     }
 
     public boolean changed() {

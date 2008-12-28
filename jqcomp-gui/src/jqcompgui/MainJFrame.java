@@ -46,6 +46,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
 		public MyAction(String text, ImageIcon icon, String desc) {
 				super(text, icon);
+
 				putValue(SHORT_DESCRIPTION, desc);
 		}
 
@@ -71,6 +72,7 @@ public class MainJFrame extends javax.swing.JFrame {
 		public void mouseReleased(MouseEvent arg0) { }
 		public void mouseClicked(MouseEvent arg0) {	}
 	}
+
 
     private abstract class AddGateAction extends MyAction {
         public AddGateAction(String name) {
@@ -225,10 +227,11 @@ public class MainJFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             /* DO NOTHING */
         }
+
         writeMsg("Quantum Computer Simulator started");
 
-
-        
+        this.inputRegister = QRegister.ket(15, 4);
+        writeMsg(inputRegister.dirac());
     }
 
     /** This method is called from within the constructor to
@@ -873,7 +876,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         f.setShowImaginary(isShowImaginary());
-        f.setMaxRow(maxRow - gate.getSize());
+        f.setMaxRow(maxRow);
         f.setGate(gate);
         f.setIcon(icon);
         f.setVisible(true);       
@@ -1208,8 +1211,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-
-
     private void addRow(QCircuit qc) {
         for(int i = 0; i < qc.getStages().size(); i++) {
             QGate gate = (QGate)qc.getStages().get(i);
@@ -1269,7 +1270,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void writeMsgSelected(String msg) {
-        writeMsg("[" + getSelectedQCircuitJInternalFrame().getTitle() + "]: " + msg);
+        writeMsg("[" + getSelectedQCircuitJInternalFrame().getTitle() + "] " + msg);
     }
 
     public void writeMsg(String msg) {
