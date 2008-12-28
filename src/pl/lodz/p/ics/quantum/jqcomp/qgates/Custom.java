@@ -9,6 +9,12 @@ public class Custom extends ElementaryQGate {
 	public Custom(ComplexMatrix matrix) {
 		this.matrix = matrix;
         this.size = (int) MoreMath.log2(matrix.getNumberOfColumns());
+        if (!matrix.isSquare())
+            throw new RuntimeException("Matrix must be square");
+        if (!isUnitary()) {
+            System.out.println("***WARNING*** Matrix must be unitary: \n"+matrix);
+           // throw new RuntimeException("Nonunitary");
+        }
 	}
 	
 	public Custom(Complex[][] matrix) {

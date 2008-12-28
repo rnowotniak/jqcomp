@@ -83,6 +83,11 @@ public class QGateTest {
         QRegister b = new QRegister(cx(-0.5,0), cx(0,0.5));
         QRegister bResult = new QRegister(cx(0,0.5), cx(-0.5,0));
         assertEquals(bResult, not.compute(b));
+
+        QGate not4 = new CompoundQGate(new Not(), new Identity(3));
+        b = QRegister.ket(15, 4); // |1111>
+        bResult = QRegister.ket(7, 4); // |0111>
+        assertEquals(bResult, not4.compute(b));
     }
 
     @Test
@@ -110,6 +115,25 @@ public class QGateTest {
            QRegister expected = QRegister.ket(i*2 + (i==3?1:0), 3);
            assertEquals(expected, toffoli.compute(a));
        }
+   }
+
+   @Test
+
+   public void testIfUnitary() {
+       for (int i=0;i<6;i++) {
+           for (int j=0;i<6;i++) {
+                if (i!=j) {
+                    QGate cnot = new CNot(i,j);
+                    assertTrue( cnot.isUnitary());
+                }
+           }
+       }
+       assertTrue( new Toffoli().isUnitary());
+       assertTrue( new Not().isUnitary());
+       assertTrue( new Fredkin().isUnitary());
+       assertTrue( new Identity().isUnitary());
+       assertTrue( new PhaseShift(Math.PI*0.25).isUnitary());
+       assertTrue( new Swap().isUnitary());
    }
 
     public void println(Object str) {

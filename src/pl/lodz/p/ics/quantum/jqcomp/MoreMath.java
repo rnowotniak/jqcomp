@@ -9,7 +9,26 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 public class MoreMath {
 	
 	static public final double epsilon = 1e-7;
-	
+
+
+    /**
+     * Compares two matrices.
+     * @return 
+     */
+    static public boolean isNearMatrix(ComplexMatrix a, ComplexMatrix b) {
+        if (a.getNumberOfColumns()!= b.getNumberOfColumns())
+            return false;
+        if (a.getNumberOfRows() != b.getNumberOfRows())
+            return false;
+        for (int i=0;i<a.getNumberOfRows();i++)
+            for (int j=0;j<b.getNumberOfColumns();j++) {
+                // MoreMath.epsilon - tolerance
+                if (!a.get(i, j).equals(b.get(i, j), MoreMath.epsilon))
+                    return false;
+            }
+        return true;
+    }
+
 	/** 
 	 * Compute the binary logarithm of a positive real number.
 	 * @param x
@@ -73,6 +92,10 @@ public class MoreMath {
 
     static public boolean isNearNumber(double x, double y) {
         return Math.abs(x-y) < epsilon;
+    }
+
+    static public boolean isNearNumber(Complex z1, Complex z2) {
+        return z1.equals(z2, epsilon);
     }
 	
 	public  static String randomize(HashMap<String, Double> probabilities) {

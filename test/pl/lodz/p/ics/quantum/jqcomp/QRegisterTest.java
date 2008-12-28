@@ -36,77 +36,64 @@ public class QRegisterTest {
     }
 
     @Test
-    public void testMeasurement() {
-        int results[] = new int[4];
-        QRegister[] b = {
-            QRegister.ket(0, 2),
-            QRegister.ket(1, 2),
-            QRegister.ket(2, 2),
-            QRegister.ket(3, 2)
-        };
-        for (int i = 0; i < 1000; i++) {
-            QRegister reg = new QRegister(cx(0.5, 0), cx(0, 0.5), cx(-0.5, 0), cx(
-                    0, -0.5));
-
-            reg = reg.normalize();
-            reg = reg.measure();
-            for (int j = 0; j < 4; j++) {
-                if (b[j].equals(reg)) {
-                    results[j]++;
-                }
-            }
-        }
-        for (int i = 0; i < results.length; i++) {
-            System.out.println(b[i].dirac() + ": " + results[i]);
-        }
+    public void testComparator() {
+        QRegister a = QRegister.ket(1, 1); // |1>
+        QRegister b = new QRegister(cx(0), cx(1));
+        assertEquals(a,b);
+        b = new QRegister(cx(0), cx(0,1));
+        assertFalse(a.equals(b));
+        b = new QRegister(cx(0+MoreMath.epsilon*2), cx(1));
+        assertFalse(a.equals(b));
     }
 
 
-    @Test
-    public void test2() {
-        println("*** test2");
 
-        ElementaryQGate gate1 = new Custom(new Complex[][]{
-                    {cx(1), cx(0)}, {cx(0), cx(1)}});
+
+    @Test
+    public void testGateOperations() {
+
+        ElementaryQGate gate1 = new Hadamard();
 
         ElementaryQGate gate2 = new Custom(new Complex[][]{
-                    {cx(1), cx(1)}, {cx(0), cx(-1)}});
+                    {cx(0,1), cx(0)},
+                    {cx(0), cx(-1,0)}});
+
+        ElementaryQGate gate3 = new Custom(new Complex[][]{
+                    {cx(-1,0), cx(0)},
+                    {cx(0), cx(0,-1)}});
+
+        
+        ElementaryQGate zero = new Custom(new Complex[][]{ //zero doesn't have inverse
+            {cx(0), cx(0)},
+            {cx(0), cx(0)}
+        });
+
+        assertTrue( MoreMath.isNearNumber(gate2.determinant(),  cx(-1,0)));
+        assertTrue( MoreMath.isNearNumber(gate1.determinant(),  cx(-1,0)));
+
+        QGate product = new Custom(new Complex[][]{
+                    {cx(0,-1), cx(0)},
+                    {cx(0), cx(0,1)}});
+
+        assertEquals(product, gate2.mul(gate3));
+        
 
         QRegister register1 = new QRegister(new Complex[]{cx(1), cx(1)});
 
         QRegister register2 = new QRegister(new Complex[]{cx(-1), cx(0)});
 
-        println("gate1:\n" + gate1);
-        println("gate2:\n" + gate2);
-        println("======================================");
-        println("add:\n" + gate1.add(gate2));
-        println("sub:\n" + gate1.sub(gate2));
-        println("mul:\n" + gate1.mul(gate2));
-        println("======================================");
-        println("gate1.trace():\n" + gate1.trace());
-        println("gate1.determinant():\n" + gate1.determinant());
-        println("gate1.transpose():\n" + gate1.transpose());
-        println("gate1.inverse():\n" + gate1.inverse());
-        println("======================================");
-        println("register1:\n" + register1);
-        println("register2:\n" + register2);
-        println("======================================");
-        println("gate2.mul(register1):\n" + gate2.mul(register1));
-        println("gate2.mul(register2):\n" + gate2.mul(register2));
-        println("gate1.mul(register2):\n" + gate1.mul(register2));
-        println("======================================");
-        println("test2 done.");
+     
     }
 
     @Test
     public void test3() {
-        println("*** test3");
+
 
         ElementaryQGate someGate1 = new Custom(new Complex[][]{
                     {cx(1), cx(0)}, {cx(0), cx(1)}});
 
         ElementaryQGate someGate2 = new Custom(new Complex[][]{
-                    {cx(-1), cx(1)}, {cx(-1), cx(0)}});
+                    {cx(-1), cx(0)}, {cx(0), cx(1)}});
 
         QCircuit circuit1 = null;
         try {
@@ -118,9 +105,6 @@ public class QRegisterTest {
         } catch (WrongSizeException ex) {
             /* DO NOTHING, exception is correct */
         }
-
-
-        println("circuit1:\n" + circuit1);
     }
 
     @Test

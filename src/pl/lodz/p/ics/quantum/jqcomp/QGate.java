@@ -6,13 +6,15 @@ import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
 abstract public class QGate implements Stage {
-
+    
   	/**
 	 * number of qubits this gates operates on
 	 */
 	protected int size;
 
 	abstract public ComplexMatrix getMatrix();
+
+   
 
     public int getSize() {
         return size;
@@ -69,6 +71,36 @@ abstract public class QGate implements Stage {
 	public String toString() {
 		return getMatrix().toString();
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final QGate other = (QGate) obj;
+        if (this.size != other.size) {
+            return false;
+        }
+
+        if (MoreMath.isNearMatrix(this.getMatrix(), other.getMatrix()));
+        return true;
+    }
+
+
+
+
+    /**
+     * Check if matrix is unitary.
+     * @return true if matrix is unitary.
+     */
+    public boolean isUnitary() {
+        ComplexMatrix inverse = this.getMatrix().inverse();
+        ComplexMatrix conjugate = MoreMath.ConjugateTranspose(this.getMatrix());
+        return MoreMath.isNearMatrix(inverse, conjugate);
+    }
 
 	/*
 	 * troche dziwnie to by�o tam napisane je�eli mamy zamiar zmienia� stan

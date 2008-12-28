@@ -74,22 +74,9 @@ public class QRegister {
 
     @Override
 	public final boolean equals(Object other) {
-  /*      if (other instanceof QRegister) {
-                return matrix.equals(((QRegister)other).matrix);
-    } */
         if (! (other instanceof QRegister )) return false;
         ComplexMatrix otherMatrix = ((QRegister)other).matrix;
-        if (matrix.getNumberOfColumns()!= otherMatrix.getNumberOfColumns())
-            return false;
-        if (matrix.getNumberOfRows() != otherMatrix.getNumberOfRows())
-            return false;
-        for (int i=0;i<matrix.getNumberOfRows();i++)
-            for (int j=0;j<matrix.getNumberOfColumns();j++) {
-                // MoreMath.epsilon - tolerance
-                if (!matrix.get(i, j).equals(otherMatrix.get(i, j), MoreMath.epsilon))
-                    return false;
-            }
-        return true;
+        return MoreMath.isNearMatrix(this.matrix, otherMatrix);
 	}
 
 /**
