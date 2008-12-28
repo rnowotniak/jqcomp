@@ -6,9 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.CompoundQGate;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.ElementaryQGate;
+import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 
 /**
  *
@@ -144,31 +142,18 @@ public class QRegisterTest {
             cx(0), cx(0), cx(0), cx(-1.0000000002, 0)}});
         cm = cm.transpose();
         QRegister f = new QRegister(cm);
-//        System.out.println(f.dirac());
         assertEquals("-1.0|1111>", f.dirac()); // or -1 * |1111> ?
     }
 
     @Test
     public void testMeasure2() {
-        int ones = 0;
-        int zeros = 0;
-        for (int i = 0; i < 3; i++) {
-            QRegister rr = new QRegister(cx(0, 0.25), cx(0.1, 0), cx(0.1, 0), cx(0.1, 0), cx(0.1), cx(0.5, 0),
-                    cx(0, -0.3), cx(0.4, 0));
-            rr.normalize();
-
-            QRegister ret = rr.measure(0, 1, 2);
-            if (ret.equals(QRegister.ket(0, 1))) {
-                zeros++;
-            } else if (ret.equals(QRegister.ket(1, 1))) {
-                ones++;
-            }
-            System.out.println("Returned " + ret.dirac());
-            System.out.println("this is " + rr);
-        }
-
-
-
+        QRegister a = QRegister.ket(0, 3);
+        QGate had4 = new Hadamard(3);
+        a = had4.compute(a);
+        ProbabilityTester pt = new ProbabilityTester();
+        for (int i=0;i<8;i++)
+            pt.addExpected(QRegister.ket(i, 3).dirac(),1.0/8);
+         pt.test(a);
     }
 
     public void println(Object str) {
