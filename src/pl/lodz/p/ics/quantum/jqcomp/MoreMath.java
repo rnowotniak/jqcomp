@@ -7,13 +7,17 @@ import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
 public class MoreMath {
-	
-	static public final double epsilon = 1e-7;
 
+    /** A very small positive number */
+	static public final double epsilon = 1e-7;
 
     /**
      * Compares two matrices.
-     * @return 
+     * @param a complex matrix
+     * @param b complex matrix
+     * @return true if both matrices have equal number of rows and columns and
+     * difference between the corresponding entries is lesser than epsilon;
+     * otherwise returns false
      */
     static public boolean isNearMatrix(ComplexMatrix a, ComplexMatrix b) {
         if (a.getNumberOfColumns()!= b.getNumberOfColumns())
@@ -90,6 +94,11 @@ public class MoreMath {
 		return Math.abs(x)<epsilon;
 	}
 
+    /**
+     * @param x
+     * @param y
+     * @return true if the distance between x and y is lesser than epsilon
+     */
     static public boolean isNearNumber(double x, double y) {
         return Math.abs(x-y) < epsilon;
     }

@@ -44,6 +44,12 @@ public class QRegisterTest {
         assertFalse(a.equals(b));
         b = new QRegister(cx(0+MoreMath.epsilon*2), cx(1));
         assertFalse(a.equals(b));
+
+        QGate x = new Custom(new Complex[][]{
+                    {cx(1,0), cx(0)},
+                    {cx(0), cx(1)}});
+        QGate y = new Identity(1);
+        assertEquals(x,y);
     }
 
 
@@ -62,13 +68,20 @@ public class QRegisterTest {
                     {cx(-1,0), cx(0)},
                     {cx(0), cx(0,-1)}});
 
+        ElementaryQGate gate4 = new Custom(new Complex[][]{
+                    {cx(0), cx(0)},
+                    {cx(0,1), cx(0,0)}});
+
+        ElementaryQGate gate4T = new Custom(new Complex[][]{
+                    {cx(0), cx(0,1)},
+                    {cx(0,0), cx(0,0)}});
         
-        ElementaryQGate zero = new Custom(new Complex[][]{ //zero doesn't have inverse
+        ElementaryQGate zero = new Custom(new Complex[][]{ 
             {cx(0), cx(0)},
             {cx(0), cx(0)}
         });
         
-        QGate ident = new Identity(2);
+        QGate ident = new Identity(1);
 
         assertTrue( MoreMath.isNearNumber(gate2.determinant(),  cx(0,-1))); // -i
         assertTrue( MoreMath.isNearNumber(gate1.determinant(),  cx(-1,0)));
@@ -82,7 +95,28 @@ public class QRegisterTest {
         // checking identity: G*I = I*G = G
         assertEquals(gate1, ident.mul(gate1));
         assertEquals(gate1, gate1.mul(ident));
- 
+
+        assertTrue( MoreMath.isNearNumber(gate2.trace(), cx(-1,1)));
+        assertTrue( MoreMath.isNearNumber(gate1.trace(), Complex.ZERO));
+
+        QGate sum = new Custom(new Complex[][]{
+            {cx(-1,1), cx(0)},
+            {cx(0), cx(-1,-1)}
+        });
+
+        assertEquals(sum, gate3.add(gate2).add(zero));
+        assertEquals(sum, zero.add(gate2).add(gate3));
+        assertEquals(gate1.inverse(), gate1);
+        assertEquals(zero, gate3.mul(cx(0)));
+
+        ElementaryQGate gate3minus4 = new Custom(new Complex[][]{
+                    {cx(-1,0), cx(0)},
+                    {cx(0,-1), cx(0,-1)}});
+
+        assertEquals(gate3minus4, gate3.sub(gate4));
+        assertEquals(gate3, gate3.sub(zero));
+
+        assertEquals(gate4T, gate4.transpose());
     }
 
     @Test

@@ -81,16 +81,12 @@ abstract public class QGate implements Stage {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
         final QGate other = (QGate) obj;
         if (this.size != other.size) {
             return false;
         }
-
-        if (MoreMath.isNearMatrix(this.getMatrix(), other.getMatrix()));
-        return true;
+        if (MoreMath.isNearMatrix(this.getMatrix(), other.getMatrix())) return true;
+        return false;
     }
 
 
