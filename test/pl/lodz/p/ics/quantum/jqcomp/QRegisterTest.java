@@ -67,8 +67,10 @@ public class QRegisterTest {
             {cx(0), cx(0)},
             {cx(0), cx(0)}
         });
+        
+        QGate ident = new Identity(2);
 
-        assertTrue( MoreMath.isNearNumber(gate2.determinant(),  cx(-1,0)));
+        assertTrue( MoreMath.isNearNumber(gate2.determinant(),  cx(0,-1))); // -i
         assertTrue( MoreMath.isNearNumber(gate1.determinant(),  cx(-1,0)));
 
         QGate product = new Custom(new Complex[][]{
@@ -77,12 +79,10 @@ public class QRegisterTest {
 
         assertEquals(product, gate2.mul(gate3));
         
-
-        QRegister register1 = new QRegister(new Complex[]{cx(1), cx(1)});
-
-        QRegister register2 = new QRegister(new Complex[]{cx(-1), cx(0)});
-
-     
+        // checking identity: G*I = I*G = G
+        assertEquals(gate1, ident.mul(gate1));
+        assertEquals(gate1, gate1.mul(ident));
+ 
     }
 
     @Test

@@ -3,7 +3,7 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
+import pl.lodz.p.ics.quantum.jqcomp.qgates.Custom;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import org.jscience.mathematics.vector.ComplexVector;
@@ -132,9 +132,9 @@ public class QRegister {
 	/** Computer the outer product.
      @param that
      */
-	public final ComplexMatrix outer(QRegister that) {
-		// may raise DimensionException
-		return this.matrix.times(that.matrix.transpose());
+	public final QGate outer(QRegister that) {
+		
+		return new Custom(this.matrix.times(that.matrix.transpose()));
 	}
 
 	/** Set [1, 0, 0, ..., 0] */

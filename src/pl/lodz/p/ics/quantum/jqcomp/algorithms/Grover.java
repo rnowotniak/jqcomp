@@ -31,10 +31,10 @@ public class Grover {
         }
         init = new QRegister(initArray);
         QRegister w0 = QRegister.ket(search, dim);
-        QGate A = new Custom(w0.outer(w0).times(Complex.valueOf(2.0,0)));
+        QGate A = w0.outer(w0).mul(Complex.valueOf(2.0,0));
      
         A = new Identity(dim).sub(A);
-        QGate B = new Custom(init.outer(init).times(Complex.valueOf(2.0,0))) ;
+        QGate B = init.outer(init).mul(Complex.valueOf(2.0,0)) ;
   
         B = B.sub(new Identity(dim));
     

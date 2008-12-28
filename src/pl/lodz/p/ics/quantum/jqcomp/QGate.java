@@ -39,6 +39,10 @@ abstract public class QGate implements Stage {
 		return new Custom(arg.getMatrix().times(this.getMatrix()));
 	}
 
+    public QGate mul(Complex z) {
+        return new Custom(getMatrix().times(z));
+    }
+
 	public QGate add(QGate other) {
 		return new Custom(getMatrix().plus(other.getMatrix()));
 	}
