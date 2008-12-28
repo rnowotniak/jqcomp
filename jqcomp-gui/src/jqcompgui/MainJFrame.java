@@ -498,7 +498,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setLeftComponent(jDesktopPane1);
 
         outputJTextArea.setColumns(20);
-        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13)); // NOI18N
+        outputJTextArea.setFont(new java.awt.Font("Monospaced", 1, 13));
         outputJTextArea.setRows(4);
         jScrollPane1.setViewportView(outputJTextArea);
 
@@ -805,34 +805,52 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
-        if (getSelectedQCircuitJInternalFrame() == null) {
+//        if (getSelectedQCircuitJInternalFrame() == null) {
+//            return;
+//        }
+//        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().setCurrentStage(0);
+//        //getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
+
+        QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
+        if(f == null) {
             return;
         }
-        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().setCurrentStage(0);
-        //getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
+
+        f.getExecutionMonitor().reset();
+
         writeMsg("Quantum circuit state reset to initial value");
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
-        if (getSelectedQCircuitJInternalFrame() == null) {
+        QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
+        if(f == null) {
             return;
         }
-        QCircuitJPanel qcjp = getSelectedQCircuitJInternalFrame().getQCircuitJPanel();
-        if (qcjp.getCurrentStage() == qcjp.getQCircuit().getStages().size()) {
-            return;
+
+        f.showExecutionInfoJDialog(this);
+
+        ExecutionMonitor m = f.getExecutionMonitor();
+        if(!m.isStepExecuting()) {
+            m.reset();
+            m.startStepExecution(getInputRegister());
         }
-        qcjp.setCurrentStage(qcjp.getCurrentStage() + 1);
+
+        if(m.nextStep()) {
+            
+        } else {
+
+        }
+        
+//        QCircuitJPanel qcjp = f.getQCircuitJPanel();
+//        if (qcjp.getCurrentStage() == qcjp.getQCircuit().getStages().size()) {
+//            return;
+//        }
+//
+//        qcjp.setCurrentStage(qcjp.getCurrentStage() + 1);
         //qcjp.repaint();
     }//GEN-LAST:event_stepJButtonActionPerformed
 
-//    private QGateInfoJDialog infoFrame = null;
-//    private QGateInfoJDialog getInfoFrame() {
-//        if(infoFrame == null) {
-//            infoFrame = new QGateInfoJDialog();
-//        }
-//
-//        return infoFrame;
-//    }
+
 
     private void doQGateAddDialog(QGate gate, ImageIcon icon) {
         QGateInfoJDialog f = new QGateInfoJDialog(this, true);
@@ -852,8 +870,7 @@ public class MainJFrame extends javax.swing.JFrame {
         f.setMaxRow(maxRow - gate.getSize());
         f.setGate(gate);
         f.setIcon(icon);
-        f.setVisible(true);
-        
+        f.setVisible(true);       
 
         writeMsg("Koniec");
         System.out.println("Koniec dialogu");
@@ -1037,11 +1054,13 @@ public class MainJFrame extends javax.swing.JFrame {
         for (int i = 0; i < 4; i++) {
             QRegister cbits = QRegister.ket(i, 2);
             input = cbits.tensor(EPR);
+            setInputRegister(input);
             writeMsg("input: " + cbits.dirac() + "    output: " + qc.compute(input).dirac());
         }
 
     }//GEN-LAST:event_SuperdenseJMenuItemActionPerformed
 
+    
     private void minimizeAllWindowsJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeAllWindowsJMenuItemActionPerformed
         for (JInternalFrame f : jDesktopPane1.getAllFrames()) {
             try {
@@ -1169,7 +1188,14 @@ public class MainJFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_removeQubitJButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
+        if(f == null) {
+            return;
+        }
+
+        ExecutionMonitor m = f.getExecutionMonitor();
+        m.reset();
+        //QRegister result = m.compute(reg);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void addRow(QCircuit qc) {
@@ -1245,6 +1271,19 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
     }
+
+
+
+    public void setInputRegister(QRegister reg) {
+        this.inputRegister = reg;
+    }
+
+    public QRegister getInputRegister() {
+        return this.inputRegister;
+    }
+
+    private QRegister inputRegister = null;
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem SuperdenseJMenuItem;

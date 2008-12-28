@@ -8,6 +8,10 @@ package jqcompgui;
 
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
+import java.util.EventObject;
+import javax.swing.event.*;
+import java.awt.event.*;
+
 
 /**
  *
@@ -35,7 +39,56 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
                 new Integer(id).toString(), title));
 
         getQCircuit().addStage(new Identity());
+
+        monitor.stepChangedEvent().add(new Listener<EventObject>() {
+            public void invoked(EventObject e) {
+                getQCircuitJPanel().setCurrentStage(monitor.getCurrentStep());
+            }
+        });
+
+        this.addInternalFrameListener(new InternalFrameAdapter() {
+            public void internalFrameClosed(InternalFrameEvent e) {
+                closeExecutionInfoJDialog();
+            }
+        });
     }
+
+    public void showExecutionInfoJDialog(java.awt.Frame owner) {
+        if(executionInfoJDialog == null) {
+            executionInfoJDialog = new ExecutionInfoJDialog(owner, getExecutionMonitor());
+            executionInfoJDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            executionInfoJDialog.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent e) {
+                    executionInfoJDialog = null;
+                }
+            });
+        }
+
+        executionInfoJDialog.setVisible(true);
+    }
+
+    public void hideExecutionInfoJDialog() {
+        closeExecutionInfoJDialog();
+        //executionInfoJDialog.setVisible(false);
+    }
+
+    public boolean isExecutionInfoJDialogVisible() {
+        if(executionInfoJDialog != null) {
+            return executionInfoJDialog.isVisible();
+        }
+
+        return false;
+    }
+
+    public void closeExecutionInfoJDialog() {
+        if(executionInfoJDialog != null) {
+            executionInfoJDialog.setVisible(false);
+            executionInfoJDialog.dispose();
+            executionInfoJDialog = null;
+        }
+    }
+
+    private ExecutionInfoJDialog executionInfoJDialog = null;
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -97,6 +150,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
      */
     public void setQCircuit(QCircuit qcircuit) {
         qCircuitJPanel.setQCircuit(qcircuit);
+        getExecutionMonitor().setQCircuit(qcircuit);
     }
 
     /**
@@ -127,10 +181,23 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
         this.qCircuitJPanel = qCircuitJPanel;
     }
 
+    /**
+     * @return the monitor
+     */
+    public ExecutionMonitor getExecutionMonitor() {
+        return monitor;
+    }
+
+    
+
+    private final ExecutionMonitor monitor = new ExecutionMonitor();
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private jqcompgui.QCircuitJPanel qCircuitJPanel;
     // End of variables declaration//GEN-END:variables
+
+   
 
 }

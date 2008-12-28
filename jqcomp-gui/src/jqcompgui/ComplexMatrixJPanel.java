@@ -209,7 +209,6 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         return modified;
     }
 
-   
 
     private ComplexMatrix getMatrixFromFields() {
         Complex[][] marr = new Complex[ntbs.length][ntbs[0].length];
@@ -326,9 +325,18 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        for(int i = 0; i < ntbs.length; i++) {
+            for(int j = 0; j < ntbs[0].length; j++) {
+                ntbs[i][j].setEnabled(enabled);
+            }
+        }
+    }
+
     private int[] columnWidths = new int[0];
     private ComplexJPanel[][] ntbs = new ComplexJPanel[0][0];
-    //private Dimension ntbSize = new Dimension(200, 20);
 
     private ComplexMatrix matrix = null;
     private boolean changedOne = false;
@@ -352,11 +360,11 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+            .addGap(0, 109, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 113, Short.MAX_VALUE)
+            .addGap(0, 106, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
    

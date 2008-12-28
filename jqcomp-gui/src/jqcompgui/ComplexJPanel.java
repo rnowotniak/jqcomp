@@ -35,8 +35,8 @@ public class ComplexJPanel extends javax.swing.JPanel {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            JTextField t1 = getTxt1();
-            JTextField t2 = getTxt2();
+            JTextField t1 = getTxtRe();
+            JTextField t2 = getTxtIm();
 
             FontMetrics metrics = g.getFontMetrics();
 
@@ -70,42 +70,42 @@ public class ComplexJPanel extends javax.swing.JPanel {
             }
         };
 
-        getTxt1().addComponentListener(cl);
-        getTxt1().setBorder(BorderFactory.createEmptyBorder());
+        getTxtRe().addComponentListener(cl);
+        getTxtRe().setBorder(BorderFactory.createEmptyBorder());
 
-        getTxt2().addComponentListener(cl);
-        getTxt2().setBorder(BorderFactory.createEmptyBorder());
+        getTxtIm().addComponentListener(cl);
+        getTxtIm().setBorder(BorderFactory.createEmptyBorder());
 
-        add(getTxt1());
-        add(getTxt2());
+        add(getTxtRe());
+        add(getTxtIm());
     }
 
     private void alignControls() {
         // offset index
         int oi = showImaginary ? 1 : 0;
 
-        JTextField t1 = getTxt1();
-        JTextField t2 = getTxt2();
+        JTextField re = getTxtRe();
+        JTextField im = getTxtIm();
 
-        t1.setLocation(leftOffset[oi], topOffset[oi]);
-        Dimension pref1 = t1.getPreferredSize();
-        t1.setSize(pref1.width + 1, pref1.height);
+        re.setLocation(leftOffset[oi], topOffset[oi]);
+        Dimension pref1 = re.getPreferredSize();
+        re.setSize(pref1.width + 1, pref1.height);
 
-        t2.setVisible(showImaginary);
-        t2.setLocation(t1.getX() + t1.getWidth()
+        im.setVisible(showImaginary);
+        im.setLocation(re.getX() + re.getWidth()
                 + betweenOffset[oi], topOffset[oi]);
-        Dimension pref2 = t2.getPreferredSize();
-        t2.setSize(pref2.width + 1, pref2.height);
+        Dimension pref2 = im.getPreferredSize();
+        im.setSize(pref2.width + 1, pref2.height);
        
         Dimension d;
         if(showImaginary) {
             d = new Dimension(
-                t2.getX() + t2.getWidth() + rightOffset[oi],
-                t2.getY() + t2.getHeight() + bottomOffset[oi]);
+                im.getX() + im.getWidth() + rightOffset[oi],
+                im.getY() + im.getHeight() + bottomOffset[oi]);
         } else {
             d = new Dimension(
-                t1.getX() + t1.getWidth() + rightOffset[oi],
-                t2.getY() + t1.getHeight() + bottomOffset[oi]);
+                re.getX() + re.getWidth() + rightOffset[oi],
+                im.getY() + re.getHeight() + bottomOffset[oi]);
         }
 
         this.setPreferredSize(d);
@@ -113,28 +113,28 @@ public class ComplexJPanel extends javax.swing.JPanel {
     }
 
     private void updateColors() {
-        getTxt1().setBackground(this.getBackground());
-        getTxt1().setForeground(this.getForeground());
+        getTxtRe().setBackground(this.getBackground());
+        getTxtRe().setForeground(this.getForeground());
 
-        getTxt2().setBackground(this.getBackground());
-        getTxt2().setForeground(this.getForeground());
+        getTxtIm().setBackground(this.getBackground());
+        getTxtIm().setForeground(this.getForeground());
     }
 
     public double getReal() {
-        return getTxt1().getValue(0.0d);
+        return getTxtRe().getValue(0.0d);
     }
 
     public void setReal(double real) {
-        getTxt1().setValue(real);
+        getTxtRe().setValue(real);
         alignControls();
     }
 
     public double getImaginary() {
-        return getTxt2().getValue(0.0d);
+        return getTxtIm().getValue(0.0d);
     }
 
     public void setImaginary(double imaginary) {
-        getTxt2().setValue(imaginary);
+        getTxtIm().setValue(imaginary);
         alignControls();
     }
 
@@ -143,8 +143,8 @@ public class ComplexJPanel extends javax.swing.JPanel {
     }
 
     public void setValue(Complex complex) {
-        getTxt1().setValue(complex.getReal());
-        getTxt2().setValue(complex.getImaginary());
+        getTxtRe().setValue(complex.getReal());
+        getTxtIm().setValue(complex.getImaginary());
         alignControls();
     }
 
@@ -160,33 +160,33 @@ public class ComplexJPanel extends javax.swing.JPanel {
         updateColors();
     }
 
-//    @Override
-//    public void setFont(Font font) {
-//
-//    }
-
-
+    @Override
+    public void setFont(Font font) {
+        super.setFont(font);
+        getTxtRe().setFont(font);
+        getTxtIm().setFont(font);
+    }
 
      /**
-     * @return the txt1
+     * @return the txtRe
      */
-    protected NumericJTextField getTxt1() {
-        if(txt1 == null) {
-            txt1 = new NumericJTextField();
+    protected NumericJTextField getTxtRe() {
+        if(txtRe == null) {
+            txtRe = new NumericJTextField();
         }
 
-        return txt1;
+        return txtRe;
     }
 
     /**
-     * @return the txt2
+     * @return the txtIm
      */
-    protected NumericJTextField getTxt2() {
-        if(txt2 == null) {
-            txt2 = new NumericJTextField();
+    protected NumericJTextField getTxtIm() {
+        if(txtIm == null) {
+            txtIm = new NumericJTextField();
         }
 
-        return txt2;
+        return txtIm;
     }
 
     /**
@@ -205,9 +205,17 @@ public class ComplexJPanel extends javax.swing.JPanel {
             alignControls();
         }
     }
+   
+   
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        getTxtRe().setEnabled(enabled);
+        getTxtIm().setEnabled(enabled);
+    }
 
-    private NumericJTextField txt1 = null;
-    private NumericJTextField txt2 = null;
+    private NumericJTextField txtRe = null;
+    private NumericJTextField txtIm = null;
     private boolean showImaginary = true;
 
     // {hideImaginary, showImaginary}
@@ -238,9 +246,6 @@ public class ComplexJPanel extends javax.swing.JPanel {
             .addGap(0, 42, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    
- 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

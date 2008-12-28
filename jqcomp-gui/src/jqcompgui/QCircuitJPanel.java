@@ -29,6 +29,8 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.Swap;
  */
 public class QCircuitJPanel extends javax.swing.JPanel {
 
+    //public static interface ExecutionStateListener
+
     private QCircuit qcircuit = new QCircuit();
     private int currentStage;
     private Stage selectedStage;
