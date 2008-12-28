@@ -366,4 +366,8 @@ public class QRegister {
 	public ComplexMatrix getMatrix() {
 		return matrix;
 	}
+
+    public int getSize() {
+        return size;
+    }
 }

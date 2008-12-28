@@ -37,6 +37,7 @@ public class ExecutionMonitor {
      * @return the result register
      */
     public synchronized QRegister compute(QRegister reg) {
+        check(reg);
         // don't assume the QCircuit.compute copies passed register
         inputRegister = new QRegister(reg);
         currentRegister = reg; // will be equal to inputRegister all the time
@@ -57,8 +58,11 @@ public class ExecutionMonitor {
         }
 
         if(circuit.getStages().size() == 0) {
-            throw new ExecutionMonitorException("Cannot execute an empty circuit");
+            resultRegister = inputRegister;
+            return;
         }
+
+        check(reg);
 
         inputRegister = new QRegister(reg);
         currentRegister = reg; // will be equal to inputRegister all the time
@@ -94,6 +98,13 @@ public class ExecutionMonitor {
         setCurrentStep(getCurrentStep() + 1);
 
         return true;
+    }
+
+    private void check(QRegister reg) {
+        if(circuit.getStages().get(0).getSize() != reg.getSize()) {
+            throw new ExecutionMonitorException(
+                    "The provided quantum register and current circuit differ in size");
+        }
     }
 
     /**

@@ -831,14 +831,19 @@ public class MainJFrame extends javax.swing.JFrame {
 
         ExecutionMonitor m = f.getExecutionMonitor();
         if(!m.isStepExecuting()) {
-            m.reset();
-            m.startStepExecution(getInputRegister());
-        }
-
-        if(m.nextStep()) {
+            QRegister input = getInputRegister();
+            if(input == null) {
+                return;
+            }
             
+            m.reset();
+            try {
+                m.startStepExecution(input);
+            } catch(ExecutionMonitorException e) {
+                writeMsg(e.getMessage());
+            }
         } else {
-
+            m.nextStep();
         }
         
 //        QCircuitJPanel qcjp = f.getQCircuitJPanel();
