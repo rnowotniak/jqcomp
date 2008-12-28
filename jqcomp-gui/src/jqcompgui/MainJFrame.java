@@ -1289,8 +1289,6 @@ public class MainJFrame extends javax.swing.JFrame {
         });
     }
 
-
-
     public void setInputRegister(QRegister reg) {
         this.inputRegister = reg;
     }

@@ -48,6 +48,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
 
         monitor.stateChangedEvent().add(new Listener<EventObject>() {
             public void invoked(EventObject e) {
+                System.out.println("INVOKED");
                 ExecutionMonitor m = (ExecutionMonitor)e.getSource();
                 switch(m.getState()) {
                     case ExecutionMonitor.EXECUTED_STATE:
@@ -111,8 +112,12 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
         }
     }
 
-    public void writeMsg(String msg) {
-        MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
+    public void writeMsg(final String msg) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+                MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
+//            }
+//        });
     }
 
     private ExecutionInfoJDialog executionInfoJDialog = null;
