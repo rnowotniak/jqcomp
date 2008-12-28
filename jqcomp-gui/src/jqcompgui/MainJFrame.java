@@ -227,6 +227,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         writeMsg("Quantum Computer Simulator started");
 
+
         
     }
 
@@ -1198,10 +1199,16 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
 
-        ExecutionMonitor m = f.getExecutionMonitor();
-        m.reset();
-        //QRegister result = m.compute(reg);
+        QRegister input = getInputRegister();
+        if(input != null) {
+            ExecutionMonitor m = f.getExecutionMonitor();
+            m.reset();
+            QRegister result = m.compute(input);
+            writeMsgSelected("output: " + result.dirac());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+
 
     private void addRow(QCircuit qc) {
         for(int i = 0; i < qc.getStages().size(); i++) {
@@ -1259,6 +1266,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void setStatus(String msg) {
         statusBarJLabel.setText(msg);
+    }
+
+    private void writeMsgSelected(String msg) {
+        writeMsg("[" + getSelectedQCircuitJInternalFrame().getTitle() + "]: " + msg);
     }
 
     public void writeMsg(String msg) {
