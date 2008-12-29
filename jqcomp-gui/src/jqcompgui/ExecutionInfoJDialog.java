@@ -73,14 +73,55 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         }
     };
 
+    private Listener<EventObject> stateChangedListener
+            = new Listener<EventObject>() {
+        public void invoked(EventObject e) {
+            ExecutionMonitor m = (ExecutionMonitor)e.getSource();
+            switch(m.getState()) {
+                case ExecutionMonitor.EXECUTED_STATE:
+                    displayAll(m);
+                    setStateMessage("");
+                    break;
+
+                case ExecutionMonitor.STEP_EXECUTION_STATE:
+                    displayAll(m);
+                    break;
+
+                case ExecutionMonitor.INITIAL_STATE:
+                    displayAll(m);
+                    break;
+            }
+        }
+    };
+
+    private void setStateMessage(String state) {
+
+    }
+
     private void update() {
         stepChanged();
     }
 
     private void stepChanged() {
-        displayRegister(inputJTextField, monitor.getInputRegister());
-        displayRegister(currentJTextField, monitor.getCurrentRegister());
-        displayRegister(resultJTextField, monitor.getResultRegister());
+        displayAll(monitor);
+    }
+
+    private void displayAll(ExecutionMonitor m) {
+        displayInput(m.getInputRegister());
+        displayCurrent(m.getCurrentRegister());
+        displayResult(m.getResultRegister());
+    }
+
+    private void displayInput(QRegister r) {
+        displayRegister(inputJTextField, r);
+    }
+
+    private void displayCurrent(QRegister r) {
+        displayRegister(currentJTextField, r);
+    }
+
+    private void displayResult(QRegister r) {
+        displayRegister(resultJTextField, r);
     }
 
     private void displayRegister(JTextField f, QRegister r) {
@@ -243,16 +284,8 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void runJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runJButtonActionPerformed
-        if(monitor.isInExecutedState()) {
-            monitor.reset();
-        }
-
-        if(monitor.isInInitialState()) {
-            QRegister reg = getInputRegister();
-            if(reg == null) {
-                return;
-            }
-
+        QRegister reg = getInputRegister();
+        if(reg != null) {
             monitor.compute(reg);
         }
     }//GEN-LAST:event_runJButtonActionPerformed

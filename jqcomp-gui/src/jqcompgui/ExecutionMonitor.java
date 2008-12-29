@@ -38,6 +38,7 @@ public class ExecutionMonitor {
      */
     public synchronized QRegister compute(QRegister reg) {
         check(reg);
+        reset();
         // don't assume the QCircuit.compute copies passed register
         inputRegister = new QRegister(reg);
         currentRegister = reg; // will be equal to inputRegister all the time
@@ -168,15 +169,26 @@ public class ExecutionMonitor {
         return circuit;
     }
 
+    public synchronized String getQCircuitName() {
+        return name;
+    }
+
     /**
      * method may call reset
      * @param circuit the circuit to set
+     * @param name the circuit name
      */
-    public synchronized void setQCircuit(QCircuit circuit) {
+    public synchronized void setQCircuit(QCircuit circuit, String name) {
         if(this.circuit != circuit) {
             reset();
             //QCircuit prev = this.circuit;
             this.circuit = circuit;
+            if(name == null) {
+                this.name = "";
+            } else {
+                this.name = name;
+            }
+
             circuitChangedInvoker.invoke(new EventObject(this));
         }
     }
@@ -222,6 +234,7 @@ public class ExecutionMonitor {
     }
 
     private QCircuit circuit = null;
+    private String name = "";
 
     private int state;
     private int currentStep;    

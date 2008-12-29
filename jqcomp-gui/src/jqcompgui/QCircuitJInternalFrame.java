@@ -48,19 +48,19 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
 
         monitor.stateChangedEvent().add(new Listener<EventObject>() {
             public void invoked(EventObject e) {
-                System.out.println("INVOKED");
                 ExecutionMonitor m = (ExecutionMonitor)e.getSource();
                 switch(m.getState()) {
                     case ExecutionMonitor.EXECUTED_STATE:
-                        writeMsg("executed - output: " + m.getResultRegister().dirac());
+                        writeMsg("Executed\n  input: " + m.getInputRegister().dirac()
+                               + "\n  output: " + m.getResultRegister().dirac());
                         break;
 
                     case ExecutionMonitor.STEP_EXECUTION_STATE:
-                        writeMsg("started step execution...");
+                        writeMsg("Started step execution...");
                         break;
 
                     case ExecutionMonitor.INITIAL_STATE:
-                        writeMsg("reset to the initial state.");
+                        writeMsg("Quantum circuit state reset to initial value.");
                         break;
 
                     default:
@@ -113,11 +113,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
     }
 
     public void writeMsg(final String msg) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-                MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
-//            }
-//        });
+        MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
     }
 
     private ExecutionInfoJDialog executionInfoJDialog = null;
@@ -182,7 +178,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
      */
     public void setQCircuit(QCircuit qcircuit) {
         qCircuitJPanel.setQCircuit(qcircuit);
-        getExecutionMonitor().setQCircuit(qcircuit);
+        getExecutionMonitor().setQCircuit(qcircuit, getTitle());
     }
 
     /**

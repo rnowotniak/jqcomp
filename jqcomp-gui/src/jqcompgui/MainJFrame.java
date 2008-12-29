@@ -221,6 +221,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
     /** Creates new form MainJFrame */
     private MainJFrame() {
+        
+        assert(instance == null);
+
         initComponents();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -809,20 +812,10 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
-//        if (getSelectedQCircuitJInternalFrame() == null) {
-//            return;
-//        }
-//        getSelectedQCircuitJInternalFrame().getQCircuitJPanel().setCurrentStage(0);
-//        //getSelectedQCircuitJInternalFrame().getQCircuitJPanel().repaint();
-
         QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
-        if(f == null) {
-            return;
+        if(f != null) {
+            f.getExecutionMonitor().reset();
         }
-
-        f.getExecutionMonitor().reset();
-
-        writeMsg("Quantum circuit state reset to initial value");
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
@@ -849,14 +842,6 @@ public class MainJFrame extends javax.swing.JFrame {
         } else {
             m.nextStep();
         }
-        
-//        QCircuitJPanel qcjp = f.getQCircuitJPanel();
-//        if (qcjp.getCurrentStage() == qcjp.getQCircuit().getStages().size()) {
-//            return;
-//        }
-//
-//        qcjp.setCurrentStage(qcjp.getCurrentStage() + 1);
-        //qcjp.repaint();
     }//GEN-LAST:event_stepJButtonActionPerformed
 
 
@@ -1205,9 +1190,7 @@ public class MainJFrame extends javax.swing.JFrame {
         QRegister input = getInputRegister();
         if(input != null) {
             ExecutionMonitor m = f.getExecutionMonitor();
-            m.reset();
-            QRegister result = m.compute(input);
-            writeMsgSelected("output: " + result.dirac());
+            m.compute(input);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1284,7 +1267,7 @@ public class MainJFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainJFrame().setVisible(true);
+                getInstance().setVisible(true);
             }
         });
     }
