@@ -17,7 +17,7 @@ public class Measurement implements Stage {
      */
     public Measurement(int size)
     {
-        this.qubits = new int[3];
+        this.qubits = new int[size];
         for (int i=0;i<size;i++) {
             qubits[i]=i;
         }

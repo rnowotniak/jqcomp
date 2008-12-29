@@ -95,8 +95,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private class AddSwapGateAction extends AddGateAction {
         public AddSwapGateAction() {
-            super("Swap");//, new ImageIcon(MainJFrame.this.getClass().getResource(
-                    //"/jqcompgui/img/swap_icon.png")));
+            super("Swap", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/swap_icon.png")));
         }
         
         @Override
@@ -173,8 +173,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private class AddFredkinGateAction extends AddGateAction {
         public AddFredkinGateAction() {
-            super("Fredkin");//, new ImageIcon(MainJFrame.this.getClass().getResource(
-                    //"/jqcompgui/img/fredkin_icon.png")));
+            super("Fredkin", new ImageIcon(MainJFrame.this.getClass().getResource(
+                    "/jqcompgui/img/fredkin_icon.png")));
         }
 
         @Override

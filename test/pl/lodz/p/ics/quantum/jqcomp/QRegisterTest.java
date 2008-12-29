@@ -5,6 +5,7 @@ import org.jscience.mathematics.vector.ComplexMatrix;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import pl.lodz.p.ics.quantum.jqcomp.algorithms.Grover;
 import static org.junit.Assert.*;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 
@@ -172,6 +173,22 @@ public class QRegisterTest {
         for (int i=0;i<8;i++)
             pt.addExpected(QRegister.ket(i, 3).dirac(),1.0/8);
          pt.test(a);
+         pt.checkExpected(); // may fail
+    }
+
+    private void grover(int size, int n, String expected) {
+        Grover g = new Grover(size,n);
+        ProbabilityTester pt = new ProbabilityTester();
+        pt.test(g.init, g.circuit);
+        pt.compareMode(expected);
+    }
+
+    @Test
+    public void testGrover() {
+        grover(8,3,"|011>");
+        grover(8,4,"|100>");
+        grover(16,0,"|0000>");
+        grover(32,16,"|10000>");
     }
 
     public void println(Object str) {

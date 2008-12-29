@@ -24,7 +24,7 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.Swap;
 
 
 /**
- *
+ * Quantum circuit rendering.
  * @author rob
  */
 public class QCircuitJPanel extends javax.swing.JPanel {

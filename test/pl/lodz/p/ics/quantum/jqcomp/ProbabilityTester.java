@@ -34,6 +34,8 @@ public class ProbabilityTester {
         Integer hits = measured.get(res);
         if (hits!=null)
              measured.put(res, hits+1);
+        else
+            measured.put(res,1);
     }
 
     private void resetCounter() {
@@ -42,19 +44,44 @@ public class ProbabilityTester {
         }
     }
 
-    public boolean test(QRegister arg){
+    public void test(QRegister arg){
         resetCounter();
         for (int i=0;i<iterations;i++){
             QRegister qr = new QRegister(arg);
             String result = qr.measure().dirac();
             addMeasured(result);
         }
+    }
+
+    public void test(QRegister init, QCircuit circuit) {
+
+        resetCounter();
+        for (int i=0;i<iterations;i++){
+            QRegister qr = new QRegister(init);
+            QRegister output = circuit.compute(qr);
+            String result = output.measure().dirac();
+            addMeasured(result);
+        }
+    }
+
+    public void checkExpected() {
         for (String s : expected.keySet()) {
             double prob = measured.get(s)*1.0 / iterations;
             if (Math.abs(expected.get(s)-prob) > tolerance) 
                 fail("Measurement result "+s+" probability "+prob+" (expected: "+expected.get(s)+")");
         }
-        return true;
+    }
+
+    public void compareMode(String expectedMode) {
+        int max = -1;
+        String mode = "";
+        for (String s: measured.keySet()) {
+            if (measured.get(s) > max) {
+                max = measured.get(s);
+                mode = s;
+            }
+        }
+        if (!expectedMode.equals(mode)) fail("Most frequent result is "+mode+" (expected: "+expectedMode+")");
     }
     
 }
