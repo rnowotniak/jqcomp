@@ -34,6 +34,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     private QCircuit qcircuit = new QCircuit();
     private int currentStage;
     private Stage selectedStage;
+    private int selectedStageIndex;
     private Color backgroundColor = Color.WHITE;
     private Color currentStageColor = Color.RED;
     private Color selectedStageColor = Color.YELLOW;
@@ -322,7 +323,12 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         return selectedStage;
     }
 
+    public int getSelectedStageIndex() {
+        return selectedStageIndex;
+    }
+
     public void setSelectedStage(int index) {
+        selectedStageIndex = index;
         if(index < 0) {
             setSelectedStage(null);
         } else {

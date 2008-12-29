@@ -942,10 +942,12 @@ public class MainJFrame extends javax.swing.JFrame {
         if (qif == null) {
             return;
         }
-        Stage selected = qif.getQCircuitJPanel().getSelectedStage();
-        if (selected == null) {
+
+        int selected = qif.getQCircuitJPanel().getSelectedStageIndex();
+        if (selected < 0) {
             return;
         }
+        
         qif.getQCircuit().getStages().remove(selected);
         repaint();
 }//GEN-LAST:event_removeJButtonActionPerformed

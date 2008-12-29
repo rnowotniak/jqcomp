@@ -148,7 +148,7 @@ public class MonitoredList<E> extends ArrayList<E> {
     @Override
     public boolean remove(Object o) {
         int i = indexOf(o);
-        if(i > 0) {
+        if(i > -1) {
             remove(i);
             return true;
         }
