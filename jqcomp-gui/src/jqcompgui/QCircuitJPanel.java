@@ -146,10 +146,11 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                     ystep - 10 + gi * ystep - 5 + 15);
         } else if (gate instanceof CNot) {
             CNot cnot = (CNot) gate;
+            int visibleSize = Math.abs(cnot.getControl()-cnot.getTarget());
             int x1 = x_offset + xstep + si * xstep;
             int y1 = ystep + gi * ystep - 5;
-            int y2 = y1 + ystep * (gate.getSize() - 1);
-            if (cnot.getControl() == 1) {
+            int y2 = y1 + ystep * visibleSize;
+            if (cnot.getControl() > cnot.getTarget()) {
                 g.fillOval(x1 - 5, y1 - 5, 10, 10);
                 g.setColor(backgroundColor);
                 g.fillOval(x1 - 5, y2 - 5, 10, 10);
@@ -164,6 +165,7 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                 g.drawLine(x1 - 5, y1, x1 + 5, y1);
                 g.fillOval(x1 - 5, y2 - 5, 10, 10);
             }
+
             g.drawLine(x1, y1 - 5, x1, y2 + 5);
         } else if (gate instanceof Swap) {
             if (qcircuit.getStages().get(si) == selectedStage) {

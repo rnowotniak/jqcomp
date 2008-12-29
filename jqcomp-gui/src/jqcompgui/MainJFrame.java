@@ -920,6 +920,9 @@ public class MainJFrame extends javax.swing.JFrame {
         }
 
         QGate[] gates = new QGate[size];
+        // ***
+        qubit = size - qubit -1;
+        // ***
         gates[qubit] = gate;
         for(int i = 0; i < gates.length; i++) {
             if(i != qubit) {
