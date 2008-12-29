@@ -37,6 +37,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         setExecutionMonitor(monitor);
 
         this.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosed(WindowEvent e) {
                 setExecutionMonitor(null);
             }
@@ -81,6 +82,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
             if(this.monitor != null) {
                 setStateMessage(null);
+   
                 this.monitor.stepChangedEvent().add(stepChangedListener);
                 this.monitor.circuitChangedEvent().add(circuitChangedListener);
                 this.monitor.stateChangedEvent().add(stateChangedListener);
@@ -103,7 +105,6 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
     private Listener stateChangedListener = new Listener() {
         public void invoked(EventObject e) {
-            System.out.println("hehe");
             ExecutionMonitor m = (ExecutionMonitor)e.getSource();
             switch(m.getState()) {
                 case ExecutionMonitor.EXECUTED_STATE:

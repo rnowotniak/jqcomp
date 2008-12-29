@@ -14,18 +14,19 @@ public class QCircuit {
     }
 
     public QCircuit(Stage[] stages) throws WrongSizeException {
-        Integer size = null;
-        for (Stage s : stages) {
-            if (size == null) {
-                size = s.getSize();
-                continue;
-            }
-            if (size != s.getSize()) {
-                throw new WrongSizeException(
-                        "All stages in circuit must have same size.");
-            }
-        }
-        this.stages = new ArrayList<Stage>(Arrays.asList(stages));
+//        Integer size = null;
+//        for (Stage s : stages) {
+//            if (size == null) {
+//                size = s.getSize();
+//                continue;
+//            }
+//            if (size != s.getSize()) {
+//                throw new WrongSizeException(
+//                        "All stages in circuit must have same size.");
+//            }
+//        }
+
+        this.stages = new StageList(stages);
     }
 
     public QRegister compute(QRegister register) {
@@ -45,18 +46,18 @@ public class QCircuit {
     }
 
     public void addStage(Stage s) throws WrongSizeException {
-        if (stages.size() > 0 && stages.get(0).getSize() != s.getSize()) {
-            throw new WrongSizeException(
-                    "All stages in circuit must have same size.");
-        }
+//        if (stages.size() > 0 && stages.get(0).getSize() != s.getSize()) {
+//            throw new WrongSizeException(
+//                    "All stages in circuit must have same size.");
+//        }
         stages.add(s);
     }
 
     public void addStage(int index, Stage s) throws WrongSizeException {
-        if (stages.size() > 0 && stages.get(0).getSize() != s.getSize()) {
-            throw new WrongSizeException(
-                    "All stages in circuit must have same size.");
-        }
+//        if (stages.size() > 0 && stages.get(0).getSize() != s.getSize()) {
+//            throw new WrongSizeException(
+//                    "All stages in circuit must have same size.");
+//        }
         stages.add(index, s);
     }
 
