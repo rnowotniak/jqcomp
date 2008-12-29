@@ -77,6 +77,13 @@ public class QCircuit {
     }
 
 
+    public int getStageSize() {
+        if(stages.size() > 0) {
+            stages.get(0).getSize();
+        }
+
+        return -1;
+    }
 
     /**
      * @return the stages

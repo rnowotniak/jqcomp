@@ -35,14 +35,8 @@ public class NumericJTextField extends JTextField
             }
         });
 
-        this.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                textChanged();
-            }
-            public void removeUpdate(DocumentEvent e) {
-                textChanged();
-            }
-            public void insertUpdate(DocumentEvent e) {
+        EventHelper.addTextChanged(this, new Listener<EventArgs>() {
+            public void invoked(EventArgs e) {
                 textChanged();
             }
         });
@@ -56,14 +50,14 @@ public class NumericJTextField extends JTextField
             return true;
         }
 
-        if(c == '.') {
+        if(c == '.' && floatingEnabled) {
             String text = getText();
             if(text.length() != 0 && !text.contains(".")) {
                 return true;
             }
         }
 
-        if(c == '-' || c == '+') {
+        if((c == '-' && negativeEnabled) || c == '+') {
             String text = getText();
             if(text.length() == 0
                || Character.toLowerCase(text.charAt(text.length() - 1)) == 'e') {
@@ -83,46 +77,30 @@ public class NumericJTextField extends JTextField
 
     private void textChanged() {
         if(isSizeAsText()) {
-            Dimension d = getPreferredSize();
-            setSize(d);
-//            if(d.width < 50) { // inaczej nie widać kursora
-//                d = new Dimension(50, d.height);
-//            }
-
-//            System.out.println("aligning to text");
-//            final Dimension df = d;
-////            EventQueue.invokeLater(new Runnable() {
-////                public void run() {
-//                    setSize(df);
-////                }
-////            });
+            setSize(getPreferredSize());
         }
     }
 
     public double getValue()
     {
-        try
-        {
-            return Double.parseDouble(getText().trim());
-        }
-        catch(Exception e)
-        {
-            setText(Double.toString(def));
-            return def;
-        }
+        return getValue(def);
     }
 
     public double getValue(double def)
     {
         try
         {
-            return Double.parseDouble(getText().trim());
+            double val = Double.parseDouble(getText().trim());
+            if(!(!negativeEnabled && val < 0)
+                && !(!floatingEnabled && val != ((double)(int)val)))
+            {
+                return val;
+            }
         }
-        catch(Exception e)
-        {
-            setText(Double.toString(def));
-            return def;
-        }
+        catch(Exception e) { }
+
+        setText(Double.toString(def));
+        return def;
     }
 
     public void setValue(double value)
@@ -158,8 +136,37 @@ public class NumericJTextField extends JTextField
         this.def = def;
     }
 
+    /**
+     * @return the floatingEnabled
+     */
+    public boolean isFloatingEnabled() {
+        return floatingEnabled;
+    }
+
+    /**
+     * @param floatingEnabled the floatingEnabled to set
+     */
+    public void setFloatingEnabled(boolean floatingEnabled) {
+        this.floatingEnabled = floatingEnabled;
+    }
+
+    /**
+     * @return the negativeEnabled
+     */
+    public boolean isNegativeEnabled() {
+        return negativeEnabled;
+    }
+
+    /**
+     * @param negativeEnabled the negativeEnabled to set
+     */
+    public void setNegativeEnabled(boolean negativeEnabled) {
+        this.negativeEnabled = negativeEnabled;
+    }
+
     private double def = 0;
     private boolean sizeAsText = true;
 
-    
+    private boolean floatingEnabled = true;
+    private boolean negativeEnabled = true;
 }

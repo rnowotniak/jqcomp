@@ -13,6 +13,7 @@ package jqcompgui;
 
 import java.util.EventObject;
 import java.awt.event.*;
+import java.awt.*;
 import javax.swing.event.*;
 import javax.swing.*;
 
@@ -29,8 +30,9 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     public ExecutionInfoJDialog(java.awt.Frame parent, ExecutionMonitor monitor) {
         super(parent, false);        
         initComponents();
-
         inputDecJTextField.setSizeAsText(false);
+        inputDecJTextField.setNegativeEnabled(false);
+        inputDecJTextField.setFloatingEnabled(false);
 
         setExecutionMonitor(monitor);
 
@@ -39,6 +41,22 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 setExecutionMonitor(null);
             }
         });
+    }
+
+    private void update() {
+        stepChanged();
+        updateInputRegister();
+    }
+
+    private void updateInputRegister() {
+        QRegister reg = getInputRegister();
+        if(reg != null) {
+            monitor.setInputRegister(reg);
+        }
+    }
+
+    private void stepChanged() {
+        displayAll(monitor);
     }
 
     /**
@@ -55,59 +73,67 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         if(this.monitor != monitor) {
             if(this.monitor != null) {
                 this.monitor.stepChangedEvent().remove(stepChangedListener);
+                this.monitor.circuitChangedEvent().remove(circuitChangedListener);
+                this.monitor.stateChangedEvent().remove(stateChangedListener);
             }
             
             this.monitor = monitor;
 
-            if(monitor != null) {
-                monitor.stepChangedEvent().add(stepChangedListener);
+            if(this.monitor != null) {
+                setStateMessage(null);
+                this.monitor.stepChangedEvent().add(stepChangedListener);
+                this.monitor.circuitChangedEvent().add(circuitChangedListener);
+                this.monitor.stateChangedEvent().add(stateChangedListener);
                 update();
             }
         }
     }
 
-    private Listener<EventObject> stepChangedListener
-            = new Listener<EventObject>() {
+    private Listener stepChangedListener = new Listener() {
         public void invoked(EventObject e) {
             stepChanged();
         }
     };
 
-    private Listener<EventObject> stateChangedListener
-            = new Listener<EventObject>() {
+    private Listener circuitChangedListener = new Listener() {
         public void invoked(EventObject e) {
+            updateInputRegister();
+        }
+    };
+
+    private Listener stateChangedListener = new Listener() {
+        public void invoked(EventObject e) {
+            System.out.println("hehe");
             ExecutionMonitor m = (ExecutionMonitor)e.getSource();
             switch(m.getState()) {
                 case ExecutionMonitor.EXECUTED_STATE:
                     displayAll(m);
-                    setStateMessage("");
+                    setStateMessage("executed.");
                     break;
 
                 case ExecutionMonitor.STEP_EXECUTION_STATE:
                     displayAll(m);
+                    setStateMessage("step execution...");
                     break;
 
                 case ExecutionMonitor.INITIAL_STATE:
                     displayAll(m);
+                    setStateMessage("");
                     break;
             }
         }
     };
 
     private void setStateMessage(String state) {
-
-    }
-
-    private void update() {
-        stepChanged();
-    }
-
-    private void stepChanged() {
-        displayAll(monitor);
+        if(state != null && !state.equals("")) {
+            setTitle(monitor.getQCircuitName() + " - " + state);
+        } else {
+            setTitle(monitor.getQCircuitName());
+        }
     }
 
     private void displayAll(ExecutionMonitor m) {
-        displayInput(m.getInputRegister());
+        displayInput(m.getCurrentInputRegister());
         displayCurrent(m.getCurrentRegister());
         displayResult(m.getResultRegister());
     }
@@ -149,6 +175,10 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         return QRegister.ket((int)dval, qubits);
     }
 
+    private void writeMsg(String msg) {
+        MainJFrame.getInstance().writeMsg(msg, monitor.getQCircuitName());
+    }
+
     private ExecutionMonitor monitor;
 
     /** This method is called from within the constructor to
@@ -175,11 +205,19 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        currentJTextField.setEditable(false);
+        currentJTextField.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
         jLabel1.setText("Current:");
 
         jLabel2.setText("Input:");
 
+        inputJTextField.setEditable(false);
+        inputJTextField.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+
         jLabel3.setText("Result:");
+
+        resultJTextField.setEditable(false);
 
         stepJButton.setText("Next Step");
         stepJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -263,20 +301,16 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
-        if(monitor.isInExecutedState()) {
-            monitor.reset();
-        }
-
-        if(monitor.isInInitialState()) {
-            QRegister reg = getInputRegister();
-            if(reg == null) {
-                return;
+        try {
+            if(monitor.isStepExecuting()) {
+                monitor.nextStep();
+            } else {
+                updateInputRegister();
+                monitor.startStepExecution();
             }
-
-            monitor.startStepExecution(reg);
+        } catch(ExecutionMonitorException e) {
+            writeMsg(e.getMessage());
         }
-
-        monitor.nextStep();
     }//GEN-LAST:event_stepJButtonActionPerformed
 
     private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
@@ -284,9 +318,11 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void runJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runJButtonActionPerformed
-        QRegister reg = getInputRegister();
-        if(reg != null) {
-            monitor.compute(reg);
+        try {
+            updateInputRegister();
+            monitor.compute();
+        } catch(ExecutionMonitorException e) {
+            writeMsg(e.getMessage());
         }
     }//GEN-LAST:event_runJButtonActionPerformed
 

@@ -819,6 +819,30 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void stepJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepJButtonActionPerformed
+//        QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
+//        if(f == null) {
+//            return;
+//        }
+//
+//        f.showExecutionInfoJDialog(this);
+//
+//        ExecutionMonitor m = f.getExecutionMonitor();
+//        if(!m.isStepExecuting()) {
+//            QRegister input = getInputRegister();
+//            if(input == null) {
+//                return;
+//            }
+//
+//            m.reset();
+//            try {
+//                m.startStepExecution(input);
+//            } catch(ExecutionMonitorException e) {
+//                writeMsg(e.getMessage());
+//            }
+//        } else {
+//            m.nextStep();
+//        }
+
         QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
         if(f == null) {
             return;
@@ -827,20 +851,10 @@ public class MainJFrame extends javax.swing.JFrame {
         f.showExecutionInfoJDialog(this);
 
         ExecutionMonitor m = f.getExecutionMonitor();
-        if(!m.isStepExecuting()) {
-            QRegister input = getInputRegister();
-            if(input == null) {
-                return;
-            }
-            
-            m.reset();
-            try {
-                m.startStepExecution(input);
-            } catch(ExecutionMonitorException e) {
-                writeMsg(e.getMessage());
-            }
-        } else {
-            m.nextStep();
+        try {
+            m.cyclicNextStep();
+        } catch(ExecutionMonitorException e) {
+            writeMsg(e.getMessage());
         }
     }//GEN-LAST:event_stepJButtonActionPerformed
 
@@ -1183,14 +1197,12 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         QCircuitJInternalFrame f = getSelectedQCircuitJInternalFrame();
-        if(f == null) {
-            return;
-        }
-
-        QRegister input = getInputRegister();
-        if(input != null) {
-            ExecutionMonitor m = f.getExecutionMonitor();
-            m.compute(input);
+        if(f != null) {
+            try {
+                f.getExecutionMonitor().compute();
+            } catch (ExecutionMonitorException e) {
+                writeMsg(e.getMessage());
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1248,16 +1260,13 @@ public class MainJFrame extends javax.swing.JFrame {
         return true;
     }
 
-    private void setStatus(String msg) {
+    public void writeMsg(String msg) {
+        outputJTextArea.append(msg + "\n");
         statusBarJLabel.setText(msg);
     }
 
-    private void writeMsgSelected(String msg) {
-        writeMsg("[" + getSelectedQCircuitJInternalFrame().getTitle() + "] " + msg);
-    }
-
-    public void writeMsg(String msg) {
-        outputJTextArea.append(msg + "\n");
+    public void writeMsg(String msg, String qCiruitName) {
+        outputJTextArea.append("[" + qCiruitName + "] " + msg + "\n");
         statusBarJLabel.setText(msg);
     }
 

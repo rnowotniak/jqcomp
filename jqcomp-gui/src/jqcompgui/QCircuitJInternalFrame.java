@@ -51,7 +51,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
                 ExecutionMonitor m = (ExecutionMonitor)e.getSource();
                 switch(m.getState()) {
                     case ExecutionMonitor.EXECUTED_STATE:
-                        writeMsg("Executed\n  input: " + m.getInputRegister().dirac()
+                        writeMsg("Executed\n  input: " + m.getCurrentInputRegister().dirac()
                                + "\n  output: " + m.getResultRegister().dirac());
                         break;
 
@@ -113,7 +113,7 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
     }
 
     public void writeMsg(final String msg) {
-        MainJFrame.getInstance().writeMsg("[" + getTitle() + "] " + msg);
+        MainJFrame.getInstance().writeMsg(msg, getTitle());
     }
 
     private ExecutionInfoJDialog executionInfoJDialog = null;

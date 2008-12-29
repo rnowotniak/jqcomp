@@ -7,6 +7,7 @@ package jqcompgui;
 
 import pl.lodz.p.ics.quantum.jqcomp.*;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
+import java.awt.event.ActionEvent;
 
 /**
  *

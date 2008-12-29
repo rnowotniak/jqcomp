@@ -19,11 +19,12 @@ public class ExecutionMonitor {
     }
 
     /**
-     * resets the execution to the initial state
+     * Resets the execution to the initial state
      */
     public synchronized void reset() {
         if(getState() != INITIAL_STATE) {
-            inputRegister = null;
+            // don't reset inputRegister
+            currentInputRegister = null;
             currentRegister = null;
             resultRegister = null;
             setCurrentStep(0);
@@ -32,50 +33,68 @@ public class ExecutionMonitor {
     }
 
     /**
-     * computes specified quantum register instantly
+     * Computes specified quantum register instantly
      * @param reg the register to be computed
      * @return the result register
+     * @throws ExecutionMonitorException
      */
     public synchronized QRegister compute(QRegister reg) {
         check(reg);
         reset();
         // don't assume the QCircuit.compute copies passed register
-        inputRegister = new QRegister(reg);
-        currentRegister = reg; // will be equal to inputRegister all the time
+        currentInputRegister = new QRegister(reg);
+        inputRegister = currentInputRegister;
+        currentRegister = null; // not used
         resultRegister = circuit.compute(reg);
         setState(EXECUTED_STATE);
         return getResultRegister();
     }
 
     /**
-     * starts step execution using the specified quantum register,
-     * to advance the execution call nextStep method
+     * Computes inputRegister instantly
+     * @return the result register
+     * @throws ExecutionMonitorException
+     */
+    public synchronized QRegister compute() {
+        return compute(inputRegister);
+    }
+
+    /**
+     * Starts step execution using the specified quantum register.
+     * To advance the execution call nextStep method.
      * @param reg the register to be computed
      * @throws ExecutionMonitorException
      */
     public synchronized void startStepExecution(QRegister reg) {
-        if(getState() != INITIAL_STATE) {
-            throw new ExecutionMonitorException("ExcecutionMonitor needs to be in the INITLAL_STATE");
-        }
-
         if(circuit.getStages().size() == 0) {
-            resultRegister = inputRegister;
+            resultRegister = currentInputRegister;
             return;
         }
 
         check(reg);
+        reset();
 
-        inputRegister = new QRegister(reg);
-        currentRegister = reg; // will be equal to inputRegister all the time
+        currentInputRegister = new QRegister(reg);
+        currentRegister = reg; // will be equal to currentInputRegister all the time
         resultRegister = null;
         setCurrentStep(0);
         setState(STEP_EXECUTION_STATE);
     }
 
     /**
-     * advances the pending execution to the next step, usable only if the
+     * Starts step execution using the inputRegister.
+     * To advance the execution call nextStep method.
+     * @throws ExecutionMonitorException
+     */
+    public synchronized void startStepExecution() {
+        startStepExecution(inputRegister);
+    }
+
+    /**
+     * Advances the pending execution to the next step, usable only if the
      * execution monitor is in STEP_EXECUTION_STATE
      * @return true if execution is not finished; false otherwise
+     * @throws ExecutionMonitorException
      */
     public synchronized boolean nextStep() {
         if(getState() != STEP_EXECUTION_STATE) {
@@ -100,7 +119,25 @@ public class ExecutionMonitor {
         return true;
     }
 
+    /**
+     * Same as nextStep, but calls startStepExecution when necessary.
+     * Works only if inputRegister is set.
+     * @throws ExecutionMonitorException
+     */
+    public synchronized void cyclicNextStep() {
+        if(isStepExecuting()) {
+            nextStep();
+        } else {
+            startStepExecution();
+        }
+    }
+
     private void check(QRegister reg) {
+        if(reg == null) {
+            throw new ExecutionMonitorException(
+                    "There is no input register to compute");
+        }
+
         if(circuit.getStages().get(0).getSize() != reg.getSize()) {
             throw new ExecutionMonitorException(
                     "The provided quantum register and current circuit differ in size");
@@ -132,10 +169,34 @@ public class ExecutionMonitor {
     }
 
     /**
+     * The register that has been used to compute outputRegister and/or currentRegister
+     * Note: currentInputRegister may differ from inputRegister
+     * @return the currentInputRegister
+     */
+    public synchronized QRegister getCurrentInputRegister() {
+        return currentInputRegister;
+    }
+
+    /**
+     * The register that will be used as currentInputRegister in next
+     * call to compute() or startStepExecution().
+     * This register, unlike currentInputRegister, is preserved during call to reset.
+     * Note: currentInputRegister may differ from inputRegister
      * @return the inputRegister
      */
     public synchronized QRegister getInputRegister() {
         return inputRegister;
+    }
+
+    /**
+     * The register that will be used as currentInputRegister in next
+     * call to compute() or startStepExecution().
+     * This register, unlike currentInputRegister, is preserved during call to reset.
+     * Note: currentInputRegister may differ from inputRegister
+     * @param inputRegister the register to set
+     */
+    public synchronized void setInputRegister(QRegister inputRegister) {
+        this.inputRegister = inputRegister;
     }
 
     /**
@@ -169,6 +230,10 @@ public class ExecutionMonitor {
         return circuit;
     }
 
+    /**
+     * 
+     * @return current quantum circuit name
+     */
     public synchronized String getQCircuitName() {
         return name;
     }
@@ -239,8 +304,9 @@ public class ExecutionMonitor {
     private int state;
     private int currentStep;    
     private QRegister currentRegister;
-    private QRegister inputRegister;
+    private QRegister currentInputRegister;
     private QRegister resultRegister;
+    private QRegister inputRegister;
 
     public static final int INITIAL_STATE = 0;
     public static final int EXECUTED_STATE = 1;
