@@ -281,22 +281,22 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         quitJMenuItem = new javax.swing.JMenuItem();
         quantumGatesJMenu = new javax.swing.JMenu();
-        jmiHadamard = new javax.swing.JMenuItem();
-        jtmCNot = new javax.swing.JMenuItem();
-        jtmNot = new javax.swing.JMenuItem();
-        jtmPhaseShift = new javax.swing.JMenuItem();
-        jmiSwap = new javax.swing.JMenuItem();
-        jtmToffoli = new javax.swing.JMenuItem();
-        jmiFredkin = new javax.swing.JMenuItem();
+        hadamardJMenuItem = new javax.swing.JMenuItem();
+        cnotJMenuItem = new javax.swing.JMenuItem();
+        notJMenuItem = new javax.swing.JMenuItem();
+        phaseShiftJMenuItem = new javax.swing.JMenuItem();
+        swapJMenuItem = new javax.swing.JMenuItem();
+        toffoliJMenuItem = new javax.swing.JMenuItem();
+        fredkinJMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
-        jMenuItem16 = new javax.swing.JMenuItem();
+        customQGateJMenuItem = new javax.swing.JMenuItem();
         algorithmsJMenu = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         SuperdenseJMenuItem = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         entanglementAlgorithmJMenuItem = new javax.swing.JMenuItem();
         settingsJMenu = new javax.swing.JMenu();
-        chkHideImaginary = new javax.swing.JCheckBoxMenuItem();
+        hdeImaginaryJCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         windowsJMenu = new javax.swing.JMenu();
         closeAllWindowsJMenuItem = new javax.swing.JMenuItem();
         minimizeAllWindowsJMenuItem = new javax.swing.JMenuItem();
@@ -464,7 +464,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(addQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(removeQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(removeQubitJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,37 +565,38 @@ public class MainJFrame extends javax.swing.JFrame {
 
         quantumGatesJMenu.setText("Quantum Gates");
 
-        jmiHadamard.setAction(hadamardAction);
-        jmiHadamard.setText("Hadamard");
-        quantumGatesJMenu.add(jmiHadamard);
+        hadamardJMenuItem.setAction(hadamardAction);
+        hadamardJMenuItem.setText("Hadamard");
+        quantumGatesJMenu.add(hadamardJMenuItem);
 
-        jtmCNot.setAction(cNotAction);
-        jtmCNot.setText("CNot");
-        quantumGatesJMenu.add(jtmCNot);
+        cnotJMenuItem.setAction(cNotAction);
+        cnotJMenuItem.setText("CNot");
+        quantumGatesJMenu.add(cnotJMenuItem);
 
-        jtmNot.setAction(notAction);
-        jtmNot.setText("Not");
-        quantumGatesJMenu.add(jtmNot);
+        notJMenuItem.setAction(notAction);
+        notJMenuItem.setText("Not");
+        quantumGatesJMenu.add(notJMenuItem);
 
-        jtmPhaseShift.setAction(phaseShiftAction);
-        jtmPhaseShift.setText("Phase Shift");
-        quantumGatesJMenu.add(jtmPhaseShift);
+        phaseShiftJMenuItem.setAction(phaseShiftAction);
+        phaseShiftJMenuItem.setText("Phase Shift");
+        quantumGatesJMenu.add(phaseShiftJMenuItem);
 
-        jmiSwap.setAction(swapAction);
-        jmiSwap.setText("Swap");
-        quantumGatesJMenu.add(jmiSwap);
+        swapJMenuItem.setAction(swapAction);
+        swapJMenuItem.setText("Swap");
+        quantumGatesJMenu.add(swapJMenuItem);
 
-        jtmToffoli.setAction(toffoliAction);
-        jtmToffoli.setText("Toffoli");
-        quantumGatesJMenu.add(jtmToffoli);
+        toffoliJMenuItem.setAction(toffoliAction);
+        toffoliJMenuItem.setText("Toffoli");
+        quantumGatesJMenu.add(toffoliJMenuItem);
 
-        jmiFredkin.setAction(fredkinAction);
-        quantumGatesJMenu.add(jmiFredkin);
+        fredkinJMenuItem.setAction(fredkinAction);
+        fredkinJMenuItem.setText("Fredkin");
+        quantumGatesJMenu.add(fredkinJMenuItem);
         quantumGatesJMenu.add(jSeparator2);
 
-        jMenuItem16.setAction(customAction);
-        jMenuItem16.setText("Custom quantum gate");
-        quantumGatesJMenu.add(jMenuItem16);
+        customQGateJMenuItem.setAction(customAction);
+        customQGateJMenuItem.setText("Custom quantum gate");
+        quantumGatesJMenu.add(customQGateJMenuItem);
 
         jMenuBar1.add(quantumGatesJMenu);
 
@@ -627,9 +628,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
         settingsJMenu.setText("Settings");
 
-        chkHideImaginary.setSelected(true);
-        chkHideImaginary.setText("Hide imaginary components");
-        settingsJMenu.add(chkHideImaginary);
+        hdeImaginaryJCheckBoxMenuItem.setSelected(true);
+        hdeImaginaryJCheckBoxMenuItem.setText("Hide imaginary components");
+        settingsJMenu.add(hdeImaginaryJCheckBoxMenuItem);
 
         jMenuBar1.add(settingsJMenu);
 
@@ -704,7 +705,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                     .addComponent(leftJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusBarJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -934,7 +935,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     public boolean isShowImaginary() {
-        return !chkHideImaginary.isSelected();
+        return !hdeImaginaryJCheckBoxMenuItem.isSelected();
     }
 
     private void hadamardJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hadamardJButtonActionPerformed
@@ -1301,12 +1302,16 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton addQubitJButton;
     private javax.swing.JMenu algorithmsJMenu;
     private javax.swing.JButton backwardJButton;
-    private javax.swing.JCheckBoxMenuItem chkHideImaginary;
     private javax.swing.JMenuItem closeAllWindowsJMenuItem;
+    private javax.swing.JMenuItem cnotJMenuItem;
+    private javax.swing.JMenuItem customQGateJMenuItem;
     private javax.swing.JMenuItem entanglementAlgorithmJMenuItem;
     private javax.swing.JMenu fileJMenu;
     private javax.swing.JButton forwardJButton;
+    private javax.swing.JMenuItem fredkinJMenuItem;
     private javax.swing.JButton hadamardJButton;
+    private javax.swing.JMenuItem hadamardJMenuItem;
+    private javax.swing.JCheckBoxMenuItem hdeImaginaryJCheckBoxMenuItem;
     private javax.swing.JMenuItem helpContentsJMenuItem;
     private javax.swing.JMenu helpJMenu;
     private javax.swing.JButton jButton2;
@@ -1318,7 +1323,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -1329,19 +1333,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JMenuItem jmiFredkin;
-    private javax.swing.JMenuItem jmiHadamard;
-    private javax.swing.JMenuItem jmiSwap;
-    private javax.swing.JMenuItem jtmCNot;
-    private javax.swing.JMenuItem jtmNot;
-    private javax.swing.JMenuItem jtmPhaseShift;
-    private javax.swing.JMenuItem jtmToffoli;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem loadJMenuItem;
     private javax.swing.JMenuItem minimizeAllWindowsJMenuItem;
     private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
     private javax.swing.JButton notJButton;
+    private javax.swing.JMenuItem notJMenuItem;
     private javax.swing.JTextArea outputJTextArea;
+    private javax.swing.JMenuItem phaseShiftJMenuItem;
     private javax.swing.JMenu quantumGatesJMenu;
     private javax.swing.JMenuItem quitJMenuItem;
     private javax.swing.JButton removeJButton;
@@ -1352,6 +1351,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel statusBarJLabel;
     private javax.swing.JPanel statusBarJPanel;
     private javax.swing.JButton stepJButton;
+    private javax.swing.JMenuItem swapJMenuItem;
+    private javax.swing.JMenuItem toffoliJMenuItem;
     private javax.swing.JMenu windowsJMenu;
     private javax.swing.JButton zoomInJButton;
     private javax.swing.JButton zoomOutJButton;

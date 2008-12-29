@@ -20,22 +20,22 @@ public class PhaseShiftOptionsJPanel extends javax.swing.JPanel {
     /** Creates new form PhaseShiftOptionsJPanel */
     public PhaseShiftOptionsJPanel() {
         initComponents();
-        txtAngle.setDef(Math.PI / 2);
+        angleNumericJTextField.setDef(Math.PI / 2);
     }
 
     public double getAngle() {
-        if(chkRadians.isSelected()) {
-            return txtAngle.getValue();
+        if(radiansJCheckBox.isSelected()) {
+            return angleNumericJTextField.getValue();
         } else {
-            return txtAngle.getValue() * 180.0d / Math.PI;
+            return angleNumericJTextField.getValue() * 180.0d / Math.PI;
         }
     }
 
     public void setAngle(double angle) {
-        if(chkRadians.isSelected()) {
-            txtAngle.setValue(angle);
+        if(radiansJCheckBox.isSelected()) {
+            angleNumericJTextField.setValue(angle);
         } else {
-            txtAngle.setValue(angle * Math.PI / 180.0d);
+            angleNumericJTextField.setValue(angle * Math.PI / 180.0d);
         }
     }
 
@@ -48,14 +48,24 @@ public class PhaseShiftOptionsJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtAngle = new jqcompgui.NumericJTextField();
-        chkRadians = new javax.swing.JCheckBox();
+        angleNumericJTextField = new jqcompgui.NumericJTextField();
+        radiansJCheckBox = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
 
-        txtAngle.setText("0.0");
+        angleNumericJTextField.setText("0.0");
+        angleNumericJTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                angleNumericJTextFieldActionPerformed(evt);
+            }
+        });
 
-        chkRadians.setSelected(true);
-        chkRadians.setText("radians");
+        radiansJCheckBox.setSelected(true);
+        radiansJCheckBox.setText("radians");
+        radiansJCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radiansJCheckBoxActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Angle:");
 
@@ -67,25 +77,33 @@ public class PhaseShiftOptionsJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtAngle, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .addComponent(angleNumericJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(chkRadians)
+                .addComponent(radiansJCheckBox)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel1)
-                .addComponent(txtAngle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(chkRadians))
+                .addComponent(angleNumericJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(radiansJCheckBox))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void radiansJCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiansJCheckBoxActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_radiansJCheckBoxActionPerformed
+
+    private void angleNumericJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_angleNumericJTextFieldActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_angleNumericJTextFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox chkRadians;
+    private jqcompgui.NumericJTextField angleNumericJTextField;
     private javax.swing.JLabel jLabel1;
-    private jqcompgui.NumericJTextField txtAngle;
+    private javax.swing.JCheckBox radiansJCheckBox;
     // End of variables declaration//GEN-END:variables
 
 }
