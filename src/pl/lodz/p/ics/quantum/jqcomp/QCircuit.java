@@ -7,7 +7,7 @@ import java.util.List;
 
 public class QCircuit {
 
-    private List<Stage> stages;
+    private StageList stages;
 
     public QCircuit() {
         this(new CompoundQGate[]{});
@@ -89,14 +89,14 @@ public class QCircuit {
     /**
      * @return the stages
      */
-    public List<Stage> getStages() {
+    public StageList getStages() {
         return stages;
     }
 
     /**
      * @param stages the stages to set
      */
-    public void setStages(List<Stage> stages) {
+    public void setStages(StageList stages) {
         this.stages = stages;
     }
 }
