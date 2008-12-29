@@ -29,7 +29,7 @@ public class CompoundQGate extends QGate {
         gates.toArray(g);
         initialize(g);
 	}
-
+    
     private void initialize(QGate[] gates) {
         this.gates = new ArrayList<ElementaryQGate>();
 		for (QGate gate : gates) {

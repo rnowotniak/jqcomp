@@ -21,7 +21,7 @@ public class ExecutionMonitor {
     /**
      * Resets the execution to the initial state
      */
-    public synchronized void reset() {
+    public void reset() {
         if(getState() != INITIAL_STATE) {
             // don't reset inputRegister
             currentInputRegister = null;
@@ -38,7 +38,7 @@ public class ExecutionMonitor {
      * @return the result register
      * @throws ExecutionMonitorException
      */
-    public synchronized QRegister compute(QRegister reg) {
+    public QRegister compute(QRegister reg) {
         check(reg);
         reset();
         // don't assume the QCircuit.compute copies passed register
@@ -55,7 +55,7 @@ public class ExecutionMonitor {
      * @return the result register
      * @throws ExecutionMonitorException
      */
-    public synchronized QRegister compute() {
+    public QRegister compute() {
         return compute(inputRegister);
     }
 
@@ -65,7 +65,7 @@ public class ExecutionMonitor {
      * @param reg the register to be computed
      * @throws ExecutionMonitorException
      */
-    public synchronized void startStepExecution(QRegister reg) {
+    public void startStepExecution(QRegister reg) {
         if(circuit.getStages().size() == 0) {
             resultRegister = currentInputRegister;
             return;
@@ -86,7 +86,7 @@ public class ExecutionMonitor {
      * To advance the execution call nextStep method.
      * @throws ExecutionMonitorException
      */
-    public synchronized void startStepExecution() {
+    public void startStepExecution() {
         startStepExecution(inputRegister);
     }
 
@@ -96,7 +96,7 @@ public class ExecutionMonitor {
      * @return true if execution is not finished; false otherwise
      * @throws ExecutionMonitorException
      */
-    public synchronized boolean nextStep() {
+    public boolean nextStep() {
         if(getState() != STEP_EXECUTION_STATE) {
             throw new ExecutionMonitorException("ExcecutionMonitor needs to be in the STEP_EXECUTION_STATE");
         }
@@ -124,7 +124,7 @@ public class ExecutionMonitor {
      * Works only if inputRegister is set.
      * @throws ExecutionMonitorException
      */
-    public synchronized void cyclicNextStep() {
+    public void cyclicNextStep() {
         if(isStepExecuting()) {
             nextStep();
         } else {
@@ -147,7 +147,7 @@ public class ExecutionMonitor {
     /**
      * @return the state
      */
-    public synchronized int getState() {
+    public int getState() {
         return state;
     }
 
@@ -164,7 +164,7 @@ public class ExecutionMonitor {
     /**
      * @return the currentRegister
      */
-    public synchronized QRegister getCurrentRegister() {
+    public QRegister getCurrentRegister() {
         return currentRegister;
     }
 
@@ -173,7 +173,7 @@ public class ExecutionMonitor {
      * Note: currentInputRegister may differ from inputRegister
      * @return the currentInputRegister
      */
-    public synchronized QRegister getCurrentInputRegister() {
+    public QRegister getCurrentInputRegister() {
         return currentInputRegister;
     }
 
@@ -184,7 +184,7 @@ public class ExecutionMonitor {
      * Note: currentInputRegister may differ from inputRegister
      * @return the inputRegister
      */
-    public synchronized QRegister getInputRegister() {
+    public QRegister getInputRegister() {
         return inputRegister;
     }
 
@@ -195,21 +195,21 @@ public class ExecutionMonitor {
      * Note: currentInputRegister may differ from inputRegister
      * @param inputRegister the register to set
      */
-    public synchronized void setInputRegister(QRegister inputRegister) {
+    public void setInputRegister(QRegister inputRegister) {
         this.inputRegister = inputRegister;
     }
 
     /**
      * @return the resultRegister
      */
-    public synchronized QRegister getResultRegister() {
+    public QRegister getResultRegister() {
         return resultRegister;
     }
 
     /**
      * @return the currentStep
      */
-    public synchronized int getCurrentStep() {
+    public int getCurrentStep() {
         return currentStep;
     }
 
@@ -226,7 +226,7 @@ public class ExecutionMonitor {
     /**
      * @return the circuit
      */
-    public synchronized QCircuit getQCircuit() {
+    public QCircuit getQCircuit() {
         return circuit;
     }
 
@@ -234,7 +234,7 @@ public class ExecutionMonitor {
      * 
      * @return current quantum circuit name
      */
-    public synchronized String getQCircuitName() {
+    public String getQCircuitName() {
         return name;
     }
 
@@ -243,22 +243,30 @@ public class ExecutionMonitor {
      * @param circuit the circuit to set
      * @param name the circuit name
      */
-    public synchronized void setQCircuit(QCircuit circuit, String name) {
+    public void setQCircuit(QCircuit circuit, String name) {
         if(this.circuit != circuit) {
-            reset();
-            //QCircuit prev = this.circuit;
+            if(this.circuit != null) {
+                this.circuit.getStages().removeChangeListener(changeListener);
+            }
+
+            QCircuit prev = this.circuit;
             this.circuit = circuit;
+            reset();
             if(name == null) {
                 this.name = "";
             } else {
                 this.name = name;
             }
 
-            circuitChangedInvoker.invoke(new EventObject(this));
+            if(this.circuit != null) {
+                this.circuit.getStages().addChangeListener(changeListener);
+            }
+
+            circuitChangedInvoker.invoke(new EventArgs(this, prev));
         }
     }
 
-    public synchronized Stage getCurrentStage() {
+    public Stage getCurrentStage() {
         if(state == STEP_EXECUTION_STATE) {
             return circuit.getStages().get(currentStep);
         } else if (state == EXECUTED_STATE) {
@@ -267,6 +275,21 @@ public class ExecutionMonitor {
 
         return null;
     }
+
+    private MonitoredList.ChangeListener changeListener
+            = new MonitoredList.ChangeListener() {
+        public void elementAdded(Object element, int index) {
+            if(getCurrentStep() >= index) {
+                reset();
+            }
+        }
+
+        public void elementRemoved(Object element, int index) {
+            if(getCurrentStep() >= index) {
+                reset();
+            }
+        }
+    };
 
     public boolean isStepExecuting() {
         return getState() == STEP_EXECUTION_STATE;
@@ -286,9 +309,9 @@ public class ExecutionMonitor {
         return stepChangedInvoker.getEvent();
     }
 
-    private EventInvoker<EventObject> circuitChangedInvoker
-        = new EventInvoker<EventObject>();
-    public Event<EventObject> circuitChangedEvent() {
+    private EventInvoker<EventArgs> circuitChangedInvoker
+        = new EventInvoker<EventArgs>();
+    public Event<EventArgs> circuitChangedEvent() {
         return circuitChangedInvoker.getEvent();
     }
 

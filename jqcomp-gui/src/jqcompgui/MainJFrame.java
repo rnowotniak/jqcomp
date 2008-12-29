@@ -28,6 +28,7 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
+import pl.lodz.p.ics.quantum.jqcomp.*;
 
 /**
  *
@@ -1172,7 +1173,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if(qc.getStages().size() == 0) {
             qc.addStage(new Identity());
         } else {
-            addRow(qc);
+            qc.getStages().addQubit();
         }
         
         frame.setQCircuit(qc);
@@ -1189,7 +1190,12 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
 
-        removeRow(qc);
+        try {
+            qc.getStages().removeLastQubit();
+        } catch(Exception e) {
+            writeMsg(e.getMessage());
+        }
+        
         frame.setQCircuit(qc);
 }//GEN-LAST:event_removeQubitJButtonActionPerformed
 
@@ -1204,59 +1210,60 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void addRow(QCircuit qc) {
-        for(int i = 0; i < qc.getStages().size(); i++) {
-            QGate gate = (QGate)qc.getStages().get(i);
-            CompoundQGate newGate = new CompoundQGate(gate, new Identity());
-            qc.getStages().set(i, newGate);
-        }
-    }
-
-    private boolean removeRow(QCircuit qc) {
-        if(checkIfCanRemoveLastRow(qc)) {
-            for(int i = 0; i < qc.getStages().size(); i++) {
-                QGate gate = (QGate)qc.getStages().get(i);
-                CompoundQGate compound = (CompoundQGate)gate;
-                List<ElementaryQGate> gates = compound.getGates();     
-                List<QGate> gates2 = new ArrayList<QGate>(gates.size());
-                for(ElementaryQGate g : gates) {
-                    gates2.add(g);
-                }
-
-                gates2.remove(gates.size() - 1);
-                qc.getStages().set(i, new CompoundQGate(gates2));
-            }
-            
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean checkIfCanRemoveLastRow(QCircuit qc) {
-        if(qc.getStages().size() == 0 || qc.getStages().get(0).getSize() < 2) {
-            return false;
-        }
-
-        for(int i = 0; i < qc.getStages().size(); i++) {
-            QGate gate = (QGate)qc.getStages().get(i);
-
-            if(gate.getMatrix() == null ||
-                    gate.getMatrix().getNumberOfRows() < 2) {
-                writeMsg("Too few qubits to remove.");
-                return false;
-            }
-            
-            CompoundQGate compound = (CompoundQGate)gate;
-            java.util.List<ElementaryQGate> gates = compound.getGates();
-            if(!(gates.get(gates.size() - 1) instanceof Identity)) {
-                writeMsg("Please remove stages which act on this qubit first.");
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    private void addRow(QCircuit qc) {
+//        StageList s = new StageList(qc.getStages());
+//        for(int i = 0; i < qc.getStages().size(); i++) {
+//            QGate gate = (QGate)qc.getStages().get(i);
+//            CompoundQGate newGate = new CompoundQGate(gate, new Identity());
+//            qc.getStages().set(i, newGate);
+//        }
+//    }
+//
+//    private boolean removeRow(QCircuit qc) {
+//        if(checkIfCanRemoveLastRow(qc)) {
+//            for(int i = 0; i < qc.getStages().size(); i++) {
+//                QGate gate = (QGate)qc.getStages().get(i);
+//                CompoundQGate compound = (CompoundQGate)gate;
+//                List<ElementaryQGate> gates = compound.getGates();
+//                List<QGate> gates2 = new ArrayList<QGate>(gates.size());
+//                for(ElementaryQGate g : gates) {
+//                    gates2.add(g);
+//                }
+//
+//                gates2.remove(gates.size() - 1);
+//                qc.getStages().set(i, new CompoundQGate(gates2));
+//            }
+//
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    private boolean checkIfCanRemoveLastRow(QCircuit qc) {
+//        if(qc.getStages().size() == 0 || qc.getStages().get(0).getSize() < 2) {
+//            return false;
+//        }
+//
+//        for(int i = 0; i < qc.getStages().size(); i++) {
+//            QGate gate = (QGate)qc.getStages().get(i);
+//
+//            if(gate.getMatrix() == null ||
+//                    gate.getMatrix().getNumberOfRows() < 2) {
+//                writeMsg("Too few qubits to remove.");
+//                return false;
+//            }
+//
+//            CompoundQGate compound = (CompoundQGate)gate;
+//            java.util.List<ElementaryQGate> gates = compound.getGates();
+//            if(!(gates.get(gates.size() - 1) instanceof Identity)) {
+//                writeMsg("Please remove stages which act on this qubit first.");
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     public void writeMsg(String msg) {
         outputJTextArea.append(msg + "\n");

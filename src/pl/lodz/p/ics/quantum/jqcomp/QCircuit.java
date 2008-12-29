@@ -93,10 +93,14 @@ public class QCircuit {
         return stages;
     }
 
-    /**
-     * @param stages the stages to set
-     */
-    public void setStages(StageList stages) {
-        this.stages = stages;
-    }
+//    /**
+//     * @param stages the stages to set
+//     */
+//    public void setStages(StageList stages) {
+//        if(stages == null) {
+//            throw new NullPointerException("stages");
+//        }
+//
+//        this.stages = stages;
+//    }
 }

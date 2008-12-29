@@ -116,6 +116,10 @@ public class MonitoredList<E> extends ArrayList<E> {
         return oldValue;
     }
 
+    protected E setUnchecked(int index, E element) {
+        return super.set(index, element);
+    }
+
     @Override
     public boolean add(E e) {
         check(e);

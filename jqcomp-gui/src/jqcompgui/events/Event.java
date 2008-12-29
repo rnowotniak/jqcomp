@@ -40,13 +40,5 @@ public class Event<T extends java.util.EventObject> {
         }
     }
 
-    public void removeByOwner(Object owner) {
-        if(owner == null) {
-            throw new NullPointerException("owner");
-        }
-
-        
-    }
-
     private final java.util.List<Listener<T>> listeners;
 }
