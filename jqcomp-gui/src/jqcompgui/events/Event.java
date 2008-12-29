@@ -3,11 +3,9 @@
  * and open the template in the editor.
  */
 
-package jqcompgui;
+package jqcompgui.events;
 
-import pl.lodz.p.ics.quantum.jqcomp.*;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
-import java.awt.event.ActionEvent;
+import jqcompgui.*;
 
 /**
  *

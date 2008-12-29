@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package jqcompgui;
+package jqcompgui.events;
 
+import jqcompgui.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
 

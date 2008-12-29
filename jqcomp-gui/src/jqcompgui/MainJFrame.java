@@ -10,20 +10,14 @@
  */
 package jqcompgui;
 
+import jqcompgui.events.ExecutionMonitorException;
+import jqcompgui.events.ExecutionMonitor;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import org.jscience.mathematics.number.Complex;
 import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;

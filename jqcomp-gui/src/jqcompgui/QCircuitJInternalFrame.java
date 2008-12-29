@@ -6,6 +6,8 @@
 
 package jqcompgui;
 
+import jqcompgui.events.Listener;
+import jqcompgui.events.ExecutionMonitor;
 import pl.lodz.p.ics.quantum.jqcomp.QCircuit;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.Identity;
 import java.util.EventObject;

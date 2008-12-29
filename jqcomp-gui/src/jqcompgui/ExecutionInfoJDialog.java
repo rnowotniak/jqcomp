@@ -11,6 +11,9 @@
 
 package jqcompgui;
 
+import jqcompgui.events.Listener;
+import jqcompgui.events.ExecutionMonitorException;
+import jqcompgui.events.ExecutionMonitor;
 import java.util.EventObject;
 import java.awt.event.*;
 import java.awt.*;

@@ -5,6 +5,9 @@
 
 package jqcompgui;
 
+import jqcompgui.events.Listener;
+import jqcompgui.events.EventArgs;
+import jqcompgui.events.EventHelper;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
