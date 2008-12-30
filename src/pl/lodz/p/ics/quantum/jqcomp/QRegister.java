@@ -80,6 +80,14 @@ public class QRegister {
         return MoreMath.isNearMatrix(this.matrix, otherMatrix);
 	}
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 43 * hash + this.size;
+        hash = 43 * hash + (this.matrix != null ? this.matrix.hashCode() : 0);
+        return hash;
+    }
+
 /**
  * Add two registers.
  * @param that
@@ -157,6 +165,7 @@ public class QRegister {
 	
 	/** Set selected amplitudes to zero
      */
+    /*
 	private final void zeroAmplitudes(ArrayList<Integer> amp){
 		Complex[] array = this.toComplexArray();
 
@@ -167,8 +176,9 @@ public class QRegister {
 		matrix = ComplexMatrix.valueOf(ComplexVector.valueOf(array))
 			.transpose();
 	}
-
+    */
 	/** Measure all qubits of this quantum register. */
+    /*
 	public final QRegister measure() {
 		Complex[] elements = this.toComplexArray();
 		double[] probabilities = new double[elements.length];
@@ -194,7 +204,7 @@ public class QRegister {
 		return newRegister;
 		
 	}
-
+*/
 	/**
 	 * Perform projective measurement operation.
 	 * 
@@ -202,7 +212,7 @@ public class QRegister {
 	 *            indices of measured qubits
 	 * @return one of the measurement subspace base vectors
 	 */
-	public QRegister measure(int... qubits) {
+/*	public QRegister measure(int... qubits) {
 		for (int i=0; i<qubits.length; i++) {
 			qubits[i] = this.size - qubits[i] - 1;
 		}
@@ -233,7 +243,7 @@ public class QRegister {
 		String rand = MoreMath.randomize(prob);
 		QRegister returnRegister = QRegister.ket(Integer.parseInt(rand,2), qubits.length) ;
 		
-		/* zerowanie amplitud */
+	
 		
 		// przebiegnij przez wszystkie stany bazowe i ustal, które amplitudy trzeba wyzerować
 		ArrayList<Integer> zeroAmp = new ArrayList<Integer>(); // lista amplitud do wyzerowania
@@ -255,6 +265,8 @@ public class QRegister {
 		//System.out.println(returnRegister);
 		return returnRegister;
 	}
+
+    */
 
 	/**
 	 * Return state in Dirac (bra-ket) notation

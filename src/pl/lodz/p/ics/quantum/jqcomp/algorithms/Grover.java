@@ -50,8 +50,7 @@ public class Grover {
     static public void main(String[] args) {
         Grover g = new Grover(8,1);
         QRegister result = g.circuit.compute(g.init);
-        System.out.println(result.dirac());
-        System.out.println("After measurement: "+result.measure().dirac());
+
 
     }
 }

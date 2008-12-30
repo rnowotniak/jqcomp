@@ -62,13 +62,17 @@ public class Teleportation {
         c.addStage(new CompoundQGate(new R(), new Identity(1), new Identity(1)));
         c.addStage(new Measurement(3,1,2)); // <---
         c.addStage(new CompoundQGate(new S(), new CNot()));
-        c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+    /*    c.addStage(new CompoundQGate(new Identity(1), new Swap()));
         c.addStage(new CompoundQGate(new CNot(0,1), new Identity(1)));
         c.addStage(new CompoundQGate(new Identity(1), new Swap()));
         c.addStage(new CompoundQGate(new S(), new Identity(1), new T()));
         c.addStage(new CompoundQGate(new Identity(1), new Swap()));
         c.addStage(new CompoundQGate(new CNot(0,1), new Identity()));
         c.addStage(new CompoundQGate(new Identity(1), new Swap()));
+     */
+        c.addStage(new CompoundQGate(new CNot(0,2)));
+        c.addStage(new CompoundQGate(new S(), new Identity(1), new T()));
+        c.addStage(new CompoundQGate(new CNot(0,2)));
         QRegister fin = c.compute(init);
         System.out.println("fin = "+fin); //sth is wrong
     }

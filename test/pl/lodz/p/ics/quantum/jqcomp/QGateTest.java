@@ -136,6 +136,8 @@ public class QGateTest {
        assertTrue( new Swap().isUnitary());
    }
 
+   
+
     public void println(Object str) {
 		System.out.println(str);
 	}

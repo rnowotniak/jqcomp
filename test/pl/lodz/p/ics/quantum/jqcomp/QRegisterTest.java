@@ -171,12 +171,30 @@ public class QRegisterTest {
         a = had4.compute(a);
         ProbabilityTester pt = new ProbabilityTester();
         for (int i=0;i<8;i++)
-            pt.addExpected(QRegister.ket(i, 3).dirac(),1.0/8);
+            pt.addExpected(QRegister.ket(i, 3),1.0/8);
          pt.test(a);
          pt.checkExpected(); // may fail
     }
 
-    private void grover(int size, int n, String expected) {
+    @Test
+    public void testMeasure3() {
+        // measure one qubit of 3
+        QRegister a = QRegister.ket(0, 3);
+        Stage[] st = new Stage[] {
+            new CompoundQGate(new Hadamard(3)),
+            new Measurement(3,0)        // measure |q0>
+        };
+        QCircuit qc = new QCircuit(st);
+        ProbabilityTester p = new ProbabilityTester();
+
+        p.addExpected( new QRegister(cx(0.5),cx(0),cx(0.5),cx(0),cx(0.5),cx(0),cx(0.5),cx(0)), 0.5);
+        p.addExpected( new QRegister(cx(0),cx(0.5),cx(0),cx(0.5),cx(0),cx(0.5),cx(0),cx(0.5)), 0.5);
+        p.test(a, qc);
+        p.checkExpected();
+        
+    }
+
+    private void grover(int size, int n, QRegister expected) {
         Grover g = new Grover(size,n);
         ProbabilityTester pt = new ProbabilityTester();
         pt.test(g.init, g.circuit);
@@ -185,10 +203,20 @@ public class QRegisterTest {
 
     @Test
     public void testGrover() {
-        grover(8,3,"|011>");
-        grover(8,4,"|100>");
-        grover(16,0,"|0000>");
-        grover(32,16,"|10000>");
+        grover(8,3,QRegister.ket(3, 3));
+        grover(8,4,QRegister.ket(4, 3));
+        grover(32,16,QRegister.ket(16, 5));
+    }
+   
+
+   // @Test
+    public void testMeasureBasic() {
+        QRegister abc = new QRegister(cx(20), cx(5), cx(5), cx(10), cx(20), cx(10), cx(10), cx(10));
+        abc.normalize();
+        System.out.println(abc);
+        QCircuit c = new QCircuit();
+        c.addStage(new Measurement(3,1,2));
+        System.out.println(c.compute(abc));
     }
 
     public void println(Object str) {
