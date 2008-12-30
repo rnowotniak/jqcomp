@@ -34,7 +34,6 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     private QCircuit qcircuit = new QCircuit();
     private int currentStage;
     private Stage selectedStage;
-    private int selectedStageIndex = -1;
     private Color backgroundColor = Color.WHITE;
     private Color currentStageColor = Color.RED;
     private Color selectedStageColor = Color.YELLOW;
@@ -60,19 +59,6 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         g.scale(getZoom(), getZoom());  
         g.setColor(Color.BLACK);
 
-        // ?
-//        if (qcircuit == null) {
-//            // draw some preview
-//            g.drawString("|0>", 30, 50);
-//            g.drawString("|0>", 30, 90);
-//            g.drawString("|0>", 30, 130);
-//
-//            g.drawLine(60, 45, 150, 45);
-//            g.drawLine(60, 85, 150, 85);
-//            g.drawLine(60, 125, 150, 125);
-//            return;
-//        }
-
         /*
          * Draw quantum cicruit
          */
@@ -81,17 +67,25 @@ public class QCircuitJPanel extends javax.swing.JPanel {
             return;
         }
 
+//        // draw selected stage marker
+//        if (selectedStage != null) {
+//            for (int si = 0; si < qcircuit.getStages().size(); si++) {
+//                Stage s = qcircuit.getStages().get(si);
+//                if (s == selectedStage) {
+//                    g.setColor(selectedStageColor);
+//                    g.fillRect(x_offset + (si + 1) * xstep - xstep / 2, ystep - 5 - 10,
+//                            xstep, ystep * (s.getSize() - 1) + 20);
+//                    break;
+//                }
+//            }
+//        }
+
         // draw selected stage marker
-        if (selectedStage != null) {
-            for (int si = 0; si < qcircuit.getStages().size(); si++) {
-                Stage s = qcircuit.getStages().get(si);
-                if (s == selectedStage) {
-                    g.setColor(selectedStageColor);
-                    g.fillRect(x_offset + (si + 1) * xstep - xstep / 2, ystep - 5 - 10,
-                            xstep, ystep * (s.getSize() - 1) + 20);
-                    break;
-                }
-            }
+        int ssi = getSelectedStageIndex();
+        if(ssi > -1) {
+             g.setColor(selectedStageColor);
+             g.fillRect(x_offset + (ssi + 1) * xstep - xstep / 2, ystep - 5 - 10,
+                    xstep, ystep * (selectedStage.getSize() - 1) + 20);
         }
 
         // draw qubits labels
@@ -125,6 +119,8 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                     }
                     drawQGate(g, gate, si, gi);
                 }
+            } else if (s instanceof Identity) {
+                // do nothing
             } else if (s instanceof ElementaryQGate) {
                 ElementaryQGate gate = (ElementaryQGate) s;
                 drawQGate(g, gate, si, 0);
@@ -133,11 +129,13 @@ public class QCircuitJPanel extends javax.swing.JPanel {
         }
 
         // draw line representing current state
-        g.setPaint(currentStageColor);
-        g.setStroke(currentStageStroke);
-        g.drawLine(x_offset + xstep / 2 + xstep * currentStage, ystep - 10,
-                x_offset + xstep / 2 + xstep * currentStage, ystep + ystep
-                * (qcircuit.getStages().get(0).getSize() - 1) + 10);
+        if(currentStage > -1) {
+            g.setPaint(currentStageColor);
+            g.setStroke(currentStageStroke);
+            g.drawLine(x_offset + xstep / 2 + xstep * currentStage, ystep - 10,
+                    x_offset + xstep / 2 + xstep * currentStage, ystep + ystep
+                    * (qcircuit.getStages().get(0).getSize() - 1) + 10);
+        }
     }
 
     private void drawQGate(Graphics2D g, ElementaryQGate gate, int si, int gi) {
@@ -254,38 +252,34 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         int x = toClientX(evt.getX());
         int y = toClientY(evt.getY());
-        //int y = (int) (1.0f * evt.getY() / zoom);
-//        System.out.println(String.format("%1$s %2$s", x, y));
         int nsi = getStageIndexByXY(x, y);
-//        if (nsi < 0) {
-//            return;
-//        }
-
         setSelectedStage(nsi);
     }//GEN-LAST:event_formMouseClicked
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         int x = toClientX(evt.getX());
         int y = toClientY(evt.getY());
-//        int x = (int) (1.0f * evt.getX() / zoom);
-//        int y = (int) (1.0f * evt.getY() / zoom);
         int nsi = getStageIndexByXY(x, y);
         if (nsi < 0) {
             return;
         }
 
-        moveStage(nsi, getSelectedStage());
+        moveStage(getSelectedStage(), nsi);
     }//GEN-LAST:event_formMouseDragged
 
-    public void moveStage(int where, Stage stage) {
-        List<Stage> stages = getQCircuit().getStages();
-        Stage newStage = stages.get(where);        
-        if(newStage != stage){
-            stages.remove(stage);
-            stages.add(where, stage);
-
+    public void moveStage(Stage stage, int where)  {
+        if(getQCircuit().getStages().moveStage(stage, where)) {
             repaint();
         }
+
+//        List<Stage> stages = getQCircuit().getStages();
+//        Stage newStage = stages.get(where);
+//        if(newStage != stage){
+//            stages.remove(stage);
+//            stages.add(where, stage);
+//
+//            repaint();
+//        }
     }
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
@@ -324,24 +318,22 @@ public class QCircuitJPanel extends javax.swing.JPanel {
     }
 
     public int getSelectedStageIndex() {
-        return selectedStageIndex;
+        if(selectedStage != null) {
+            return getQCircuit().getStages().indexOfReference(selectedStage);
+        }
+
+        return -1;
     }
 
     public void setSelectedStage(int index) {
-        selectedStageIndex = index;
-        if(index < 0) {
-            setSelectedStage(null);
-        } else {
-            setSelectedStage(getStage(index));
-        }
-    }
+        int selectedStageIndex = getSelectedStageIndex();
+        if(selectedStageIndex != index) {
+            if(index < 0) {
+                selectedStage = null;
+            } else {
+                selectedStage = getStage(index);
+            }
 
-    /**
-     * @param selectedStage the selectedStage to set
-     */
-    public void setSelectedStage(Stage selectedStage) {
-        if(this.selectedStage != selectedStage) {
-            this.selectedStage = selectedStage;
             repaint();
         }
     }

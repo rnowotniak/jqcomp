@@ -96,4 +96,23 @@ public class StageList extends MonitoredList<Stage> {
             }
         }
     }
+
+    public boolean moveStage(Stage stage, int where) {
+        int index = indexOfReference(stage);
+        return moveStage(index, where);
+    }
+
+    public boolean moveStage(int stageToMove, int where) {
+        if(stageToMove > -1) {
+            Stage newStage = get(where);
+            Stage stage = get(stageToMove);
+            if(newStage != stage){
+                remove(stageToMove);
+                add(where, stage);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

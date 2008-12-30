@@ -103,6 +103,16 @@ public class MonitoredList<E> extends ArrayList<E> {
 
     private LinkedList<ChangeListener> changeListeners = null;
 
+    public int indexOfReference(E element) {
+        for(int i = 0; i < size(); i++) {
+            if(get(i) == element) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     @Override
     public E set(int index, E element) {
         check(element);
