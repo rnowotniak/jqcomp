@@ -109,18 +109,19 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     private Listener stateChangedListener = new Listener() {
         public void invoked(EventObject e) {
             ExecutionMonitor m = (ExecutionMonitor)e.getSource();
+
             switch(m.getState()) {
-                case ExecutionMonitor.EXECUTED_STATE:
+                case Executed:
                     displayAll(m);
                     setStateMessage("executed.");
                     break;
 
-                case ExecutionMonitor.STEP_EXECUTION_STATE:
+                case StepExecution:
                     displayAll(m);
                     setStateMessage("step execution...");
                     break;
 
-                case ExecutionMonitor.INITIAL_STATE:
+                case Initial:
                     displayAll(m);
                     setStateMessage("");
                     break;

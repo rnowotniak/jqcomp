@@ -8,6 +8,7 @@ package pl.lodz.p.ics.quantum.jqcomp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.lang.Enum;
 /**
  *
  * @author Andrzej

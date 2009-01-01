@@ -22,13 +22,13 @@ public class ExecutionMonitor {
      * Resets the execution to the initial state
      */
     public void reset() {
-        if(getState() != INITIAL_STATE) {
+        if(!isInInitialState()) {
             // don't reset inputRegister
             currentInputRegister = null;
             currentRegister = null;
             resultRegister = null;
             setCurrentStep(0);
-            setState(INITIAL_STATE);
+            setState(State.Initial);
         }
     }
 
@@ -46,7 +46,7 @@ public class ExecutionMonitor {
         inputRegister = currentInputRegister;
         currentRegister = null; // not used
         resultRegister = circuit.compute(reg);
-        setState(EXECUTED_STATE);
+        setState(State.Executed);
         return getResultRegister();
     }
 
@@ -78,7 +78,7 @@ public class ExecutionMonitor {
         currentRegister = reg; // will be equal to currentInputRegister all the time
         resultRegister = null;
         setCurrentStep(0);
-        setState(STEP_EXECUTION_STATE);
+        setState(State.StepExecution);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ExecutionMonitor {
      * @throws ExecutionMonitorException
      */
     public boolean nextStep() {
-        if(getState() != STEP_EXECUTION_STATE) {
+        if(getState() != State.StepExecution) {
             throw new ExecutionMonitorException("ExcecutionMonitor needs to be in the STEP_EXECUTION_STATE");
         }
 
@@ -111,7 +111,7 @@ public class ExecutionMonitor {
         if((getCurrentStep() + 1) == circuit.getStages().size()) {
             resultRegister = currentRegister;
             setCurrentStep(getCurrentStep() + 1);
-            setState(EXECUTED_STATE);
+            setState(State.Executed);
             return false;
         }
 
@@ -147,14 +147,14 @@ public class ExecutionMonitor {
     /**
      * @return the state
      */
-    public int getState() {
+    public State getState() {
         return state;
     }
 
     /**
      * @param state the state to set
      */
-    private void setState(int state) {
+    private void setState(State state) {
         if(this.state != state) {            
             this.state = state;
             stateChangedInvoker.invoke(new EventObject(this));
@@ -267,9 +267,9 @@ public class ExecutionMonitor {
     }
 
     public Stage getCurrentStage() {
-        if(state == STEP_EXECUTION_STATE) {
+        if(state == State.StepExecution) {
             return circuit.getStages().get(currentStep);
-        } else if (state == EXECUTED_STATE) {
+        } else if (state == State.Executed) {
             return circuit.getStages().get(circuit.getStages().size() - 1);
         }
 
@@ -292,15 +292,15 @@ public class ExecutionMonitor {
     };
 
     public boolean isStepExecuting() {
-        return getState() == STEP_EXECUTION_STATE;
+        return getState() == State.StepExecution;
     }
 
     public boolean isInInitialState() {
-        return getState() == INITIAL_STATE;
+        return getState() == State.Initial;
     }
 
     public boolean isInExecutedState() {
-        return getState() == EXECUTED_STATE;
+        return getState() == State.Executed;
     }
 
     private EventInvoker<EventObject> stepChangedInvoker
@@ -324,14 +324,20 @@ public class ExecutionMonitor {
     private QCircuit circuit = null;
     private String name = "";
 
-    private int state;
+    private State state;
     private int currentStep;    
     private QRegister currentRegister;
     private QRegister currentInputRegister;
     private QRegister resultRegister;
     private QRegister inputRegister;
 
-    public static final int INITIAL_STATE = 0;
-    public static final int EXECUTED_STATE = 1;
-    public static final int STEP_EXECUTION_STATE = 2;
+    public static enum State {
+        Initial,
+        Executed,
+        StepExecution;
+    }
+
+//    public static final int INITIAL_STATE = 0;
+//    public static final int EXECUTED_STATE = 1;
+//    public static final int STEP_EXECUTION_STATE = 2;
 }

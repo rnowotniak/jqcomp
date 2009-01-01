@@ -52,16 +52,16 @@ public class QCircuitJInternalFrame extends javax.swing.JInternalFrame {
             public void invoked(EventObject e) {
                 ExecutionMonitor m = (ExecutionMonitor)e.getSource();
                 switch(m.getState()) {
-                    case ExecutionMonitor.EXECUTED_STATE:
+                    case Executed:
                         writeMsg("Executed\n  input: " + m.getCurrentInputRegister().dirac()
                                + "\n  output: " + m.getResultRegister().dirac());
                         break;
 
-                    case ExecutionMonitor.STEP_EXECUTION_STATE:
+                    case StepExecution:
                         writeMsg("Started step execution...");
                         break;
 
-                    case ExecutionMonitor.INITIAL_STATE:
+                    case Initial:
                         writeMsg("Quantum circuit state reset to initial value.");
                         break;
 
