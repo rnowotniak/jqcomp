@@ -153,6 +153,46 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         protected CNotOptionsJPanel pnlOptions;
     }
 
+     private class HadamardDisplayModel implements QGateDisplayModel {
+
+        public boolean initializeDisplay(JScrollPane display, QGate gate) {
+            if(gate instanceof Hadamard) {
+                this.gate = (Hadamard)gate;
+                pnlOptions = new HadamardOptionPanel();
+                pnlOptions.setGateSize(1);
+                pnlOptions.setMaxSize(maxRow);
+                display.setViewportView(pnlOptions);
+                pnlOptions.revalidate();
+                return true;
+            }
+
+            return false;
+        }
+
+        public QGate update(QGate gate) {
+            int size = pnlOptions.getGateSize();
+            if(size < 0) {
+                return null;
+            }
+
+  //          if((control + getRow()) > maxRow || (target + getRow()) > maxRow) {
+  //              return null;
+   //         }
+            return new Hadamard(size);
+        }
+
+        public String getName() {
+            return "Hadamard";
+        }
+
+        public String getDescription() {
+            return "Hadamard gate";
+        }
+
+        protected Hadamard gate;
+        protected HadamardOptionPanel pnlOptions;
+    }
+
     private class CustomDisplayModel implements QGateDisplayModel {
         public boolean initializeDisplay(JScrollPane display, QGate gate) {
             if(gate instanceof Custom) {
@@ -206,6 +246,7 @@ public class QGateInfoJDialog extends javax.swing.JDialog {
         this.addDisplayModel(new PhaseShiftDisplayModel());
         this.addDisplayModel(new CNotDisplayModel());
         this.addDisplayModel(new CustomDisplayModel());
+        this.addDisplayModel(new HadamardDisplayModel());
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
  

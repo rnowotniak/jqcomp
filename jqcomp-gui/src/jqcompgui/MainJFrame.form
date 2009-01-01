@@ -106,6 +106,14 @@
                 <Property name="text" type="java.lang.String" value="Fredkin"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="measurementAction" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Measurement"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="customQGateJMenuItem">

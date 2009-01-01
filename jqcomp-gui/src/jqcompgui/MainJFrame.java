@@ -193,6 +193,20 @@ public class MainJFrame extends javax.swing.JFrame {
     }
     private AddCustomGateAction customAction = new AddCustomGateAction();
 
+    private class AddMeasurementAction extends AddGateAction {
+
+        public AddMeasurementAction() {
+            super("Measurement");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+ 
+        }
+    }
+
+    private AddMeasurementAction measurementAction = new AddMeasurementAction();
+
     private static MainJFrame instance;
 
     public static MainJFrame getInstance() {
@@ -283,6 +297,7 @@ public class MainJFrame extends javax.swing.JFrame {
         swapJMenuItem = new javax.swing.JMenuItem();
         toffoliJMenuItem = new javax.swing.JMenuItem();
         fredkinJMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         customQGateJMenuItem = new javax.swing.JMenuItem();
         algorithmsJMenu = new javax.swing.JMenu();
@@ -459,7 +474,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(addQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(removeQubitJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(removeQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,7 +504,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(addQubitJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(removeQubitJButton)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jSplitPane1.setDividerLocation(250);
@@ -587,6 +602,10 @@ public class MainJFrame extends javax.swing.JFrame {
         fredkinJMenuItem.setAction(fredkinAction);
         fredkinJMenuItem.setText("Fredkin");
         quantumGatesJMenu.add(fredkinJMenuItem);
+
+        jMenuItem1.setAction(measurementAction);
+        jMenuItem1.setText("Measurement");
+        quantumGatesJMenu.add(jMenuItem1);
         quantumGatesJMenu.add(jSeparator2);
 
         customQGateJMenuItem.setAction(customAction);
@@ -1269,6 +1288,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JPanel jPanel2;
