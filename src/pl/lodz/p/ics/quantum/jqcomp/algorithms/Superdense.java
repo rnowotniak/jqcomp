@@ -21,7 +21,6 @@ import pl.lodz.p.ics.quantum.jqcomp.QRegister;
  * 
  * @author rob
  * 
- * TODO: Use Dirac notation, as soon as provided by QRegister
  * 
  */
 public class Superdense {
@@ -70,7 +69,7 @@ public class Superdense {
 		
 		System.out.println("Final state:");
 		System.out.println("(should be one of the four base vectors, according to b0, b1 bits:");
-		System.out.println(result);
+		System.out.println(result.dirac());
 		
 	}
 

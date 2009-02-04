@@ -18,12 +18,13 @@ import javax.swing.UIManager;
  */
 public class JQCompGuiJApplet extends javax.swing.JApplet {
 
+    static public JQCompGuiJApplet instance;
+
     /** Initializes the applet JQCompGuiJApplet */
     @Override
     public void init() {
         try {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
-
                 public void run() {
                     try {
                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -31,11 +32,14 @@ public class JQCompGuiJApplet extends javax.swing.JApplet {
                         /* DO NOTHING */
                     }
                     initComponents();
+                    MainJFrame mjf = MainJFrame.getInstance();
+                    mjf.setVisible(true);
                 }
             });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        instance = this;
     }
 
     @Override
@@ -52,14 +56,9 @@ public class JQCompGuiJApplet extends javax.swing.JApplet {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        runJButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        runJButton.setText("run jqcomp-gui");
-        runJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runJButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("(jqcomp-gui should be started in a separate window)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,25 +66,19 @@ public class JQCompGuiJApplet extends javax.swing.JApplet {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(runJButton)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(runJButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void runJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runJButtonActionPerformed
-        MainJFrame mjf = MainJFrame.getInstance();
-        mjf.setVisible(true);
-        runJButton.setVisible(false);
-    }//GEN-LAST:event_runJButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton runJButton;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

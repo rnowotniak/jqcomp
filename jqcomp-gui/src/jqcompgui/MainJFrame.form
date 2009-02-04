@@ -106,7 +106,7 @@
                 <Property name="text" type="java.lang.String" value="Fredkin"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="measurementJMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="measurementAction" type="code"/>
@@ -131,11 +131,6 @@
             <Property name="text" type="java.lang.String" value="Algorithms"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Quantum teleportation"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SuperdenseJMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Superdense coding"/>
@@ -143,11 +138,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SuperdenseJMenuItemActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem12">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Grover&apos;s fast search"/>
-              </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="entanglementAlgorithmJMenuItem">
               <Properties>
@@ -271,7 +261,7 @@
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane1" pref="424" max="32767" attributes="0"/>
+                  <Component id="jSplitPane1" pref="444" max="32767" attributes="0"/>
                   <Component id="leftJPanel" alignment="0" max="32767" attributes="2"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>

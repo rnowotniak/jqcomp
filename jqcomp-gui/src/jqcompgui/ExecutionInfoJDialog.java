@@ -16,12 +16,9 @@ import jqcompgui.events.ExecutionMonitorException;
 import jqcompgui.events.ExecutionMonitor;
 import java.util.EventObject;
 import java.awt.event.*;
-import java.awt.*;
-import javax.swing.event.*;
 import javax.swing.*;
 
 import pl.lodz.p.ics.quantum.jqcomp.*;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 
 /**
  *
