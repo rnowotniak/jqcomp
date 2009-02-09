@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 import pl.lodz.p.ics.quantum.jqcomp.*;
 import javax.swing.*;
-import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 import java.util.ArrayList;

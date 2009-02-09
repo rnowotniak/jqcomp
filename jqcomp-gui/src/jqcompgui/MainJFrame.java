@@ -81,14 +81,18 @@ public class MainJFrame extends javax.swing.JFrame {
             super(name, icon, "Add " + name + " quantum gate to the selected circuit");
         }
 
-        public void doAction(QGate gate) {
+        public void doAction(Stage stage) {
             Object icon = getValue(LARGE_ICON_KEY);
             if (icon == null) {
                 icon = getValue(SMALL_ICON);
             }
-
-            doQGateAddDialog(gate, (ImageIcon) icon);
+            if (stage instanceof QGate)
+                doQGateAddDialog((QGate)stage, (ImageIcon) icon);
+            else
+                throw new RuntimeException("Not yet implemented.");
         }
+
+     
     }
 
     private class AddSwapGateAction extends AddGateAction {
@@ -207,11 +211,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private class AddMeasurementAction extends AddGateAction {
 
         public AddMeasurementAction() {
-            super("Measurement");
+            super("Measurement",new ImageIcon(MainJFrame.this.getClass().getResource("/jqcompgui/img/measurement_icon.png")));
         }
-
         @Override
         public void actionPerformed(ActionEvent ae) {
+            doAction(new Measurement(1)); //??
         }
     }
     private AddMeasurementAction measurementAction = new AddMeasurementAction();
@@ -271,6 +275,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
+        measurementButton = new javax.swing.JButton();
         leftJPanel = new javax.swing.JPanel();
         resetJButton = new javax.swing.JButton();
         stepJButton = new javax.swing.JButton();
@@ -393,6 +398,10 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(jButton8);
 
+        measurementButton.setAction(measurementAction);
+        measurementButton.setText("Measurement");
+        jPanel2.add(measurementButton);
+
         leftJPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         resetJButton.setText("reset");
@@ -481,7 +490,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(zoomOutJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
             .addComponent(addQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-            .addComponent(removeQubitJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, Short.MAX_VALUE)
+            .addComponent(removeQubitJButton, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -511,7 +520,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(addQubitJButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(removeQubitJButton)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         jSplitPane1.setDividerLocation(250);
@@ -1312,6 +1321,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JMenuItem loadJMenuItem;
+    private javax.swing.JButton measurementButton;
     private javax.swing.JMenuItem measurementJMenuItem;
     private javax.swing.JMenuItem minimizeAllWindowsJMenuItem;
     private javax.swing.JMenuItem newQuantumCircuitJMenuItem;
