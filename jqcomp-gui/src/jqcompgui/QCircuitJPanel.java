@@ -125,6 +125,11 @@ public class QCircuitJPanel extends javax.swing.JPanel {
                 ElementaryQGate gate = (ElementaryQGate) s;
                 drawQGate(g, gate, si, 0);
             } else if (s instanceof Measurement) {
+                Measurement m = (Measurement)s;
+                int[] qubits = m.getMeasuredQubits();
+                for (int i: qubits) {
+                     drawGateBox(g,si,m.getSize()-1-i, new Identity());
+                }
             }
         }
 

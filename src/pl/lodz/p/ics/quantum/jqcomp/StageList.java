@@ -9,6 +9,7 @@ import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -44,9 +45,17 @@ public class StageList extends MonitoredList<Stage> {
 
     public void addQubit() {
         for(int i = 0; i < size(); i++) {
-            QGate gate = (QGate)get(i);
-            CompoundQGate newGate = new CompoundQGate(gate, new Identity());
-            setUnchecked(i, newGate);
+            Stage stage = get(i);
+            if (stage instanceof QGate) {
+                QGate gate = (QGate)stage;
+                CompoundQGate newGate = new CompoundQGate(gate, new Identity());
+                setUnchecked(i, newGate);
+            }
+            else if (stage instanceof Measurement) {
+                Measurement measure = (Measurement)stage;
+                measure.expand(); // increase size by 1
+                setUnchecked(i, measure);
+            }
         }
     }
 
@@ -63,17 +72,23 @@ public class StageList extends MonitoredList<Stage> {
         checkIfCanRemoveLastQubit();
 
         for(int i = 0; i < size(); i++) {
-            QGate gate = (QGate)get(i);
-            CompoundQGate compound = (CompoundQGate)gate;
-            List<ElementaryQGate> gates = compound.getGates();
+            if (get(i) instanceof QGate) {
+                QGate gate = (QGate)get(i);
+                CompoundQGate compound = (CompoundQGate)gate;
+                List<ElementaryQGate> gates = compound.getGates();
 
-            List<QGate> gates2 = new ArrayList<QGate>(gates.size());
-            for(ElementaryQGate g : gates) {
-                gates2.add(g);
+                List<QGate> gates2 = new ArrayList<QGate>(gates.size());
+                for(ElementaryQGate g : gates) {
+                    gates2.add(g);
+                }
+
+                gates2.remove(gates.size() - 1);
+                setUnchecked(i, new CompoundQGate(gates2));
+            } else if (get(i) instanceof Measurement) {
+                Measurement m = (Measurement) get(i);
+                m.shrink();
+                setUnchecked(i, m);
             }
-
-            gates2.remove(gates.size() - 1);
-            setUnchecked(i, new CompoundQGate(gates2));
         }
     }
 
@@ -87,13 +102,22 @@ public class StageList extends MonitoredList<Stage> {
         }
 
         for(int i = 0; i < size(); i++) {
-            QGate gate = (QGate)get(i);
+            if (get(i) instanceof QGate) {
+                QGate gate = (QGate)get(i);
 
-            CompoundQGate compound = (CompoundQGate)gate;
-            java.util.List<ElementaryQGate> gates = compound.getGates();
-            if(!(gates.get(gates.size() - 1) instanceof Identity)) {
-                throw new Exception("Please remove stages which act on this qubit first");
+                CompoundQGate compound = (CompoundQGate)gate;
+                java.util.List<ElementaryQGate> gates = compound.getGates();
+                if(!(gates.get(gates.size() - 1) instanceof Identity)) {
+                    throw new Exception("Please remove stages which act on this qubit first");
+                }
+            } else if (get(i) instanceof Measurement) {
+                Measurement m = (Measurement) get(i);
+                int[] qubits = m.getMeasuredQubits();
+                Arrays.sort(qubits);
+                if (qubits[0]==0)
+                    throw new Exception("Please remove measurements performed on |q0>.");
             }
+
         }
     }
 

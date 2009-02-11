@@ -94,4 +94,27 @@ public class Measurement implements Stage {
         return gateSize;
     }
 
+
+    /** Increase the size of the 'gate' by 1 */
+    public void expand() {
+        for (int i=0;i<qubits.length;i++) qubits[i]++;
+        this.gateSize++;
+    }
+
+    /** Decrease the size of the 'gate' by 1 by removing |0>| */
+    public void shrink() {
+        if (gateSize<=1) throw new RuntimeException("Cannot shrink: size<=1");
+        //if (qubits.length==1 && )
+
+        for (int i=0;i<qubits.length;i++) qubits[i]--;
+        this.gateSize--;
+        if (qubits[0]==-1) {
+            qubits = Arrays.copyOfRange(qubits, 1, qubits.length);
+        }
+    }
+
+    public int[] getMeasuredQubits() {
+        return this.qubits;
+    }
+
 }
