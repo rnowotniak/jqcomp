@@ -89,7 +89,7 @@ public class MainJFrame extends javax.swing.JFrame {
             if (stage instanceof QGate)
                 doQGateAddDialog((QGate)stage, (ImageIcon) icon);
             else
-                throw new RuntimeException("Not yet implemented.");
+                doMeasurementDialog();
         }
 
      
@@ -911,11 +911,12 @@ public class MainJFrame extends javax.swing.JFrame {
             }
 
             Stage stage = makeStage(gate, f.getRow(), maxRow);
+
+            /*
             if (stage == null) {
                 return;
             }
-
-            QCircuitJPanel qcj = frame.getQCircuitJPanel();
+             QCircuitJPanel qcj = frame.getQCircuitJPanel();
             java.util.List<Stage> stages = qcj.getQCircuit().getStages();
             int selected = stages.indexOf(qcj.getSelectedStage());
             if (selected > -1) {
@@ -925,8 +926,44 @@ public class MainJFrame extends javax.swing.JFrame {
             }
 
             qcj.repaint();
-            qcj.revalidate();
+            qcj.revalidate(); */
+            placeStage(frame, stage);
         }
+    }
+
+    private void doMeasurementDialog() {
+        QCircuitJInternalFrame frame = getSelectedQCircuitJInternalFrame();
+        if (frame==null) return;
+        int size = 0;
+        QCircuit qc = frame.getQCircuitJPanel().getQCircuit();
+        if (qc.getStages().size() > 0) {
+            size = qc.getStages().get(0).getSize();
+        } else return;
+        System.out.println("Size is"+size);
+        MeasurementOptionsDialog form = new MeasurementOptionsDialog(this,true,size);
+        form.setVisible(true);
+        if (form.getResult()==MeasurementOptionsDialog.DIALOG_ACCEPTED) {
+            Stage stage = form.getStage();
+            System.out.println(stage.getSize());
+            placeStage(frame, stage);
+        }
+    }
+
+    // insert stage and refresh
+    private void placeStage(QCircuitJInternalFrame frame, Stage stage) {
+            if (stage==null) {
+                return;
+            }
+            QCircuitJPanel qcj = frame.getQCircuitJPanel();
+            java.util.List<Stage> stages = qcj.getQCircuit().getStages();
+            int selected = stages.indexOf(qcj.getSelectedStage());
+            if (selected > -1) {
+                stages.add(selected, stage);
+            } else {
+                stages.add(stage);
+            }
+            qcj.repaint();
+            qcj.revalidate();
     }
 
     private Stage makeStage(QGate gate, int qubit, int maxRow) {
