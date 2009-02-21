@@ -17,6 +17,7 @@ import jqcompgui.events.ExecutionMonitor;
 import java.util.EventObject;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.table.*;
 
 import pl.lodz.p.ics.quantum.jqcomp.*;
 
@@ -25,6 +26,54 @@ import pl.lodz.p.ics.quantum.jqcomp.*;
  * @author Andrzej
  */
 public class ExecutionInfoJDialog extends javax.swing.JDialog {
+
+    private class ExecutionTableModel extends AbstractTableModel {
+
+        private QRegister getTarget() {
+            if (ExecutionInfoJDialog.this.monitor==null) return null;
+            if (ExecutionInfoJDialog.this.monitor.isStepExecuting())
+                return ExecutionInfoJDialog.this.monitor.getCurrentRegister();
+            else if (ExecutionInfoJDialog.this.monitor.isInExecutedState()) {
+                return ExecutionInfoJDialog.this.monitor.getResultRegister();
+            }
+            return null;
+        }
+
+        private int getRegisterSize(){
+            QRegister target = getTarget();
+            if (target!=null)
+                return target.getSize();
+            return 0;
+        }
+
+        public int getRowCount() {
+            return MoreMath.pow2(getRegisterSize());
+
+        }
+
+        public int getColumnCount() {
+            return 2;
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            if (columnIndex == 0)
+                return QRegister.ket(rowIndex, getRegisterSize()).dirac();
+            else
+                return (getTarget().toComplexArray())[rowIndex];
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return null;
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false;
+        }
+
+
+    }
 
     /** Creates new form ExecutionInfoJDialog */
     public ExecutionInfoJDialog(java.awt.Frame parent, ExecutionMonitor monitor) {
@@ -181,6 +230,10 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         MainJFrame.getInstance().writeMsg(msg, monitor.getQCircuitName());
     }
 
+    private void updateTable(){
+         ((ExecutionTableModel)this.amplitudesTable.getModel()).fireTableDataChanged();
+    }
+
     private ExecutionMonitor monitor;
 
     /** This method is called from within the constructor to
@@ -204,6 +257,8 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         runJButton = new javax.swing.JButton();
         inputDecJTextField = new jqcompgui.NumericJTextField();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        amplitudesTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -246,23 +301,29 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         jLabel4.setText("Input (decimal): ");
 
+        amplitudesTable.setModel(new  ExecutionTableModel ());
+        jScrollPane1.setViewportView(amplitudesTable);
+        amplitudesTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+        amplitudesTable.getColumnModel().getColumn(1).setWidth(80);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(currentJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(resultJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(inputJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(inputDecJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(currentJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputDecJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(runJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepJButton)
@@ -272,8 +333,8 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputDecJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,6 +357,8 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -310,6 +373,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 updateInputRegister();
                 monitor.startStepExecution();
             }
+            updateTable();
         } catch(ExecutionMonitorException e) {
             writeMsg(e.getMessage());
         }
@@ -323,6 +387,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         try {
             updateInputRegister();
             monitor.compute();
+            updateTable();
         } catch(ExecutionMonitorException e) {
             writeMsg(e.getMessage());
         }
@@ -330,6 +395,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable amplitudesTable;
     private javax.swing.JTextField currentJTextField;
     private jqcompgui.NumericJTextField inputDecJTextField;
     private javax.swing.JTextField inputJTextField;
@@ -337,6 +403,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton resetJButton;
     private javax.swing.JTextField resultJTextField;
