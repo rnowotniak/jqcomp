@@ -6,7 +6,6 @@
 package jqcompgui.events;
 
 import pl.lodz.p.ics.quantum.jqcomp.*;
-import pl.lodz.p.ics.quantum.jqcomp.qgates.*;
 import java.util.EventObject;
 
 /**
@@ -264,6 +263,17 @@ public class ExecutionMonitor {
 
             circuitChangedInvoker.invoke(new EventArgs(this, prev));
         }
+    }
+
+    public void modifyRegister(QRegister newRegister, boolean normalize){
+        if (newRegister != null) {
+            if (newRegister.getSize() != this.currentRegister.getSize()) {
+                throw new RuntimeException("Register size mismatch.");
+            }
+            currentRegister = newRegister;
+        }
+        if (normalize)
+            currentRegister.normalize();
     }
 
     public Stage getCurrentStage() {

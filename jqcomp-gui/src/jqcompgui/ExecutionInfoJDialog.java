@@ -19,6 +19,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import org.jscience.mathematics.number.Complex;
 import pl.lodz.p.ics.quantum.jqcomp.*;
 
 /**
@@ -28,6 +29,7 @@ import pl.lodz.p.ics.quantum.jqcomp.*;
 public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
     private class ExecutionTableModel extends AbstractTableModel {
+        public static final String COLUMN1_HEADER = "amplitude";
 
         private QRegister getTarget() {
             if (ExecutionInfoJDialog.this.monitor==null) return null;
@@ -37,6 +39,10 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 return ExecutionInfoJDialog.this.monitor.getResultRegister();
             }
             return null;
+        }
+
+        private ExecutionMonitor getMonitor() {
+            return ExecutionInfoJDialog.this.monitor;
         }
 
         private int getRegisterSize(){
@@ -58,22 +64,35 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (columnIndex == 0)
                 return QRegister.ket(rowIndex, getRegisterSize()).dirac();
-            else
+            else {
                 return (getTarget().toComplexArray())[rowIndex];
+            }
+                
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            if (columnIndex == 1 && aValue instanceof Complex) {
+                Complex[] array = getTarget().toComplexArray();
+                array[rowIndex] = (Complex) aValue;
+                getMonitor().modifyRegister(new QRegister(array), false);
+                ExecutionInfoJDialog.this.modifiedTable = true;
+            }
         }
 
         @Override
         public String getColumnName(int column) {
+            if (column == 1) return COLUMN1_HEADER;
             return null;
         }
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
+            if ( columnIndex==1) return true;
             return false;
         }
-
-
     }
+
 
     /** Creates new form ExecutionInfoJDialog */
     public ExecutionInfoJDialog(java.awt.Frame parent, ExecutionMonitor monitor) {
@@ -91,6 +110,8 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 setExecutionMonitor(null);
             }
         });
+        TableColumn col = this.amplitudesTable.getColumn(ExecutionTableModel.COLUMN1_HEADER);
+        col.setCellEditor(new ComplexNumberCellEditor());
     }
 
     private void update() {
@@ -230,7 +251,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         MainJFrame.getInstance().writeMsg(msg, monitor.getQCircuitName());
     }
 
-    private void updateTable(){
+    private void redrawTable(){
          ((ExecutionTableModel)this.amplitudesTable.getModel()).fireTableDataChanged();
     }
 
@@ -259,6 +280,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         amplitudesTable = new javax.swing.JTable();
+        normalizeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -303,32 +325,41 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         amplitudesTable.setModel(new  ExecutionTableModel ());
         jScrollPane1.setViewportView(amplitudesTable);
+        amplitudesTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         amplitudesTable.getColumnModel().getColumn(0).setPreferredWidth(10);
         amplitudesTable.getColumnModel().getColumn(1).setWidth(80);
+
+        normalizeButton.setText("Normalize");
+        normalizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                normalizeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(currentJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(inputJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                    .addComponent(inputDecJTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(currentJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(resultJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputJTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                    .addComponent(inputDecJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(runJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stepJButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resetJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(resetJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(normalizeButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -358,7 +389,9 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(normalizeButton)
                 .addContainerGap())
         );
 
@@ -373,7 +406,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 updateInputRegister();
                 monitor.startStepExecution();
             }
-            updateTable();
+            redrawTable();
         } catch(ExecutionMonitorException e) {
             writeMsg(e.getMessage());
         }
@@ -387,11 +420,29 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         try {
             updateInputRegister();
             monitor.compute();
-            updateTable();
+            redrawTable();
         } catch(ExecutionMonitorException e) {
             writeMsg(e.getMessage());
         }
     }//GEN-LAST:event_runJButtonActionPerformed
+
+    private void normalize() {
+        monitor.modifyRegister(null, true);
+        redrawTable();
+    }
+
+    private void normalizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalizeButtonActionPerformed
+        normalize();
+}//GEN-LAST:event_normalizeButtonActionPerformed
+
+    /** 
+     * Set if the user edits amplitudes 
+     */
+   private boolean modifiedTable = false;
+
+    public boolean isModifiedByUser() {
+        return modifiedTable;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -405,6 +456,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton normalizeButton;
     private javax.swing.JButton resetJButton;
     private javax.swing.JTextField resultJTextField;
     private javax.swing.JButton runJButton;

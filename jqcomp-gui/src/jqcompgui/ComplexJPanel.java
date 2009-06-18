@@ -23,7 +23,9 @@ import javax.swing.*;
  */
 public class ComplexJPanel extends javax.swing.JPanel {
 
-    /** Creates new form ComplexJPanel */
+    /** Creates new form ComplexJPanel
+     *  Complex numbers editor
+     */
     public ComplexJPanel() {
         initComponents();
         setupControls();

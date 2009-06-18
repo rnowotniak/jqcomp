@@ -8,11 +8,8 @@ package jqcompgui;
 import jqcompgui.events.Listener;
 import jqcompgui.events.EventArgs;
 import jqcompgui.events.EventHelper;
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.beans.*;
-import javax.swing.event.*;
 
 /**
  *
@@ -100,7 +97,9 @@ public class NumericJTextField extends JTextField
                 return val;
             }
         }
-        catch(Exception e) { }
+        catch(Exception e) {
+         //   throw new RuntimeException("Parse error");
+        }
 
         setText(Double.toString(def));
         return def;
