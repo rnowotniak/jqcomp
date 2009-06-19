@@ -248,7 +248,10 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
             matrix = getMatrixFromFields();
             changedOne = false;
         }
-        
+
+        // ugly but working:
+        //if (ntbs.length>0) matrix = getMatrixFromFields();
+
         return matrix;
     }
 

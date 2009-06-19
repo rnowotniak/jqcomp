@@ -265,15 +265,41 @@ public class ExecutionMonitor {
         }
     }
 
+    /**
+     * Modify/normalize register.
+     *
+     * @param newRegister the new value
+     * @param normalize try to normalize if true
+     */
     public void modifyRegister(QRegister newRegister, boolean normalize){
+
+        QRegister target = getShownRegister();
+        if (target == null) return;
+
         if (newRegister != null) {
-            if (newRegister.getSize() != this.currentRegister.getSize()) {
+            if (newRegister.getSize() != target.getSize()) {
                 throw new RuntimeException("Register size mismatch.");
             }
-            currentRegister = newRegister;
+            target = newRegister;
         }
-        if (normalize)
-            currentRegister.normalize();
+
+        if (normalize) {
+            if (target.norm() != 0.0)
+                target.normalize();
+        }
+        switch (state) {
+            case Initial: currentInputRegister = target; break;
+            case StepExecution: currentRegister = target; break;
+        }
+    }
+
+    public QRegister getShownRegister() {
+        switch (state) {
+            case Initial: return currentInputRegister;
+            case StepExecution: return currentRegister;
+            case Executed: return resultRegister;
+            default: return null;
+        }
     }
 
     public Stage getCurrentStage() {

@@ -175,6 +175,7 @@ public class ComplexJPanel extends javax.swing.JPanel {
     protected NumericJTextField getTxtRe() {
         if(txtRe == null) {
             txtRe = new NumericJTextField();
+            txtRe.setNegativeEnabled(true);
         }
 
         return txtRe;
@@ -186,6 +187,7 @@ public class ComplexJPanel extends javax.swing.JPanel {
     protected NumericJTextField getTxtIm() {
         if(txtIm == null) {
             txtIm = new NumericJTextField();
+            txtIm.setNegativeEnabled(true);
         }
 
         return txtIm;

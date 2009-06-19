@@ -47,6 +47,9 @@ public class NumericJTextField extends JTextField
     public boolean passChar(char c)
     {       
         if(Character.isDigit(c)) {
+            String text = getText();
+            if (text.length() > getCaretPosition())
+                if (text.charAt(getCaretPosition()) == '-') return false;
             return true;
         }
 
@@ -57,7 +60,7 @@ public class NumericJTextField extends JTextField
             }
         }
 
-        if((c == '-' && negativeEnabled) || c == '+') {
+        if((c == '-' && negativeExpEnabled) || c == '+') {
             String text = getText();
             if(text.length() == 0
                || Character.toLowerCase(text.charAt(text.length() - 1)) == 'e') {
@@ -65,6 +68,9 @@ public class NumericJTextField extends JTextField
             }
         }
 
+        if (c == '-' && negativeEnabled) {
+            if (getCaretPosition()==0) return true;
+        }
         if(c == 'e' || c == 'E') {
             String text = getText().toLowerCase();
             if(!text.contains("e")) {
@@ -91,7 +97,7 @@ public class NumericJTextField extends JTextField
         try
         {
             double val = Double.parseDouble(getText().trim());
-            if(!(!negativeEnabled && val < 0)
+            if(!(!negativeExpEnabled && val < 0)
                 && !(!floatingEnabled && val != ((double)(int)val)))
             {
                 return val;
@@ -155,13 +161,21 @@ public class NumericJTextField extends JTextField
     /**
      * @return the negativeEnabled
      */
-    public boolean isNegativeEnabled() {
-        return negativeEnabled;
+    public boolean isNegativeExpEnabled() {
+        return negativeExpEnabled;
     }
 
     /**
      * @param negativeEnabled the negativeEnabled to set
      */
+    public void setNegativeExpEnabled(boolean negativeEnabled) {
+        this.negativeExpEnabled = negativeEnabled;
+    }
+
+    public boolean isNegativeEnabled() {
+        return negativeEnabled;
+    }
+
     public void setNegativeEnabled(boolean negativeEnabled) {
         this.negativeEnabled = negativeEnabled;
     }
@@ -170,5 +184,9 @@ public class NumericJTextField extends JTextField
     private boolean sizeAsText = true;
 
     private boolean floatingEnabled = true;
-    private boolean negativeEnabled = true;
+    private boolean negativeExpEnabled = true;
+    private boolean negativeEnabled = false;
+
+
+
 }

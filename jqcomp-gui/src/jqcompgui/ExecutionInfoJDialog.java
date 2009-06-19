@@ -33,12 +33,15 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         private QRegister getTarget() {
             if (ExecutionInfoJDialog.this.monitor==null) return null;
-            if (ExecutionInfoJDialog.this.monitor.isStepExecuting())
-                return ExecutionInfoJDialog.this.monitor.getCurrentRegister();
-            else if (ExecutionInfoJDialog.this.monitor.isInExecutedState()) {
-                return ExecutionInfoJDialog.this.monitor.getResultRegister();
-            }
-            return null;
+//            if (ExecutionInfoJDialog.this.monitor.isStepExecuting())
+//                return ExecutionInfoJDialog.this.monitor.getCurrentRegister();
+//            else if (ExecutionInfoJDialog.this.monitor.isInExecutedState()) {
+//                return ExecutionInfoJDialog.this.monitor.getResultRegister();
+//            }
+//            else if (ExecutionInfoJDialog.this.monitor.isInInitialState()){
+//                return ExecutionInfoJDialog.this.monitor.getInputRegister();
+//            }
+            return ExecutionInfoJDialog.this.monitor.getShownRegister();
         }
 
         private ExecutionMonitor getMonitor() {
@@ -62,6 +65,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         }
 
         public Object getValueAt(int rowIndex, int columnIndex) {
+            if (getTarget() == null) return null;
             if (columnIndex == 0)
                 return QRegister.ket(rowIndex, getRegisterSize()).dirac();
             else {
@@ -76,7 +80,6 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
                 Complex[] array = getTarget().toComplexArray();
                 array[rowIndex] = (Complex) aValue;
                 getMonitor().modifyRegister(new QRegister(array), false);
-                ExecutionInfoJDialog.this.modifiedTable = true;
             }
         }
 
@@ -88,7 +91,9 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            if ( columnIndex==1) return true;
+            if ( (ExecutionInfoJDialog.this.monitor.isStepExecuting()
+                    || ExecutionInfoJDialog.this.monitor.isInInitialState() )
+                    && columnIndex==1) return true;
             return false;
         }
     }
@@ -99,7 +104,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         super(parent, false);        
         initComponents();
         inputDecJTextField.setSizeAsText(false);
-        inputDecJTextField.setNegativeEnabled(false);
+        inputDecJTextField.setNegativeExpEnabled(false);
         inputDecJTextField.setFloatingEnabled(false);
 
         setExecutionMonitor(monitor);
@@ -414,6 +419,7 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
 
     private void resetJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJButtonActionPerformed
         monitor.reset();
+        redrawTable();
     }//GEN-LAST:event_resetJButtonActionPerformed
 
     private void runJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runJButtonActionPerformed
@@ -435,14 +441,6 @@ public class ExecutionInfoJDialog extends javax.swing.JDialog {
         normalize();
 }//GEN-LAST:event_normalizeButtonActionPerformed
 
-    /** 
-     * Set if the user edits amplitudes 
-     */
-   private boolean modifiedTable = false;
-
-    public boolean isModifiedByUser() {
-        return modifiedTable;
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
