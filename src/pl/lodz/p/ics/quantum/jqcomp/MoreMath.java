@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
+import org.jscience.mathematics.vector.ComplexVector;
 
 public class MoreMath {
 
@@ -117,4 +118,68 @@ public class MoreMath {
 		}
 		return "" ;// todo;
 	}
+
+    /**
+     * Project v onto u.
+     * @param v
+     * @param u
+     * @return the projection
+     */
+    public static ComplexVector project(ComplexVector v, ComplexVector u){
+        Complex uu = u.times(u); // dot product
+        Complex uv = u.times(v);
+        return u.times(uv.divide(uu));
+    }
+
+    /**
+     * Return a set of orthonormal vectors obtained by the Gram-Schmidt process.
+     * @param inputSet linearly independent set of vectors
+     * @return orthonormal set of vectors provided inputSet is linearly independent
+     */
+    public static ComplexVector[] GramSchmidtOrthonormalization(ComplexVector[] inputSet) {
+
+        for (int i=0;i<inputSet.length;i++) {
+            if (inputSet[i].getDimension() != inputSet.length) {
+                throw new WrongSizeException("Invalid input vector length");
+            }
+        }
+        int vectors = inputSet.length;
+        Complex[] zero = new Complex[vectors];
+        for (int i=0;i<vectors;i++) {
+            zero[i] = Complex.ZERO;
+        }
+
+        ComplexVector u[] = new ComplexVector[vectors];
+        ComplexVector n[] = new ComplexVector[vectors]; // normalized u
+        for (int i=0;i<vectors;i++){
+            n[i] = ComplexVector.valueOf(zero);
+        }
+        for (int i=0;i<vectors;i++){
+            u[i] = inputSet[i];
+            for (int j=0;j<i;j++) {
+                u[i] = u[i].minus(project(inputSet[i],u[j]));
+            }
+            // store normalized value in n
+            Complex norm = u[i].norm();
+            if (!norm.equals(Complex.ZERO) ) n[i] = u[i].times(Complex.ONE.divide(norm));
+            else {
+                n[i] = u[i];
+                break;
+            }
+        }
+        return n;
+    }
+
+    public static ComplexMatrix GramSchmidtOrthonormalization(ComplexMatrix matrix) {
+        int rows = matrix.getNumberOfRows();
+        ComplexVector[] r = new ComplexVector[rows];
+        for (int i=0;i<rows;i++) {
+            r[i] = matrix.getRow(i);
+        }
+        ComplexMatrix ret = ComplexMatrix.valueOf(MoreMath.GramSchmidtOrthonormalization(r));
+        return ret;
+    }
+
+    private MoreMath() {}
+
 }

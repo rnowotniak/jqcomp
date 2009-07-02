@@ -14,6 +14,8 @@ package jqcompgui;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.EventObject;
+import jqcompgui.events.Listener;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 
@@ -22,6 +24,8 @@ import org.jscience.mathematics.vector.ComplexMatrix;
  * @author Andrzej
  */
 public class ComplexMatrixJPanel extends javax.swing.JPanel {
+
+   
 
     /** Creates new form MatrixJPanel */
     public ComplexMatrixJPanel() {
@@ -129,6 +133,12 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
                 ntb.setShowImaginary(isShowImaginary());
                 ntb.addComponentListener(cl);
                 setNTB(ntb, i, j);
+                ntb.valueChangedEvent().add(new Listener<EventObject>() {
+                    public void invoked(EventObject e) {
+                        changedOne = true;
+                        changed = true;
+                    }
+                });
             }
         }
         
@@ -250,7 +260,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         }
 
         // ugly but working:
-        //if (ntbs.length>0) matrix = getMatrixFromFields();
+      //  if (ntbs.length>0) matrix = getMatrixFromFields();
 
         return matrix;
     }
@@ -334,6 +344,7 @@ public class ComplexMatrixJPanel extends javax.swing.JPanel {
         for(int i = 0; i < ntbs.length; i++) {
             for(int j = 0; j < ntbs[0].length; j++) {
                 ntbs[i][j].setEnabled(enabled);
+
             }
         }
     }

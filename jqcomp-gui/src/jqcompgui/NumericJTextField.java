@@ -5,11 +5,14 @@
 
 package jqcompgui;
 
+import jqcompgui.events.Event;
 import jqcompgui.events.Listener;
 import jqcompgui.events.EventArgs;
 import jqcompgui.events.EventHelper;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.EventObject;
+import jqcompgui.events.EventInvoker;
 
 /**
  *
@@ -32,6 +35,7 @@ public class NumericJTextField extends JTextField
             @Override
             public void focusLost(FocusEvent e) {
                 getValue();
+                valueChangedInvoker.invoke(new EventObject(this));
             }
         });
 
@@ -97,14 +101,14 @@ public class NumericJTextField extends JTextField
         try
         {
             double val = Double.parseDouble(getText().trim());
-            if(!(!negativeExpEnabled && val < 0)
+            if(!(!negativeEnabled && val < 0)
                 && !(!floatingEnabled && val != ((double)(int)val)))
             {
                 return val;
             }
         }
         catch(Exception e) {
-         //   throw new RuntimeException("Parse error");
+      
         }
 
         setText(Double.toString(def));
@@ -178,6 +182,13 @@ public class NumericJTextField extends JTextField
 
     public void setNegativeEnabled(boolean negativeEnabled) {
         this.negativeEnabled = negativeEnabled;
+    }
+
+    private EventInvoker<EventObject> valueChangedInvoker =
+            new EventInvoker<EventObject>();
+
+    public Event<EventObject> valueChangedEvent(){
+        return valueChangedInvoker.getEvent();
     }
 
     private double def = 0;

@@ -5,8 +5,6 @@
 
 package jqcompgui.events;
 
-import jqcompgui.*;
-
 /**
  *
  * @author Andrzej

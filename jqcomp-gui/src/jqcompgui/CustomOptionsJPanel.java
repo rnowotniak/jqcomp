@@ -11,11 +11,10 @@
 
 package jqcompgui;
 
-import java.awt.*;
 import javax.swing.*;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
-import pl.lodz.p.ics.quantum.jqcomp.WrongSizeException;
+import pl.lodz.p.ics.quantum.jqcomp.MoreMath;
 
 /**
  *
@@ -43,6 +42,7 @@ public class CustomOptionsJPanel extends javax.swing.JPanel {
     public void setMatrix(ComplexMatrix matrix) {
         //check(matrix);
         pnlMatrix.setMatrix(matrix);
+        
     }
 
 //    private void check(ComplexMatrix matrix) {
@@ -113,24 +113,33 @@ public class CustomOptionsJPanel extends javax.swing.JPanel {
         pnlMatrix = new jqcompgui.ComplexMatrixJPanel();
         jLabel1 = new javax.swing.JLabel();
         numberSpinner = new javax.swing.JSpinner();
+        orthonormalizationButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout pnlMatrixLayout = new javax.swing.GroupLayout(pnlMatrix);
         pnlMatrix.setLayout(pnlMatrixLayout);
         pnlMatrixLayout.setHorizontalGroup(
             pnlMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 219, Short.MAX_VALUE)
+            .addGap(0, 268, Short.MAX_VALUE)
         );
         pnlMatrixLayout.setVerticalGroup(
             pnlMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 101, Short.MAX_VALUE)
+            .addGap(0, 98, Short.MAX_VALUE)
         );
 
-        jLabel1.setText("Number ");
+        jLabel1.setText("Size");
 
         numberSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         numberSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numberSpinnerStateChanged(evt);
+            }
+        });
+
+        orthonormalizationButton.setText("Orthonormalization");
+        orthonormalizationButton.setToolTipText("Make rows of the matrix an orthonormal set of vectors.");
+        orthonormalizationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orthonormalizationButtonActionPerformed(evt);
             }
         });
 
@@ -143,7 +152,9 @@ public class CustomOptionsJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numberSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(orthonormalizationButton)
+                .addContainerGap())
             .addComponent(pnlMatrix, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -152,7 +163,8 @@ public class CustomOptionsJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(numberSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numberSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(orthonormalizationButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlMatrix, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -162,10 +174,17 @@ public class CustomOptionsJPanel extends javax.swing.JPanel {
         resizeMatrix((Integer)numberSpinner.getValue() * 2);
     }//GEN-LAST:event_numberSpinnerStateChanged
 
+    private void orthonormalizationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orthonormalizationButtonActionPerformed
+        ComplexMatrix m = getMatrix();
+        ComplexMatrix z = MoreMath.GramSchmidtOrthonormalization(m);
+        setMatrix(z);
+}//GEN-LAST:event_orthonormalizationButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSpinner numberSpinner;
+    private javax.swing.JButton orthonormalizationButton;
     private jqcompgui.ComplexMatrixJPanel pnlMatrix;
     // End of variables declaration//GEN-END:variables
 

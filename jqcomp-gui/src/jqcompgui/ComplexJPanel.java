@@ -13,9 +13,12 @@ package jqcompgui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
 import org.jscience.mathematics.number.Complex;
 import org.jscience.mathematics.vector.ComplexMatrix;
 import javax.swing.*;
+import jqcompgui.events.EventInvoker;
+import jqcompgui.events.Listener;
 
 /**
  *
@@ -176,6 +179,11 @@ public class ComplexJPanel extends javax.swing.JPanel {
         if(txtRe == null) {
             txtRe = new NumericJTextField();
             txtRe.setNegativeEnabled(true);
+            txtRe.valueChangedEvent().add(new Listener<EventObject>() {
+                public void invoked(EventObject e) {
+                    ComplexJPanel.this.valueChangedInvoker.invoke(e);
+                }
+            });
         }
 
         return txtRe;
@@ -188,6 +196,11 @@ public class ComplexJPanel extends javax.swing.JPanel {
         if(txtIm == null) {
             txtIm = new NumericJTextField();
             txtIm.setNegativeEnabled(true);
+            txtIm.valueChangedEvent().add(new Listener<EventObject>() {
+                public void invoked(EventObject e) {
+                    ComplexJPanel.this.valueChangedInvoker.invoke(e);
+                }
+            });
         }
 
         return txtIm;
@@ -216,6 +229,13 @@ public class ComplexJPanel extends javax.swing.JPanel {
         super.setEnabled(enabled);
         getTxtRe().setEnabled(enabled);
         getTxtIm().setEnabled(enabled);
+    }
+
+    private EventInvoker<EventObject> valueChangedInvoker =
+            new EventInvoker<EventObject>() ;
+
+    public jqcompgui.events.Event<EventObject> valueChangedEvent() {
+        return valueChangedInvoker.getEvent();
     }
 
     private NumericJTextField txtRe = null;

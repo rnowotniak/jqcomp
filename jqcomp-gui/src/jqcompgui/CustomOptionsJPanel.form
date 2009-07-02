@@ -21,7 +21,9 @@
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="numberSpinner" min="-2" pref="53" max="-2" attributes="0"/>
-              <EmptySpace pref="102" max="32767" attributes="0"/>
+              <EmptySpace pref="39" max="32767" attributes="0"/>
+              <Component id="orthonormalizationButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Component id="pnlMatrix" alignment="1" max="32767" attributes="0"/>
       </Group>
@@ -33,6 +35,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="numberSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="orthonormalizationButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnlMatrix" max="32767" attributes="0"/>
@@ -46,19 +49,19 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="219" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="268" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="101" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Number "/>
+        <Property name="text" type="java.lang.String" value="Size"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="numberSpinner">
@@ -69,6 +72,15 @@
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="numberSpinnerStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="orthonormalizationButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Orthonormalization"/>
+        <Property name="toolTipText" type="java.lang.String" value="Make rows of the matrix an orthonormal set of vectors."/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="orthonormalizationButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
