@@ -69,7 +69,7 @@ public class ProbabilityTester {
     }
 
     public void checkExpected() {
-        System.out.println(this.measured);
+        
         for (QRegister s : expected.keySet()) {
             double prob = measured.get(s)*1.0 / iterations;
             if (Math.abs(expected.get(s)-prob) > tolerance) 

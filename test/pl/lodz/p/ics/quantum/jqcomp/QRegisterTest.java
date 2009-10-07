@@ -207,25 +207,7 @@ public class QRegisterTest {
         grover(8,4,QRegister.ket(4, 3));
         grover(32,16,QRegister.ket(16, 5));
     }
-   
 
-   // @Test
-    public void testMeasureBasic() {
-        QRegister abc = new QRegister(cx(20), cx(5), cx(5), cx(10), cx(20), cx(10), cx(10), cx(10));
-        abc.normalize();
-        System.out.println(abc);
-        QCircuit c = new QCircuit();
-        c.addStage(new Measurement(3,1,2));
-        System.out.println(c.compute(abc));
-    }
-
-    public void println(Object str) {
-        System.out.println(str);
-    }
-
-    public void print(Object str) {
-        System.out.print(str);
-    }
 
     public Complex cx(double real, double imaginary) {
         return Complex.valueOf(real, imaginary);

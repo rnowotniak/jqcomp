@@ -136,16 +136,6 @@ public class QGateTest {
        assertTrue( new Swap().isUnitary());
    }
 
-   
-
-    public void println(Object str) {
-		System.out.println(str);
-	}
-
-	public void print(Object str) {
-		System.out.print(str);
-	}
-
     public Complex cx(double real, double imaginary) {
 		return Complex.valueOf(real, imaginary);
 	}
